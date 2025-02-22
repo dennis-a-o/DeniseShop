@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="NightAdjusted.Theme.DeniseShop" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.DeniseShop" parent="NightAdjusted.Theme.DeniseShop" />
+
+    <style name="NightAdjusted.Theme.Splash" parent="Theme.SplashScreen">
+        <item name="android:windowLightStatusBar" >true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+    </style>
+
+    <style name="Theme.DeniseShop.Splash" parent="NightAdjusted.Theme.Splash">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen_image</item>
+        <item name="postSplashScreenTheme">@style/Theme.DeniseShop</item>
+    </style>
+</resources>
