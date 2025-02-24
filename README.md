@@ -99,7 +99,7 @@ Modern e-commerce Android application built with Kotlin, Jetpack Compose, and mo
 
 ## API 
 
-The Deniseshop App uses the [Deniseshop Web App](https://github.com/dennis-o-a/deniseshop-web-app.git) for RESTful api.</br>
+The Deniseshop App uses the [Deniseshop Web App](https://github.com/dennis-a-o/deniseshop-web-app.git) for RESTful api.</br>
 
 
 ## Security
