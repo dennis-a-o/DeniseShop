@@ -46,7 +46,7 @@ Modern e-commerce Android application built with Kotlin, Jetpack Compose, and mo
 **Steps:**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/dennis-o-a/deniseshop.git
+   git clone https://github.com/dennis-a-o/deniseshop.git
    ```
 2. Open project in Android Studio
 3. Build project (will resolve Gradle dependencies)
