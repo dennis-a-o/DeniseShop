@@ -92,10 +92,13 @@ Modern e-commerce Android application built with Kotlin, Jetpack Compose, and mo
 
 ## Screenshots
 
-| Home                                 | Products                              | Flash Sales                                 | Categories                                | Cart                          | Wishlist                              | Register                              | Login                              | Profile                              |
-|--------------------------------------|---------------------------------------|---------------------------------------------|-------------------------------------------|-------------------------------|---------------------------------------|---------------------------------------|------------------------------------|--------------------------------------|
-| ![Home Screen](screenshots/home.png) | ![Products](screenshots/products.png) | ![Flash Sales](screenshots/flash-sales.png) | ![Categories](screenshots/categories.png) | ![Cart](screenshots/cart.png) | ![Wishlist](screenshots/wishlist.png) | ![Wishlist](screenshots/register.png) | ![Wishlist](screenshots/login.png) | ![Wishlist](screenshots/profile.png) |
-
+| Home                                      | Products                              | FlashSales                                  |
+|-------------------------------------------|---------------------------------------|---------------------------------------------|
+| ![Home Screen](screenshots/home.png)      | ![Products](screenshots/products.png) | ![Flash Sales](screenshots/flash-sales.png) |
+| Categories                                | Cart                                  | Wishlist                                    |
+| ![Categories](screenshots/categories.png) | ![Cart](screenshots/cart.png)         | ![Wishlist](screenshots/wishlist.png)       |
+| Register                                  | Login                                 | Profile                                     |
+| ![Wishlist](screenshots/register.png)     | ![Wishlist](screenshots/login.png)    | ![Wishlist](screenshots/profile.png)        |
 
 ## API 
 
