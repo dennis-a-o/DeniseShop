@@ -31,7 +31,6 @@ import com.example.deniseshop.data.source.PreferencesDataSource
 import com.example.deniseshop.data.source.RemoteApiDataSource
 import com.example.deniseshop.domain.models.PrefUser
 import com.example.deniseshop.domain.models.UpdateProfileData
-import com.example.deniseshop.domain.models.UserSignInData
 import com.example.deniseshop.domain.models.UserSignUpData
 import com.example.deniseshop.ui.mapper.BaseListMapper
 import com.example.deniseshop.ui.mapper.BaseMapper

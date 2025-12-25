@@ -24,12 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.deniseshop.R
-import com.example.deniseshop.ui.components.ReviewItem
-import com.example.deniseshop.ui.components.ReviewStatItem
+import com.example.deniseshop.ui.components.items.ReviewItem
+import com.example.deniseshop.ui.components.items.ReviewStatItem
 import com.example.deniseshop.ui.components.common.ErrorUi
 import com.example.deniseshop.ui.components.common.FooterErrorUI
 import com.example.deniseshop.ui.components.common.FooterLoadingUi

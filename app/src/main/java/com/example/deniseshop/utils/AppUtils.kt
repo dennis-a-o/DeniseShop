@@ -1,9 +1,5 @@
 package com.example.deniseshop.utils
 
-import android.content.Context
-import android.net.ConnectivityManager
-import androidx.core.content.ContextCompat.getSystemService
-import com.example.deniseshop.DeniseShopApplication
 import java.text.SimpleDateFormat
 import java.util.Locale
 

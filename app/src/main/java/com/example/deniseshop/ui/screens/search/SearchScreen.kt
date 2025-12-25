@@ -49,15 +49,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.deniseshop.R
 import com.example.deniseshop.common.event.ProductFilterEvent
 import com.example.deniseshop.navigation.Routes
-import com.example.deniseshop.ui.components.GridProductItem
-import com.example.deniseshop.ui.components.ListProductItem
+import com.example.deniseshop.ui.components.items.GridProductItem
+import com.example.deniseshop.ui.components.items.ListProductItem
 import com.example.deniseshop.ui.components.bars.ProductConfigBar
 import com.example.deniseshop.ui.components.common.ErrorUi
 import com.example.deniseshop.ui.components.common.FooterErrorUI

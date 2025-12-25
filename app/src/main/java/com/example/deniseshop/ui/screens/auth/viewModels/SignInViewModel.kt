@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.deniseshop.common.state.NetworkResponseState
-import com.example.deniseshop.domain.models.UserSignInData
 import com.example.deniseshop.domain.usercase.ValidateInputUseCase
 import com.example.deniseshop.domain.usercase.auth.SignInUseCase
 import com.example.deniseshop.ui.models.SignInState

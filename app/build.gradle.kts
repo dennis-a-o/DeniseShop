@@ -1,20 +1,20 @@
 plugins {
 	alias(libs.plugins.android.application)
-	alias(libs.plugins.jetbrains.kotlin.android)
-	id("kotlinx-serialization")
-	id("com.google.devtools.ksp")
-	id ("com.google.dagger.hilt.android")
-	//alias(libs.plugins.compose.compiler)//kotlin 2.0
+	alias(libs.plugins.kotlin.android)
+	alias(libs.plugins.kotlin.compose)
+	alias(libs.plugins.dagger.hilt.android)
+	alias(libs.plugins.kotlin.serialization)
+	alias(libs.plugins.ksp)
 }
 
 android {
 	namespace = "com.example.deniseshop"
-	compileSdk = 35
+	compileSdk = 36
 
 	defaultConfig {
 		applicationId = "com.example.deniseshop"
 		minSdk = 24
-		targetSdk = 35
+		targetSdk = 36
 		versionCode = 1
 		versionName = "1.0"
 
@@ -38,15 +38,15 @@ android {
 		sourceCompatibility = JavaVersion.VERSION_17
 		targetCompatibility = JavaVersion.VERSION_17
 	}
-	kotlinOptions {
-		jvmTarget = "17"
+
+	kotlin{
+		jvmToolchain(17)
 	}
+
 	buildFeatures {
 		compose = true
 	}
-	composeOptions {
-		kotlinCompilerExtensionVersion = "1.5.14"
-	}
+
 	packaging {
 		resources {
 			excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -56,13 +56,6 @@ android {
 		enableAggregatingTask = true
 	}
 }
-//kotlin 2.0
-/*composeCompiler {
-	enableStrongSkippingMode = true
-
-	reportsDestination = layout.buildDirectory.dir("compose_compiler")
-	stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
-}*/
 
 dependencies {
 	implementation(libs.androidx.core.ktx)
@@ -74,7 +67,6 @@ dependencies {
 	implementation(libs.androidx.ui.tooling.preview)
 	implementation(libs.androidx.material3)
 	//kotlin serialization
-	implementation(libs.kotlinx.serialization.json)
 	implementation(libs.kotlinx.serialization.json)
 	//preff datastore
 	implementation(libs.androidx.datastore.preferences.core)

@@ -18,7 +18,6 @@ import com.example.deniseshop.data.models.ApiProductFilter
 import com.example.deniseshop.data.models.ApiReviewStat
 import com.example.deniseshop.data.models.ApiUser
 import com.example.deniseshop.domain.models.UpdateProfileData
-import com.example.deniseshop.domain.models.UserSignInData
 import com.example.deniseshop.domain.models.UserSignUpData
 import com.example.deniseshop.ui.models.ProductQueryParams
 import com.example.deniseshop.ui.models.UiBrand

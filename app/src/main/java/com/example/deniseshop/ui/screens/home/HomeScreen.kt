@@ -1,6 +1,5 @@
 package com.example.deniseshop.ui.screens.home
 
-import android.provider.Contacts.Intents.UI
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -57,25 +56,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import coil.compose.rememberAsyncImagePainter
 import com.example.deniseshop.R
 import com.example.deniseshop.common.state.ScreenState
 import com.example.deniseshop.ui.components.bars.BottomNavBar
 import com.example.deniseshop.navigation.Routes
-import com.example.deniseshop.ui.components.BrandItem
+import com.example.deniseshop.ui.components.items.BrandItem
 import com.example.deniseshop.ui.components.ColumnGrid
 import com.example.deniseshop.ui.components.CountDownType
 import com.example.deniseshop.ui.components.common.ErrorUi
 import com.example.deniseshop.ui.components.FlashSaleCountDown
-import com.example.deniseshop.ui.components.GridProductItem
+import com.example.deniseshop.ui.components.items.GridProductItem
 import com.example.deniseshop.ui.components.IconWithBadge
 import com.example.deniseshop.ui.components.LazyRowGrid
-import com.example.deniseshop.ui.components.ListProductItem
+import com.example.deniseshop.ui.components.items.ListProductItem
 import com.example.deniseshop.ui.components.common.LoadingUi
 import com.example.deniseshop.ui.models.UiBrand
 import com.example.deniseshop.ui.models.UiCategory

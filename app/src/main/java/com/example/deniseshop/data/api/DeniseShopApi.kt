@@ -10,6 +10,7 @@ import com.example.deniseshop.data.models.ApiCoupon
 import com.example.deniseshop.data.models.ApiFaq
 import com.example.deniseshop.data.models.ApiFlashSale
 import com.example.deniseshop.data.models.ApiHome
+import com.example.deniseshop.data.models.ApiImageUpdate
 import com.example.deniseshop.data.models.ApiOrder
 import com.example.deniseshop.data.models.ApiOrderDetail
 import com.example.deniseshop.data.models.ApiPage
@@ -21,10 +22,8 @@ import com.example.deniseshop.data.models.ApiResponse
 import com.example.deniseshop.data.models.ApiReview
 import com.example.deniseshop.data.models.ApiReviewStat
 import com.example.deniseshop.data.models.ApiSignInResponse
-import com.example.deniseshop.data.models.ApiToken
-import com.example.deniseshop.data.models.ApiUserUpdate
-import com.example.deniseshop.data.models.ApiImageUpdate
 import com.example.deniseshop.data.models.ApiUser
+import com.example.deniseshop.data.models.ApiUserUpdate
 import com.example.deniseshop.data.models.ApiWishlist
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -61,9 +60,6 @@ interface DeniseShopApi {
 		@Field("email") email: String,
 		@Field("password") password: String,
 	): Call<ApiSignInResponse>
-
-	@POST("auth/refresh")
-	fun refreshToken(): Call<ApiToken>
 
 	@POST("auth/forgot-password")
 	@FormUrlEncoded

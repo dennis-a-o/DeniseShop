@@ -26,7 +26,6 @@ import com.example.deniseshop.data.models.ApiImageUpdate
 import com.example.deniseshop.data.models.ApiUser
 import com.example.deniseshop.data.models.ApiWishlist
 import com.example.deniseshop.domain.models.UpdateProfileData
-import com.example.deniseshop.domain.models.UserSignInData
 import com.example.deniseshop.domain.models.UserSignUpData
 import com.example.deniseshop.ui.models.ProductQueryParams
 import kotlinx.coroutines.flow.Flow

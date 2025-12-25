@@ -11,7 +11,6 @@ import com.squareup.moshi.ToJson
 @Retention(AnnotationRetention.RUNTIME)
 @JsonQualifier
 annotation class BooleanType
-
 class BooleanAdapter {
 	@BooleanType
 	@FromJson

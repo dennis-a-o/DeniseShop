@@ -26,8 +26,6 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedFilterChip
@@ -67,8 +65,8 @@ import com.example.deniseshop.common.state.ScreenState
 import com.example.deniseshop.navigation.Routes
 import com.example.deniseshop.ui.components.IconWithBadge
 import com.example.deniseshop.ui.components.RatingStar
-import com.example.deniseshop.ui.components.ReviewItem
-import com.example.deniseshop.ui.components.ReviewStatItem
+import com.example.deniseshop.ui.components.items.ReviewItem
+import com.example.deniseshop.ui.components.items.ReviewStatItem
 import com.example.deniseshop.ui.components.common.ErrorUi
 import com.example.deniseshop.ui.components.common.FullScreenDialog
 import com.example.deniseshop.ui.components.common.LoadingUi
@@ -140,7 +138,7 @@ fun ProductDetailScreen(
 				modifier = Modifier.shadow(elevation = 1.dp),
 				 navigationIcon = {
 					IconButton(onClick = { onNavigateUp() }) {
-						Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "" )
+						Icon(painter = painterResource(R.drawable.ic_arrow_back), contentDescription = "" )
 					}
 				},
 				actions = {

@@ -21,20 +21,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.deniseshop.R
 import com.example.deniseshop.navigation.Routes
-import com.example.deniseshop.ui.components.BrandItem
+import com.example.deniseshop.ui.components.items.BrandItem
 import com.example.deniseshop.ui.components.IconWithBadge
 import com.example.deniseshop.ui.components.common.ErrorUi
 import com.example.deniseshop.ui.components.common.FooterErrorUI
 import com.example.deniseshop.ui.components.common.FooterLoadingUi
 import com.example.deniseshop.ui.components.common.LoadingUi
 import com.example.deniseshop.ui.screens.brand.viewModels.BrandViewModel
-import com.example.deniseshop.ui.screens.wishlist.WishlistViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

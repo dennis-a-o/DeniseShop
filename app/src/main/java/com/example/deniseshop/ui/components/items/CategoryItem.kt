@@ -1,4 +1,4 @@
-package com.example.deniseshop.ui.components
+package com.example.deniseshop.ui.components.items
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,22 +19,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.example.deniseshop.ui.models.UiBrand
+import com.example.deniseshop.ui.models.UiCategory
 
 @Composable
-fun BrandItem(
+fun CategoryItem(
 	modifier: Modifier = Modifier,
-	brand: UiBrand,
+	category: UiCategory,
 	onClick: (Long) -> Unit
 ){
 	Column (
 		modifier = modifier
 			.shadow(elevation = 1.dp, shape = RoundedCornerShape(16.dp))
 			.background(MaterialTheme.colorScheme.surfaceContainerLowest)
-			.clickable { onClick(brand.id) }
+			.clickable { onClick(category.id) }
 	){
 		Image(
-			painter = rememberAsyncImagePainter(model = brand.logo),
+			painter = rememberAsyncImagePainter(model = category.image),
 			contentDescription = "",
 			modifier = Modifier
 				.fillMaxWidth()
@@ -42,7 +42,7 @@ fun BrandItem(
 			contentScale = ContentScale.Fit
 		)
 		Text(
-			text = brand.name,
+			text = category.name,
 			modifier = Modifier
 				.fillMaxWidth()
 				.padding(horizontal = 4.dp),

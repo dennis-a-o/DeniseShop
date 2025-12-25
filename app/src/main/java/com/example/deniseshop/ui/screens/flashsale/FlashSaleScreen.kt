@@ -47,9 +47,9 @@ import com.example.deniseshop.common.event.ProductFilterEvent
 import com.example.deniseshop.navigation.Routes
 import com.example.deniseshop.ui.components.CountDownType
 import com.example.deniseshop.ui.components.FlashSaleCountDown
-import com.example.deniseshop.ui.components.GridProductItem
+import com.example.deniseshop.ui.components.items.GridProductItem
 import com.example.deniseshop.ui.components.IconWithBadge
-import com.example.deniseshop.ui.components.ListProductItem
+import com.example.deniseshop.ui.components.items.ListProductItem
 import com.example.deniseshop.ui.components.bars.ProductConfigBar
 import com.example.deniseshop.ui.components.common.ErrorUi
 import com.example.deniseshop.ui.components.common.FooterErrorUI

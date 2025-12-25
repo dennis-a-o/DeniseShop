@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.Dp
 
 @Composable
 fun ButtonWithProgressIndicator(
+	modifier: Modifier = Modifier,
 	onClick: () -> Unit,
 	isLoading: Boolean = false,
-	modifier: Modifier = Modifier,
 	progressIndicatorModifier: Modifier = Modifier,
 	progressIndicatorColor: Color = ProgressIndicatorDefaults.circularColor,
 	strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
