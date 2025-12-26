@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -43,9 +41,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.deniseshop.R
 import com.example.deniseshop.common.event.ProductFilterEvent
 import com.example.deniseshop.navigation.Routes
-import com.example.deniseshop.ui.components.items.GridProductItem
 import com.example.deniseshop.ui.components.IconWithBadge
-import com.example.deniseshop.ui.components.items.ListProductItem
 import com.example.deniseshop.ui.components.bars.ProductConfigBar
 import com.example.deniseshop.ui.components.common.ErrorUi
 import com.example.deniseshop.ui.components.common.FooterErrorUI
@@ -53,6 +49,8 @@ import com.example.deniseshop.ui.components.common.FooterLoadingUi
 import com.example.deniseshop.ui.components.common.FullScreenDialog
 import com.example.deniseshop.ui.components.filter.ProductFilter
 import com.example.deniseshop.ui.components.filter.ProductSortFilter
+import com.example.deniseshop.ui.components.items.GridProductItem
+import com.example.deniseshop.ui.components.items.ListProductItem
 import com.example.deniseshop.ui.screens.cart.CartViewModel
 import com.example.deniseshop.ui.screens.product.viewModels.ProductViewModel
 import com.example.deniseshop.ui.screens.wishlist.WishlistViewModel
@@ -112,7 +110,7 @@ fun ProductScreen(
 				modifier = Modifier.shadow(elevation = 1.dp),
 				navigationIcon = {
 					IconButton(onClick = { onNavigateUp() }) {
-						Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "" )
+						Icon(painter = painterResource(R.drawable.ic_arrow_back), contentDescription = "" )
 					}
 				},
 				actions = {

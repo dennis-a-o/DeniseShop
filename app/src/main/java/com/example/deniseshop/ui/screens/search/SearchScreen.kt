@@ -17,10 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -136,8 +132,8 @@ fun SearchScreen(
 						leadingIcon = {
 							IconButton(onClick = { onNavigateUp() }) {
 								Icon(
-									imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-									contentDescription = null
+									painter = painterResource(R.drawable.ic_arrow_back),
+									contentDescription = ""
 								)
 							}
 						},
@@ -146,8 +142,8 @@ fun SearchScreen(
 								if (text.isNotEmpty()) {
 									IconButton(onClick = { viewModel.onSearchQueryChange("") }) {
 										Icon(
-											imageVector = Icons.Filled.Clear,
-											contentDescription = "clear search"
+											painter = painterResource(R.drawable.ic_close),
+											contentDescription = "clear"
 										)
 									}
 								}
@@ -156,7 +152,7 @@ fun SearchScreen(
 									expanded = false
 								}) {
 									Icon(
-										imageVector = Icons.Filled.Search,
+										painter = painterResource(R.drawable.ic_search),
 										contentDescription = "search"
 									)
 								}

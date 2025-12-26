@@ -20,8 +20,6 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -56,14 +54,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import coil.compose.rememberAsyncImagePainter
-import com.example.deniseshop.navigation.Routes
-import com.example.deniseshop.ui.components.IconWithBadge
 import com.example.deniseshop.R
 import com.example.deniseshop.common.state.ScreenState
+import com.example.deniseshop.navigation.Routes
+import com.example.deniseshop.ui.components.IconWithBadge
 import com.example.deniseshop.ui.components.common.ErrorUi
 import com.example.deniseshop.ui.components.common.LoadingUi
 import com.example.deniseshop.ui.models.UiCart
@@ -110,7 +106,7 @@ fun CartScreen(
 				modifier = Modifier.shadow(elevation = 1.dp),
 				navigationIcon = {
 					IconButton(onClick = { onNavigateUp() }) {
-						Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "" )
+						Icon(painter = painterResource(R.drawable.ic_arrow_back), contentDescription = "" )
 					}
 				},
 				actions = {
