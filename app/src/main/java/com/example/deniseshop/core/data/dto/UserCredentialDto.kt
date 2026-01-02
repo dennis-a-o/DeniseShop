@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserCredential(
+data class UserCredentialDto(
 	@SerialName("auth_token") val authToken: AuthTokenDto,
 	@SerialName("user") val user: UserDto
 )
