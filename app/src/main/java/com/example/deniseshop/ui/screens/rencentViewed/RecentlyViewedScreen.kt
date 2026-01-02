@@ -11,8 +11,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -93,7 +92,7 @@ fun RecentlyViewedScreen(
 				modifier = Modifier.shadow(elevation = 1.dp),
 				navigationIcon = {
 					IconButton(onClick = { onNavigateUp() }) {
-						Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "" )
+						Icon(painter = painterResource(R.drawable.ic_arrow_back), contentDescription = "" )
 					}
 				}
 			)

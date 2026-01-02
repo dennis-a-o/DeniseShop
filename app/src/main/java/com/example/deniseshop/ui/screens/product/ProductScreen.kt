@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -112,7 +110,7 @@ fun ProductScreen(
 				modifier = Modifier.shadow(elevation = 1.dp),
 				navigationIcon = {
 					IconButton(onClick = { onNavigateUp() }) {
-						Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "" )
+						Icon(painter = painterResource(R.drawable.ic_arrow_back), contentDescription = "" )
 					}
 				},
 				actions = {
