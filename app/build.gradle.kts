@@ -68,6 +68,7 @@ dependencies {
 	implementation(libs.androidx.material3)
 	//kotlin serialization
 	implementation(libs.kotlinx.serialization.json)
+	implementation(libs.retrofit.kotlinx.serialization.converter)
 	//preff datastore
 	implementation(libs.androidx.datastore.preferences.core)
 	//Protobuff datastore
@@ -96,7 +97,7 @@ dependencies {
 	// Moshi
 	implementation (libs.moshi.kotlin)
 	//testImplementation(libs.junit.jupiter)
-	ksp(libs.moshi.kotlin.codegen)
+	//ksp(libs.moshi.kotlin.codegen)
 	//gson
 	implementation (libs.gson)
 	implementation (libs.converter.gson)

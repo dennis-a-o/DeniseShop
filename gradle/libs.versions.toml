@@ -30,9 +30,9 @@ pagingCompose = "3.3.6"
 retrofit = "2.9.0"
 roomRuntime = "2.8.4"
 runtimeLivedata = "1.10.0"
-#junitJupiter = "5.8.1"
 room = "2.8.4"
 ksp = "2.3.4"
+retrofitSerializationConverter = "1.0.0"
 
 [libraries]
 android-lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieComposeVersion" }
@@ -85,7 +85,7 @@ moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", ver
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 paypal-web-payments = { module = "com.paypal.android:paypal-web-payments", version.ref = "cardPayments" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
-#junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+retrofit-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofitSerializationConverter" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
