@@ -10,9 +10,7 @@ import com.example.deniseshop.core.domain.model.UserSignUp
 import okhttp3.MultipartBody
 import retrofit2.awaitResponse
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class RetrofitDeniseShopNetwork @Inject constructor(
 	private val api: RetrofitDeniseShopNetworkApi
 ): RemoteDeniseShopDataSource {
