@@ -1,0 +1,15 @@
+package com.example.deniseshop.core.domain.model
+
+enum class ValidationError {
+	INVALID_NAME,
+	NAME_REQUIRED,
+	INVALID_EMAIL,
+	EMAIL_REQUIRED,
+	INVALID_PASSWORD,
+	INVALID_PHONE,
+	NOT_ALPHA_NUMERIC,
+	SHORT_PASSWORD,
+	PASSWORD_REQUIRED,
+	REQUIRED,
+	INVALID
+}
