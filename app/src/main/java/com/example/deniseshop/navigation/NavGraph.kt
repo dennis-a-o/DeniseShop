@@ -12,12 +12,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.deniseshop.R
 import com.example.deniseshop.feature.signin.presentation.SignInScreen
+import com.example.deniseshop.feature.signup.presentation.SignUpScreen
 import com.example.deniseshop.ui.models.UiAddress
 import com.example.deniseshop.ui.screens.address.AddressFormScreen
 import com.example.deniseshop.ui.screens.address.AddressScreen
 import com.example.deniseshop.ui.screens.address.viewModels.AddressFormViewModel
 import com.example.deniseshop.ui.screens.auth.ForgotPasswordScreen
-import com.example.deniseshop.ui.screens.auth.SignUpScreen
 import com.example.deniseshop.ui.screens.brand.BrandProductScreen
 import com.example.deniseshop.ui.screens.brand.BrandScreen
 import com.example.deniseshop.ui.screens.brand.viewModels.BrandProductViewModel
@@ -28,6 +28,7 @@ import com.example.deniseshop.ui.screens.category.CategoryScreen
 import com.example.deniseshop.ui.screens.category.viewModels.CategoryProductViewModel
 import com.example.deniseshop.ui.screens.checkout.CheckoutScreen
 import com.example.deniseshop.ui.screens.contact.ContactScreen
+import com.example.deniseshop.ui.screens.coupon.CouponScreen
 import com.example.deniseshop.ui.screens.faqs.FaqsScreen
 import com.example.deniseshop.ui.screens.flashsale.FlashSaleScreen
 import com.example.deniseshop.ui.screens.flashsale.FlashSaleViewModel
@@ -36,12 +37,11 @@ import com.example.deniseshop.ui.screens.order.OrderDetailScreen
 import com.example.deniseshop.ui.screens.order.OrderScreen
 import com.example.deniseshop.ui.screens.order.viewModels.OrderDetailViewModel
 import com.example.deniseshop.ui.screens.page.PageScreen
+import com.example.deniseshop.ui.screens.page.PageViewModel
 import com.example.deniseshop.ui.screens.product.ProductDetailScreen
 import com.example.deniseshop.ui.screens.product.ProductScreen
 import com.example.deniseshop.ui.screens.product.viewModels.ProductDetailViewModel
 import com.example.deniseshop.ui.screens.profile.ProfileScreen
-import com.example.deniseshop.ui.screens.coupon.CouponScreen
-import com.example.deniseshop.ui.screens.page.PageViewModel
 import com.example.deniseshop.ui.screens.rencentViewed.RecentlyViewedScreen
 import com.example.deniseshop.ui.screens.review.ReviewScreen
 import com.example.deniseshop.ui.screens.review.ReviewViewModel
@@ -379,11 +379,14 @@ fun NavGraph(
 
 		composable(Routes.SignUpScreen.route){
 			SignUpScreen(
-				onNavigate = { route, options ->
-					navController.navigate(route, options)
+				onBackClick = navController::navigateUp,
+				onTermsClick = {
+					navController.navigate("${Routes.PageScreen.route}/Terms Conditions")
 				},
-				onNavigateUp = {
-					navController.navigateUp()
+				onSignInClick = navController::navigateUp,
+				onShowSnackBar = {a,b -> Boolean
+					Log.d("onShowSnackBar()","$a, $b")
+					true
 				}
 			)
 		}

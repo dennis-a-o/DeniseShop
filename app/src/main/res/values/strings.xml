@@ -129,4 +129,6 @@
     <string name="error_unknown">Oops, something went wrong.</string>
     <string name="error_invalid_input">Invalid inputs, confirm and try again.</string>
     <string name="error_serialization">Could not parse data.</string>
+    <string name="error_phone_required">Phone number is required.</string>
+    <string name="error_accept_terms">You must accept terms and conditions to sign up.</string>
 </resources>

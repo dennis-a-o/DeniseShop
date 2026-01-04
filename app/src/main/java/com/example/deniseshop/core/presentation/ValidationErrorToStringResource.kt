@@ -16,6 +16,8 @@ fun ValidationError.toUiText(): UiText{
 		ValidationError.PASSWORD_REQUIRED -> R.string.error_password_required
 		ValidationError.REQUIRED -> R.string.error_required
 		ValidationError.INVALID -> R.string.error_invalid
+		ValidationError.PHONE_REQUIRED -> R.string.error_phone_required
+		ValidationError.ACCEPT_TERMS -> R.string.error_accept_terms
 	}
 
 	return UiText.StringResourceId(res)
