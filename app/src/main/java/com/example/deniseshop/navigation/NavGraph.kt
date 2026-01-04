@@ -11,13 +11,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.deniseshop.R
+import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPasswordScreen
 import com.example.deniseshop.feature.signin.presentation.SignInScreen
 import com.example.deniseshop.feature.signup.presentation.SignUpScreen
 import com.example.deniseshop.ui.models.UiAddress
 import com.example.deniseshop.ui.screens.address.AddressFormScreen
 import com.example.deniseshop.ui.screens.address.AddressScreen
 import com.example.deniseshop.ui.screens.address.viewModels.AddressFormViewModel
-import com.example.deniseshop.ui.screens.auth.ForgotPasswordScreen
 import com.example.deniseshop.ui.screens.brand.BrandProductScreen
 import com.example.deniseshop.ui.screens.brand.BrandScreen
 import com.example.deniseshop.ui.screens.brand.viewModels.BrandProductViewModel
@@ -393,8 +393,11 @@ fun NavGraph(
 
 		composable(Routes.ForgotPassword.route){
 			ForgotPasswordScreen(
-				onNavigateUp = {
-					navController.navigateUp()
+				onBackClick = navController::popBackStack,
+				onSignInClick = navController::navigateUp,
+				onShowSnackBar = {a,b -> Boolean
+					Log.d("onShowSnackBar()","$a, $b")
+					true
 				}
 			)
 		}
