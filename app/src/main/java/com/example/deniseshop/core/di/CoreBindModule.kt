@@ -4,6 +4,8 @@ import com.example.deniseshop.core.data.datastore.SettingDataSource
 import com.example.deniseshop.core.data.datastore.UserSettingDataSource
 import com.example.deniseshop.core.data.network.RemoteDeniseShopDataSource
 import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetwork
+import com.example.deniseshop.core.data.repository.AuthRepositoryImpl
+import com.example.deniseshop.core.domain.repository.AuthRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,4 +26,10 @@ abstract class CoreBindModule {
 	abstract fun bindsUserSettingDataStore(
 		settingDataSource: UserSettingDataSource
 	): SettingDataSource
+
+	@Singleton
+	@Binds
+	abstract fun bindsAuthRepositoryImpl(
+		authRepositoryImpl: AuthRepositoryImpl
+	): AuthRepository
 }

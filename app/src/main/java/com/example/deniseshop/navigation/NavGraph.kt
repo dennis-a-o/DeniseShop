@@ -11,12 +11,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.deniseshop.R
+import com.example.deniseshop.feature.signin.presentation.SignInScreen
 import com.example.deniseshop.ui.models.UiAddress
 import com.example.deniseshop.ui.screens.address.AddressFormScreen
 import com.example.deniseshop.ui.screens.address.AddressScreen
 import com.example.deniseshop.ui.screens.address.viewModels.AddressFormViewModel
 import com.example.deniseshop.ui.screens.auth.ForgotPasswordScreen
-import com.example.deniseshop.ui.screens.auth.SignInScreen
 import com.example.deniseshop.ui.screens.auth.SignUpScreen
 import com.example.deniseshop.ui.screens.brand.BrandProductScreen
 import com.example.deniseshop.ui.screens.brand.BrandScreen
@@ -360,11 +360,19 @@ fun NavGraph(
 
 		composable(Routes.SignInScreen.route){
 			SignInScreen(
-				onNavigate = { route, options ->
-					navController.navigate(route, options)
+				onBackClick = navController::navigateUp,
+				onSingUpClick =  {
+					navController.navigate(Routes.SignUpScreen.route)
 				},
-				onNavigateUp = {
-					navController.navigateUp()
+				onForgotPasswordClick = {
+					navController.navigate(Routes.ForgotPassword.route)
+				},
+				onSignIn = {
+					navController.popBackStack()
+				},
+				onShowSnackBar = {a,b -> Boolean
+					Log.d("onShowSnackBar()","$a, $b")
+					 true
 				}
 			)
 		}
