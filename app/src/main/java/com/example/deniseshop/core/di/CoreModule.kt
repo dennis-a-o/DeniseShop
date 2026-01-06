@@ -1,5 +1,6 @@
 package com.example.deniseshop.core.di
 
+import com.example.deniseshop.core.data.datastore.SettingDataSource
 import com.example.deniseshop.core.data.network.BASE_URL
 import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetworkApi
 import com.example.deniseshop.core.data.network.interceptors.AuthenticationInterceptor
@@ -64,9 +65,9 @@ object CoreModule {
 	fun provideApi(
 		//builder: Retrofit.Builder,
 		json: Json,
-		dataStorePreferencesRepository: PreferencesDataSource
+		settingDataSource: SettingDataSource
 	): RetrofitDeniseShopNetworkApi {
-		val authenticationInterceptor = AuthenticationInterceptor(dataStorePreferencesRepository)
+		val authenticationInterceptor = AuthenticationInterceptor(settingDataSource)
 
 		val okHttpClient = OkHttpClient.Builder()
 			.addInterceptor(authenticationInterceptor)

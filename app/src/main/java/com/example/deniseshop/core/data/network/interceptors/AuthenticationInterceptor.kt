@@ -1,6 +1,7 @@
 package com.example.deniseshop.core.data.network.interceptors
 
 import android.util.Log
+import com.example.deniseshop.core.data.datastore.SettingDataSource
 import com.example.deniseshop.core.data.dto.AuthTokenDto
 import com.example.deniseshop.core.data.network.AUTH_ENDPOINT
 import com.example.deniseshop.core.data.network.AUTH_HEADER
@@ -8,7 +9,6 @@ import com.example.deniseshop.core.data.network.BASE_URL
 import com.example.deniseshop.core.data.network.REFRESH_TOKEN
 import com.example.deniseshop.core.data.network.TOKEN_TYPE
 import com.example.deniseshop.data.api.ApiParameters
-import com.example.deniseshop.data.source.PreferencesDataSource
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -18,7 +18,7 @@ import okhttp3.Response
 import javax.inject.Inject
 
 class AuthenticationInterceptor @Inject constructor(
-	private val dataStorePreferencesRepository: PreferencesDataSource
+	private val preferencesDataSource: SettingDataSource
 ): Interceptor {
 
 	companion object {
@@ -32,9 +32,9 @@ class AuthenticationInterceptor @Inject constructor(
 		val originalRequest = chain.request()
 
 		runBlocking {
-			val apiToken =  dataStorePreferencesRepository.getApiToken().first()
-			accessToken = apiToken.accessToken.toString()
-			refreshToken = apiToken.refreshToken.toString()
+			val authToken =  preferencesDataSource.getAuthToken().first()
+			accessToken = authToken["accessToken"] ?: ""
+			refreshToken = authToken["refreshToken"] ?: ""
 		}
 
 		val authenticatedRequest = chain.request().newBuilder()
@@ -109,15 +109,16 @@ class AuthenticationInterceptor @Inject constructor(
 
 	private fun storeNewToken(token: AuthTokenDto) {
 		runBlocking {
-			token.accessToken?.let {
-				dataStorePreferencesRepository.setAccessToken(it)
-			}
+			preferencesDataSource.saveAuthToken(
+				accessToken = token.accessToken ?: "" ,
+				refreshToken = token.refreshToken ?: ""
+			)
 		}
 	}
 
 	private fun deleteUserLocalCache(){
 		runBlocking {
-			dataStorePreferencesRepository.clearApiUser()
+			preferencesDataSource.deleteUser()
 		}
 	}
 }

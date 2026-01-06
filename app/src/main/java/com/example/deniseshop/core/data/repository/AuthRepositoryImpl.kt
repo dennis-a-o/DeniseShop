@@ -95,7 +95,13 @@ class AuthRepositoryImpl @Inject constructor(
 	}
 
 	override suspend fun logout(): Result<Unit, DataError.Remote> {
-		return remote.logout()
+		return when(val result = remote.logout()) {
+			is Result.Error -> Result.Error(result.error)
+			is Result.Success -> {
+				preferenceDataSource.deleteUser()
+				Result.Success(Unit)
+			}
+		}
 	}
 
 	override suspend fun deleteUser(): Result<Unit, DataError.Remote> {

@@ -58,6 +58,8 @@ class UserSettingDataSource @Inject constructor(
 			prefs[USER_EMAIL] = ""
 			prefs[USER_PHONE] = ""
 			prefs[USER_IMAGE] = ""
+			prefs[ACCESS_TOKEN] = ""
+			prefs[REFRESH_TOKEN] = ""
 		}
 	}
 

@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.deniseshop.R
+import com.example.deniseshop.feature.changepassword.presentation.ChangePasswordBottomSheet
 import com.example.deniseshop.feature.editprofile.presentation.EditProfileBottomSheet
 import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPasswordScreen
 import com.example.deniseshop.feature.profile.presentation.ProfileScreen
@@ -63,12 +64,25 @@ fun NavGraph(
 	val navController = rememberNavController()
 
 	var showEditProfileBottomSheet by remember { mutableStateOf(false) }
+	var showChangePasswordBottomSheet by remember { mutableStateOf(false) }
 
 
 	if (showEditProfileBottomSheet){
 		EditProfileBottomSheet(
 			onDismiss = {
 				showEditProfileBottomSheet = false
+			},
+			onShowSnackBar = { a,b -> Boolean
+				Log.d("onShowSnackBar()","$a, $b")
+				true
+			}
+		)
+	}
+
+	if (showChangePasswordBottomSheet){
+		ChangePasswordBottomSheet(
+			onDismiss = {
+				showChangePasswordBottomSheet = false
 			},
 			onShowSnackBar = { a,b -> Boolean
 				Log.d("onShowSnackBar()","$a, $b")
@@ -211,7 +225,9 @@ fun NavGraph(
 				onShowEditAccountBottomSheet = {
 					showEditProfileBottomSheet = true
 				},
-				onShowChangePasswordBottomSheet = {},
+				onShowChangePasswordBottomSheet = {
+					showChangePasswordBottomSheet = true
+				},
 				onShowThemeBottomSheet = {},
 				onShowSnackBar = {a,b -> Boolean
 					Log.d("onShowSnackBar()","$a, $b")
