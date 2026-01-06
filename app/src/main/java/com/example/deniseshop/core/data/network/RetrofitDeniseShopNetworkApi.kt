@@ -60,13 +60,13 @@ interface RetrofitDeniseShopNetworkApi {
 		@Part body: MultipartBody.Part?
 	): ImageDto
 
-	@POST("user/password")
+	@PUT("user/password")
 	@FormUrlEncoded
 	fun changePassword(
 		@Field("current_password") currentPassword: String,
 		@Field("new_password") newPassword: String
 	): Call<Unit>
 
-	@DELETE("user/delete")
+	@DELETE("user")
 	suspend fun deleteAccount()
 }

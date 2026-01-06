@@ -131,4 +131,7 @@
     <string name="error_serialization">Could not parse data.</string>
     <string name="error_phone_required">Phone number is required.</string>
     <string name="error_accept_terms">You must accept terms and conditions to sign up.</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="update">Update</string>
+    <string name="success">Success</string>
 </resources>

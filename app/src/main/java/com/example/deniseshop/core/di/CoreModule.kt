@@ -2,7 +2,7 @@ package com.example.deniseshop.core.di
 
 import com.example.deniseshop.core.data.network.BASE_URL
 import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetworkApi
-import com.example.deniseshop.data.api.interceptors.AuthenticationInterceptor
+import com.example.deniseshop.core.data.network.interceptors.AuthenticationInterceptor
 import com.example.deniseshop.data.source.PreferencesDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module

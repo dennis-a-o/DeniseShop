@@ -4,6 +4,10 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavOptions
@@ -11,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.deniseshop.R
+import com.example.deniseshop.feature.editprofile.presentation.EditProfileBottomSheet
 import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPasswordScreen
 import com.example.deniseshop.feature.profile.presentation.ProfileScreen
 import com.example.deniseshop.feature.signin.presentation.SignInScreen
@@ -56,6 +61,21 @@ fun NavGraph(
 	onClearIntentData: () -> Unit
 ){
 	val navController = rememberNavController()
+
+	var showEditProfileBottomSheet by remember { mutableStateOf(false) }
+
+
+	if (showEditProfileBottomSheet){
+		EditProfileBottomSheet(
+			onDismiss = {
+				showEditProfileBottomSheet = false
+			},
+			onShowSnackBar = { a,b -> Boolean
+				Log.d("onShowSnackBar()","$a, $b")
+				true
+			}
+		)
+	}
 
 	val wishlistViewModel: WishlistViewModel = hiltViewModel()
 	val cartViewModel: CartViewModel = hiltViewModel()
@@ -188,7 +208,9 @@ fun NavGraph(
 				onNavigate = {
 					navController.navigate(it)
 				},
-				onShowEditAccountBottomSheet = {},
+				onShowEditAccountBottomSheet = {
+					showEditProfileBottomSheet = true
+				},
 				onShowChangePasswordBottomSheet = {},
 				onShowThemeBottomSheet = {},
 				onShowSnackBar = {a,b -> Boolean
