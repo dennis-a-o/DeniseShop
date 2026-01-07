@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.deniseshop.R
 import com.example.deniseshop.feature.changepassword.presentation.ChangePasswordBottomSheet
+import com.example.deniseshop.feature.changetheme.ChangeThemeBottomSheet
 import com.example.deniseshop.feature.editprofile.presentation.EditProfileBottomSheet
 import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPasswordScreen
 import com.example.deniseshop.feature.profile.presentation.ProfileScreen
@@ -65,6 +66,7 @@ fun NavGraph(
 
 	var showEditProfileBottomSheet by remember { mutableStateOf(false) }
 	var showChangePasswordBottomSheet by remember { mutableStateOf(false) }
+	var showChangeThemeBottomSheet by remember { mutableStateOf(false) }
 
 
 	if (showEditProfileBottomSheet){
@@ -87,6 +89,14 @@ fun NavGraph(
 			onShowSnackBar = { a,b -> Boolean
 				Log.d("onShowSnackBar()","$a, $b")
 				true
+			}
+		)
+	}
+
+	if (showChangeThemeBottomSheet){
+		ChangeThemeBottomSheet(
+			onDismiss = {
+				showChangeThemeBottomSheet = false
 			}
 		)
 	}
@@ -228,7 +238,9 @@ fun NavGraph(
 				onShowChangePasswordBottomSheet = {
 					showChangePasswordBottomSheet = true
 				},
-				onShowThemeBottomSheet = {},
+				onShowThemeBottomSheet = {
+					showChangeThemeBottomSheet = true
+				},
 				onShowSnackBar = {a,b -> Boolean
 					Log.d("onShowSnackBar()","$a, $b")
 					true
