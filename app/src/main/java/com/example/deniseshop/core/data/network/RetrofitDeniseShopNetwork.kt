@@ -1,5 +1,6 @@
 package com.example.deniseshop.core.data.network
 
+import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
@@ -89,6 +90,12 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 	override suspend fun deleteUser(): Result<Unit, DataError.Remote> {
 		return safeCall<Unit> {
 			api.deleteAccount()
+		}
+	}
+
+	override suspend fun getHome(): Result<HomeDto, DataError.Remote> {
+		return safeCall<HomeDto> {
+			api.getHome()
 		}
 	}
 }

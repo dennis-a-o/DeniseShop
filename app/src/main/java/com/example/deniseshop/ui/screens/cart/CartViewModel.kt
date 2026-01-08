@@ -112,7 +112,7 @@ class CartViewModel @Inject constructor(
 	}
 
 	private fun getCart(){
-		getCartUseCase().onEach {
+		/*getCartUseCase().onEach {
 			when(it){
 				is NetworkResponseState.Error -> {
 					_cartState.value = ScreenState.Error(it.exception.message.toString())
@@ -128,7 +128,7 @@ class CartViewModel @Inject constructor(
 					_cartCountState.value = it.result.cartItems.map { item -> item.quantity }.reduceOrNull { acc, i ->  acc + i }?: 0
 				}
 			}
-		}.launchIn(viewModelScope)
+		}.launchIn(viewModelScope)*/
 	}
 
 	private fun addCart(productId: Long, quantity: Int?,color: String?, size: String?){

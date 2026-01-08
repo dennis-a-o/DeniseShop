@@ -10,7 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -19,6 +18,7 @@ import com.example.deniseshop.feature.changepassword.presentation.ChangePassword
 import com.example.deniseshop.feature.changetheme.ChangeThemeBottomSheet
 import com.example.deniseshop.feature.editprofile.presentation.EditProfileBottomSheet
 import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPasswordScreen
+import com.example.deniseshop.feature.home.HomeScreen
 import com.example.deniseshop.feature.profile.presentation.ProfileScreen
 import com.example.deniseshop.feature.signin.presentation.SignInScreen
 import com.example.deniseshop.feature.signup.presentation.SignUpScreen
@@ -40,7 +40,6 @@ import com.example.deniseshop.ui.screens.coupon.CouponScreen
 import com.example.deniseshop.ui.screens.faqs.FaqsScreen
 import com.example.deniseshop.ui.screens.flashsale.FlashSaleScreen
 import com.example.deniseshop.ui.screens.flashsale.FlashSaleViewModel
-import com.example.deniseshop.ui.screens.home.HomeScreen
 import com.example.deniseshop.ui.screens.order.OrderDetailScreen
 import com.example.deniseshop.ui.screens.order.OrderScreen
 import com.example.deniseshop.ui.screens.order.viewModels.OrderDetailViewModel
@@ -112,11 +111,9 @@ fun NavGraph(
 	){
 		composable(Routes.Home.route){
 			HomeScreen(
-				onNavigate = { route, options: NavOptions? ->
-					navController.navigate(route, navOptions = options )
-				},
-				wishlistViewModel = wishlistViewModel,
-				cartViewModel = cartViewModel
+				onNavigate = { route ->
+					navController.navigate(route)
+				}
 			)
 		}
 

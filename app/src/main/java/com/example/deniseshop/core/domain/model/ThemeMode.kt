@@ -1,7 +1,7 @@
 package com.example.deniseshop.core.domain.model
 
-enum class ThemeMode {
-	SYSTEM,
-	DARK,
-	LIGHT
+enum class ThemeMode(val value: String) {
+	SYSTEM("System default"),
+	DARK("Dark"),
+	LIGHT("Light")
 }

@@ -134,4 +134,5 @@
     <string name="edit_profile">Edit profile</string>
     <string name="update">Update</string>
     <string name="success">Success</string>
+    <string name="error">Error</string>
 </resources>

@@ -24,7 +24,7 @@ object CoreModule {
 	fun providesJSON(): Json = Json {
 		ignoreUnknownKeys = true
 		isLenient = false
-		explicitNulls = true
+		explicitNulls = false
 		coerceInputValues = true
 	}
 

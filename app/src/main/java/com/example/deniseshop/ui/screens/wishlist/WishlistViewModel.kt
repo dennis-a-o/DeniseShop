@@ -73,7 +73,7 @@ class WishlistViewModel @Inject constructor(
 	}
 
 	private fun getWishlistItems(){
-		getWishlistProductUseCase().onEach {
+		/*getWishlistProductUseCase().onEach {
 			when(it){
 				is NetworkResponseState.Error -> {
 					Log.e("WISHLIST_VM", it.exception.toString())
@@ -85,7 +85,7 @@ class WishlistViewModel @Inject constructor(
 					_wishlistCountState.value = it.result.size
 				}
 			}
-		}.launchIn(viewModelScope)
+		}.launchIn(viewModelScope)*/
 	}
 
 	private fun addToWishlist(product:Long){

@@ -65,7 +65,7 @@ fun ChangeThemeBottomSheet(
 						selected = themeMode == currentThemeMode,
 						onClick = {})
 					Text(
-						text = themeMode.name,
+						text = themeMode.value,
 						style = MaterialTheme.typography.bodyMedium
 					)
 				}

@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FeaturedFlashSale(
+data class FeaturedFlashSaleDto(
 	@SerialName( "flash_sale") val flashSale: FlashSaleDto,
 	@SerialName( "products") val products: List<ProductDto>
 )
