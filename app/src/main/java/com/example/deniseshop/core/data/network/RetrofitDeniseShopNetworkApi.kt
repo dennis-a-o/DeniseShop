@@ -1,5 +1,6 @@
 package com.example.deniseshop.core.data.network
 
+import com.example.deniseshop.core.data.dto.CategoryDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
@@ -73,4 +74,7 @@ interface RetrofitDeniseShopNetworkApi {
 
 	@GET("home")
 	suspend fun getHome(): HomeDto
+
+	@GET("categories")
+	suspend fun getCategories(): List<CategoryDto>
 }

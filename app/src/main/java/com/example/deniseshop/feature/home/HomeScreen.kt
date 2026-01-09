@@ -1,8 +1,10 @@
 package com.example.deniseshop.feature.home
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -46,11 +48,10 @@ fun HomeScreen(
 ) {
 	val state =  viewModel.state.collectAsState()
 	val wishlistItems = viewModel.wishlistItems.collectAsState()
-	val cartItems = viewModel.wishlistItems.collectAsState()
+	val cartItems = viewModel.cartItems.collectAsState()
 
 	Column(
 		modifier = Modifier
-			.windowInsetsPadding(WindowInsets.navigationBars)
 			.fillMaxSize()
 	) {
 		TopAppBar(
@@ -86,7 +87,7 @@ fun HomeScreen(
 			}
 		)
 		PullToRefreshBox(
-			isRefreshing = state.value == ScreenState.Loading,
+			isRefreshing = false,
 			onRefresh = { viewModel.refresh() },
 			modifier = Modifier
 				.fillMaxSize()
@@ -253,6 +254,9 @@ private fun HomeScreen(
 					onCartToggle = onCartToggle
 				)
 			}
+		}
+		item {
+			Spacer(Modifier.height(16.dp))
 		}
 	}
 }

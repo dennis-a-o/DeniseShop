@@ -52,16 +52,4 @@ fun DeniseShopTheme(
 		typography = Typography(),
 		content = content
 	)
-
-	val view = LocalView.current
-	if (!view.isInEditMode){
-		SideEffect {
-			val window = (view.context as Activity).window
-			window.statusBarColor = colorScheme.background.toArgb()
-			window.navigationBarColor = colorScheme.background.toArgb()
-
-			WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
-			WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
-		}
-	}
 }

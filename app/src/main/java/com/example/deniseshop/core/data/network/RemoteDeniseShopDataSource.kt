@@ -1,5 +1,6 @@
 package com.example.deniseshop.core.data.network
 
+import com.example.deniseshop.core.data.dto.CategoryDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
@@ -21,4 +22,5 @@ interface RemoteDeniseShopDataSource {
 	suspend fun logout(): Result<Unit, DataError.Remote>
 	suspend fun deleteUser(): Result<Unit, DataError.Remote>
 	suspend fun getHome(): Result<HomeDto, DataError.Remote>
+	suspend fun getCategories(): Result<List<CategoryDto>, DataError.Remote>
 }

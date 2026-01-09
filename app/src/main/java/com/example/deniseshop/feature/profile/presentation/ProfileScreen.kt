@@ -38,7 +38,6 @@ import com.example.deniseshop.navigation.Routes
 @Composable
 fun ProfileScreen(
 	viewModel: ProfileViewModel = hiltViewModel(),
-	onBackClick: () -> Unit,
 	onNavigate: (String) -> Unit,
 	onShowEditAccountBottomSheet: () -> Unit,
 	onShowChangePasswordBottomSheet: () -> Unit,
@@ -75,20 +74,11 @@ fun ProfileScreen(
 
 	Column(
 		modifier = Modifier
-			.windowInsetsPadding(WindowInsets.navigationBars)
 			.fillMaxSize()
 	) {
 		TopAppBar(
 			title = {
 				Text(stringResource(R.string.profile))
-			},
-			navigationIcon = {
-				IconButton(onClick = onBackClick) {
-					Icon(
-						painter = painterResource(R.drawable.ic_arrow_back),
-						contentDescription = null
-					)
-				}
 			}
 		)
 		ProfileScreen(
