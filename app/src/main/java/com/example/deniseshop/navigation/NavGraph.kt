@@ -23,6 +23,7 @@ import com.example.deniseshop.feature.home.HomeScreen
 import com.example.deniseshop.feature.profile.presentation.ProfileScreen
 import com.example.deniseshop.feature.signin.presentation.SignInScreen
 import com.example.deniseshop.feature.signup.presentation.SignUpScreen
+import com.example.deniseshop.feature.wishlists.WishlistsScreen
 import com.example.deniseshop.ui.models.UiAddress
 import com.example.deniseshop.ui.screens.address.AddressFormScreen
 import com.example.deniseshop.ui.screens.address.AddressScreen
@@ -122,12 +123,11 @@ fun NavGraph(
 		}
 
 		composable(Routes.Wishlist.route){
-			WishlistScreen(
-				onNavigate = { route, options ->
-					navController.navigate(route,options)
+			WishlistsScreen(
+				onNavigate = {
+					navController.navigate(it)
 				},
-				viewModel = wishlistViewModel,
-				cartViewModel = cartViewModel
+				onShowSnackBar = onShowSnackBar
 			)
 		}
 

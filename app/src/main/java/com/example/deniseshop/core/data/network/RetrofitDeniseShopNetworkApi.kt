@@ -5,6 +5,9 @@ import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
+import com.example.deniseshop.core.data.dto.WishlistDto
+import com.example.deniseshop.data.models.ApiResponse
+import com.example.deniseshop.data.models.ApiWishlist
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.DELETE
@@ -15,6 +18,8 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface RetrofitDeniseShopNetworkApi {
 	@POST("auth/register")
@@ -77,4 +82,21 @@ interface RetrofitDeniseShopNetworkApi {
 
 	@GET("categories")
 	suspend fun getCategories(): List<CategoryDto>
+
+	@GET("wishlists")
+	suspend fun getWishlists(
+		@Query("page") page: Int,
+		@Query("page_size") pageSize: Int
+	): List<WishlistDto>
+
+	@POST("wishlist")
+	@FormUrlEncoded
+	suspend fun addToWishlist(
+		@Field("product_id") product: Long,
+	)
+
+	@DELETE("wishlist/{id}")
+	suspend fun removeWishlist(
+		@Path("id") id: Long,
+	)
 }

@@ -5,6 +5,7 @@ import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
+import com.example.deniseshop.core.data.dto.WishlistDto
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.User
@@ -103,6 +104,27 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 	override suspend fun getCategories(): Result<List<CategoryDto>, DataError.Remote> {
 		return safeCall<List<CategoryDto>> {
 			api.getCategories()
+		}
+	}
+
+	override suspend fun getWishlists(
+		page: Int,
+		pageSize: Int
+	): Result<List<WishlistDto>, DataError.Remote> {
+		return safeCall {
+			api.getWishlists(page = page, pageSize = pageSize)
+		}
+	}
+
+	override suspend fun addToWishlist(productId: Long): Result<Unit, DataError.Remote> {
+		return safeCall {
+			api.addToWishlist(productId)
+		}
+	}
+
+	override suspend fun removeWishlist(id: Long): Result<Unit, DataError.Remote> {
+		return safeCall {
+			api.removeWishlist(id)
 		}
 	}
 }

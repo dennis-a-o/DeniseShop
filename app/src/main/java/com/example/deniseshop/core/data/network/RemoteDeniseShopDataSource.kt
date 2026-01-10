@@ -5,6 +5,7 @@ import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
+import com.example.deniseshop.core.data.dto.WishlistDto
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.User
@@ -23,4 +24,7 @@ interface RemoteDeniseShopDataSource {
 	suspend fun deleteUser(): Result<Unit, DataError.Remote>
 	suspend fun getHome(): Result<HomeDto, DataError.Remote>
 	suspend fun getCategories(): Result<List<CategoryDto>, DataError.Remote>
+	suspend fun getWishlists(page: Int, pageSize: Int): Result<List<WishlistDto>, DataError.Remote>
+	suspend fun addToWishlist(productId: Long): Result<Unit, DataError.Remote>
+	suspend fun removeWishlist(id: Long): Result<Unit, DataError.Remote>
 }
