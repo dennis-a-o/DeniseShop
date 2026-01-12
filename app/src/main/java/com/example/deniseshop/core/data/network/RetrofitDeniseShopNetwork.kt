@@ -3,10 +3,13 @@ package com.example.deniseshop.core.data.network
 import com.example.deniseshop.core.data.dto.CategoryDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
+import com.example.deniseshop.core.data.dto.ProductDto
+import com.example.deniseshop.core.data.dto.ProductFilterDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
 import com.example.deniseshop.core.domain.model.DataError
+import com.example.deniseshop.core.domain.model.ProductFilterParams
 import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.User
 import com.example.deniseshop.core.domain.model.UserSignUp
@@ -125,6 +128,36 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 	override suspend fun removeWishlist(id: Long): Result<Unit, DataError.Remote> {
 		return safeCall {
 			api.removeWishlist(id)
+		}
+	}
+
+	override suspend fun getProducts(filterParams: ProductFilterParams): Result<List<ProductDto>, DataError.Remote> {
+		return safeCall<List<ProductDto>> {
+			api.getProducts(
+				query = filterParams.query,
+				page = filterParams.page,
+				pageSize = filterParams.pageSize,
+				sortBy = filterParams.sortBy.value,
+				minPrice = filterParams.minPrice,
+				maxPrice = filterParams.maxPrice,
+				categories = filterParams.categories,
+				brands = filterParams.brands,
+				colors = filterParams.categories,
+				sizes = filterParams.sizes,
+				rating = filterParams.rating
+			)
+		}
+	}
+
+	override suspend fun getProductFilter(
+		categoryId: Long,
+		brandId: Long
+	): Result<ProductFilterDto, DataError.Remote> {
+		return safeCall<ProductFilterDto> {
+			api.getProductFilter(
+				category = categoryId,
+				brand = brandId
+			)
 		}
 	}
 }

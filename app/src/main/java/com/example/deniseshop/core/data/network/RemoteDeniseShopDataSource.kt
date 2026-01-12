@@ -3,10 +3,13 @@ package com.example.deniseshop.core.data.network
 import com.example.deniseshop.core.data.dto.CategoryDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
+import com.example.deniseshop.core.data.dto.ProductDto
+import com.example.deniseshop.core.data.dto.ProductFilterDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
 import com.example.deniseshop.core.domain.model.DataError
+import com.example.deniseshop.core.domain.model.ProductFilterParams
 import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.User
 import com.example.deniseshop.core.domain.model.UserSignUp
@@ -27,4 +30,6 @@ interface RemoteDeniseShopDataSource {
 	suspend fun getWishlists(page: Int, pageSize: Int): Result<List<WishlistDto>, DataError.Remote>
 	suspend fun addToWishlist(productId: Long): Result<Unit, DataError.Remote>
 	suspend fun removeWishlist(id: Long): Result<Unit, DataError.Remote>
+	suspend fun getProducts(filterParams: ProductFilterParams): Result<List<ProductDto>, DataError.Remote>
+	suspend fun getProductFilter(categoryId: Long, brandId: Long): Result<ProductFilterDto, DataError.Remote>
 }
