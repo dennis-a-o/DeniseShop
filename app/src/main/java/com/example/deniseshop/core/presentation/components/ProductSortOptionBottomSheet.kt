@@ -25,7 +25,7 @@ import com.example.deniseshop.core.domain.model.ProductSortOption
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductSortOptionBottomBar(
+fun ProductSortOptionBottomSheet(
 	sortOption: ProductSortOption,
 	onSortOptionSelect:(ProductSortOption) -> Unit,
 	onDismiss: () -> Unit,
@@ -58,7 +58,7 @@ fun ProductSortOptionBottomBar(
 				){
 					RadioButton(
 						selected =  sortOption == option,
-						onClick = {}
+						onClick = null
 					)
 					Spacer(Modifier.width(8.dp))
 					Text(
@@ -66,7 +66,7 @@ fun ProductSortOptionBottomBar(
 						style = MaterialTheme.typography.bodyLarge
 					)
 				}
-				Spacer(Modifier.height(8.dp))
+				Spacer(Modifier.height(16.dp))
 			}
 		}
 	}

@@ -1,10 +1,10 @@
 package com.example.deniseshop.core.domain.repository
 
 import androidx.paging.PagingData
+import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.domain.model.Category
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.Home
-import com.example.deniseshop.core.domain.model.Product
 import com.example.deniseshop.core.domain.model.ProductFilter
 import com.example.deniseshop.core.domain.model.ProductFilterParams
 import com.example.deniseshop.core.domain.model.Result
@@ -17,6 +17,6 @@ interface ShopRepository {
 	fun getWishlists(limit: Int): Flow<PagingData<Wishlist>>
 	suspend fun addToWishlist(productId: Long): Result<Unit, DataError.Remote>
 	suspend fun removeWishlist(id: Long): Result<Unit, DataError.Remote>
-	fun getProducts(filterParams: ProductFilterParams): Flow<PagingData<Product>>
+	fun getProducts(filterParams: ProductFilterParams): ProductsPagingSource
 	suspend fun getProductFilter(categoryId: Long, brandId: Long): Result<ProductFilter, DataError.Remote>
 }

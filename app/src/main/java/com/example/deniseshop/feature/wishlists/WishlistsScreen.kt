@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,9 +48,9 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.deniseshop.R
 import com.example.deniseshop.core.domain.model.Wishlist
 import com.example.deniseshop.core.presentation.components.ErrorUi
+import com.example.deniseshop.core.presentation.components.IconWithBadge
+import com.example.deniseshop.core.presentation.components.LoadingUi
 import com.example.deniseshop.navigation.Routes
-import com.example.deniseshop.ui.components.IconWithBadge
-import com.example.deniseshop.ui.components.common.LoadingUi
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -84,7 +83,7 @@ fun WishlistsScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Search.route) }
+					onClick = { onNavigate(Routes.Cart.route) }
 				) {
 					IconWithBadge(
 						badge = cartItems.value.size,
@@ -103,8 +102,13 @@ fun WishlistsScreen(
 				.fillMaxSize()
 		) {
 			when (wishlistItems.loadState.refresh) {
-				is LoadState.Error -> LoadingUi()
-				LoadState.Loading -> {
+				 LoadState.Loading -> {
+					 LoadingUi(
+						 modifier = Modifier
+							 .fillMaxSize()
+					 )
+				 }
+				is LoadState.Error -> {
 					ErrorUi(
 						onErrorAction = {
 							wishlistItems.refresh()
@@ -155,10 +159,7 @@ fun WishlistsScreen(
 								}
 								LoadState.Loading -> {
 									item {
-										CircularProgressIndicator(
-											modifier = Modifier
-												.align(Alignment.Center)
-										)
+										LoadingUi()
 									}
 								}
 

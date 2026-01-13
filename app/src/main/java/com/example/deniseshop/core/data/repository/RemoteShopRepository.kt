@@ -13,7 +13,6 @@ import com.example.deniseshop.core.data.paging.WishlistPagingSource
 import com.example.deniseshop.core.domain.model.Category
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.Home
-import com.example.deniseshop.core.domain.model.Product
 import com.example.deniseshop.core.domain.model.ProductFilter
 import com.example.deniseshop.core.domain.model.ProductFilterParams
 import com.example.deniseshop.core.domain.model.Result
@@ -59,16 +58,11 @@ class RemoteShopRepository @Inject constructor(
 		return remoteDeniseShopDataSource.removeWishlist(id)
 	}
 
-	override fun getProducts(filterParams: ProductFilterParams): Flow<PagingData<Product>> {
-		return Pager(
-			config = PagingConfig(pageSize = filterParams.pageSize),
-			pagingSourceFactory = {
-				ProductsPagingSource(
-					api = api,
-					filterParams = filterParams
-				)
-			}
-		).flow
+	override fun getProducts(filterParams: ProductFilterParams): ProductsPagingSource {
+		return ProductsPagingSource(
+			api = api,
+			filterParams = filterParams
+		)
 	}
 
 	override suspend fun getProductFilter(

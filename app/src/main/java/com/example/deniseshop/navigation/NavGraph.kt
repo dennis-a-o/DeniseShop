@@ -20,6 +20,7 @@ import com.example.deniseshop.feature.changetheme.ChangeThemeBottomSheet
 import com.example.deniseshop.feature.editprofile.presentation.EditProfileBottomSheet
 import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPasswordScreen
 import com.example.deniseshop.feature.home.HomeScreen
+import com.example.deniseshop.feature.products.ProductsScreen
 import com.example.deniseshop.feature.profile.presentation.ProfileScreen
 import com.example.deniseshop.feature.signin.presentation.SignInScreen
 import com.example.deniseshop.feature.signup.presentation.SignUpScreen
@@ -47,13 +48,11 @@ import com.example.deniseshop.ui.screens.order.viewModels.OrderDetailViewModel
 import com.example.deniseshop.ui.screens.page.PageScreen
 import com.example.deniseshop.ui.screens.page.PageViewModel
 import com.example.deniseshop.ui.screens.product.ProductDetailScreen
-import com.example.deniseshop.ui.screens.product.ProductScreen
 import com.example.deniseshop.ui.screens.product.viewModels.ProductDetailViewModel
 import com.example.deniseshop.ui.screens.rencentViewed.RecentlyViewedScreen
 import com.example.deniseshop.ui.screens.review.ReviewScreen
 import com.example.deniseshop.ui.screens.review.ReviewViewModel
 import com.example.deniseshop.ui.screens.search.SearchScreen
-import com.example.deniseshop.ui.screens.wishlist.WishlistScreen
 import com.example.deniseshop.ui.screens.wishlist.WishlistViewModel
 
 
@@ -149,16 +148,12 @@ fun NavGraph(
 			arguments = Routes.ProductScreen.arguments
 		){ backStackEntry ->
 			val title = backStackEntry.arguments?.getString("title")
-			ProductScreen(
-				onNavigate = {route, options ->
-					navController.navigate(route, options)
-				},
-				onNavigateUp = {
-					navController.navigateUp()
+			ProductsScreen(
+				onNavigate = {route ->
+					navController.navigate(route)
 				},
 				title = title ?: stringResource(R.string.products),
-				wishlistViewModel = wishlistViewModel,
-				cartViewModel = cartViewModel
+				onBackClick = navController::popBackStack
 			)
 		}
 

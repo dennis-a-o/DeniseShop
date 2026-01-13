@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -12,7 +14,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedFilterChip
@@ -45,14 +49,16 @@ import com.example.deniseshop.ui.components.RatingStar
 @Composable
 fun ProductFilterBottomSheet(
 	filter: ProductFilter,
+	filterState: ProductFilterState,
 	onApplyFilterState: (ProductFilterState) -> Unit,
 	onDismiss: () -> Unit
 ) {
-	var filterState by remember { mutableStateOf(ProductFilterState()) }
+	var filterState by remember(filterState) { mutableStateOf(filterState) }
 
 	ModalBottomSheet(
 		onDismissRequest = onDismiss,
 		sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+		containerColor = MaterialTheme.colorScheme.background
 	) {
 		Column(
 			modifier = Modifier
@@ -61,6 +67,7 @@ fun ProductFilterBottomSheet(
 			TopAppBar(
 				title = { Text(text = stringResource(R.string.filterBy)) },
 				modifier = Modifier.shadow(0.5.dp),
+				windowInsets = WindowInsets(0,0,0,0),
 				navigationIcon = {
 					IconButton(onClick = onDismiss ) {
 						Icon(
@@ -70,115 +77,110 @@ fun ProductFilterBottomSheet(
 					}
 				}
 			)
-			LazyColumn{
+			Column(
+				modifier = Modifier
+					.verticalScroll(rememberScrollState())
+					.weight(1f)
+			){
 				filter.categories.let { categories ->
 					if(categories.isNotEmpty()) {
-						item {
-							FilterSection(
-								title = stringResource(R.string.categories),
-								options = categories,
-								selectedOptions = filterState.selectedCategories,
-								onOptionClick = {
-									filterState = if(it in filterState.selectedCategories){
-										filterState.copy(
-											selectedCategories = filterState.selectedCategories - it
-										)
-									}else{
-										filterState.copy(
-											selectedCategories = filterState.selectedCategories + it
-										)
-									}
+						FilterSection(
+							title = stringResource(R.string.categories),
+							options = categories,
+							selectedOptions = filterState.selectedCategories,
+							onOptionClick = {
+								filterState = if(it in filterState.selectedCategories){
+									filterState.copy(
+										selectedCategories = filterState.selectedCategories - it
+									)
+								}else{
+									filterState.copy(
+										selectedCategories = filterState.selectedCategories + it
+									)
 								}
-							)
-						}
+							}
+						)
 					}
 				}
 				filter.brands.let { brands ->
 					if(brands.isNotEmpty()) {
-						item {
-							FilterSection(
-								title = stringResource(R.string.brands),
-								options = brands,
-								selectedOptions = filterState.selectedBrands,
-								onOptionClick = {
-									filterState = if(it in filterState.selectedBrands){
-										filterState.copy(
-											selectedBrands = filterState.selectedBrands - it
-										)
-									}else{
-										filterState.copy(
-											selectedBrands = filterState.selectedBrands + it
-										)
-									}
+						FilterSection(
+							title = stringResource(R.string.brands),
+							options = brands,
+							selectedOptions = filterState.selectedBrands,
+							onOptionClick = {
+								filterState = if(it in filterState.selectedBrands){
+									filterState.copy(
+										selectedBrands = filterState.selectedBrands - it
+									)
+								}else{
+									filterState.copy(
+										selectedBrands = filterState.selectedBrands + it
+									)
 								}
-							)
-						}
+							}
+						)
 					}
 				}
-				item {
-					FilterPriceSection(
-						maxPrice = filter.maxPrice,
-						currency = filter.currency,
-						priceRange = filterState.priceRange,
-						onChange = {
-							filterState = filterState.copy(priceRange = it)
-						}
-					)
-				}
+				FilterPriceSection(
+					maxPrice = filter.maxPrice,
+					currency = filter.currency,
+					priceRange = filterState.priceRange,
+					onChange = {
+						filterState = filterState.copy(priceRange = it)
+					}
+				)
 				filter.colors.let { colors ->
 					if (colors.isNotEmpty()) {
-						item {
-							FilterSection(
-								title = stringResource(R.string.colors),
-								options = colors,
-								selectedOptions = filterState.selectedColors,
-								onOptionClick = {
-									filterState = if(it in filterState.selectedColors){
-										filterState.copy(
-											selectedColors = filterState.selectedColors - it
-										)
-									}else{
-										filterState.copy(
-											selectedColors = filterState.selectedColors + it
-										)
-									}
+						FilterSection(
+							title = stringResource(R.string.colors),
+							options = colors,
+							selectedOptions = filterState.selectedColors,
+							onOptionClick = {
+								filterState = if(it in filterState.selectedColors){
+									filterState.copy(
+										selectedColors = filterState.selectedColors - it
+									)
+								}else{
+									filterState.copy(
+										selectedColors = filterState.selectedColors + it
+									)
 								}
-							)
-						}
+							}
+						)
 					}
 				}
 				filter.sizes.let { sizes ->
 					if (sizes.isNotEmpty()) {
-						item {
-							FilterSection(
-								title = stringResource(R.string.sizes),
-								options = sizes,
-								selectedOptions = filterState.selectedSize,
-								onOptionClick = {
-									filterState = if(it in filterState.selectedSize){
-										filterState.copy(
-											selectedSize = filterState.selectedSize - it
-										)
-									}else{
-										filterState.copy(
-											selectedSize = filterState.selectedSize + it
-										)
-									}
+						FilterSection(
+							title = stringResource(R.string.sizes),
+							options = sizes,
+							selectedOptions = filterState.selectedSize,
+							onOptionClick = {
+								filterState = if(it in filterState.selectedSize){
+									filterState.copy(
+										selectedSize = filterState.selectedSize - it
+									)
+								}else{
+									filterState.copy(
+										selectedSize = filterState.selectedSize + it
+									)
 								}
-							)
-						}
+							}
+						)
 					}
 				}
-				item {
-					FilterRatingSection (
-						ratingState = filterState.rating,
-						onChange = {
-							filterState = filterState.copy(rating = it)
-						}
-					)
-				}
+				FilterRatingSection (
+					ratingState = filterState.rating,
+					onChange = {
+						filterState = filterState.copy(rating = it)
+					}
+				)
 			}
-			BottomAppBar() {
+			BottomAppBar(
+				containerColor = MaterialTheme.colorScheme.background
+			) {
+				Spacer(Modifier.width(8.dp))
 				OutlinedButton(
 					onClick = {
 						filterState = ProductFilterState()
@@ -202,6 +204,7 @@ fun ProductFilterBottomSheet(
 				) {
 					Text(text = stringResource(R.string.apply))
 				}
+				Spacer(Modifier.width(8.dp))
 			}
 		}
 	}

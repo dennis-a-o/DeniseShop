@@ -25,8 +25,8 @@ class ProductsPagingSource(
 		return try {
 			val data = api.getProducts(
 				query = filterParams.query,
-				page = filterParams.page,
-				pageSize = filterParams.pageSize,
+				page = page,
+				pageSize = pageSize,
 				sortBy = filterParams.sortBy.value,
 				minPrice = filterParams.minPrice,
 				maxPrice = filterParams.maxPrice,
