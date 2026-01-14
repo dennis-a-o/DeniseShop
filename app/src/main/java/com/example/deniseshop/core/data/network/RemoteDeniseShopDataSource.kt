@@ -32,4 +32,5 @@ interface RemoteDeniseShopDataSource {
 	suspend fun removeWishlist(id: Long): Result<Unit, DataError.Remote>
 	suspend fun getProducts(filterParams: ProductFilterParams): Result<List<ProductDto>, DataError.Remote>
 	suspend fun getProductFilter(categoryId: Long, brandId: Long): Result<ProductFilterDto, DataError.Remote>
+	suspend fun getCategory(id: Long): Result<CategoryDto, DataError.Remote>
 }

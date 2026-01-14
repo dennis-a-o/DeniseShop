@@ -9,6 +9,7 @@ import com.example.deniseshop.core.data.mappers.toHome
 import com.example.deniseshop.core.data.mappers.toProductFilter
 import com.example.deniseshop.core.data.network.RemoteDeniseShopDataSource
 import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetworkApi
+import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.data.paging.WishlistPagingSource
 import com.example.deniseshop.core.domain.model.Category
@@ -81,5 +82,25 @@ class RemoteShopRepository @Inject constructor(
 			is Result.Error -> Result.Error(res.error)
 			is Result.Success -> Result.Success( data = res.data.toProductFilter())
 		}
+	}
+
+	override suspend fun getCategory(id: Long): Result<Category, DataError.Remote> {
+		return when(
+			val res = remoteDeniseShopDataSource.getCategory(id)
+		) {
+			is Result.Error ->  Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.toCategory())
+		}
+	}
+
+	override fun getCategoryProducts(
+		id: Long,
+		filterParams: ProductFilterParams
+	): CategoryProductsPagingSource {
+		return CategoryProductsPagingSource(
+			categoryId = id,
+			filterParams = filterParams,
+			api = api
+		)
 	}
 }

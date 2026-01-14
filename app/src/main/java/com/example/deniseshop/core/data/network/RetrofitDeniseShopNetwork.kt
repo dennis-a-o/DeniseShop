@@ -160,4 +160,10 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 			)
 		}
 	}
+
+	override suspend fun getCategory(id: Long): Result<CategoryDto, DataError.Remote> {
+		return safeCall<CategoryDto> {
+			api.getCategory(id)
+		}
+	}
 }

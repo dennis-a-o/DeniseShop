@@ -1,6 +1,7 @@
 package com.example.deniseshop.core.domain.repository
 
 import androidx.paging.PagingData
+import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.domain.model.Category
 import com.example.deniseshop.core.domain.model.DataError
@@ -19,4 +20,6 @@ interface ShopRepository {
 	suspend fun removeWishlist(id: Long): Result<Unit, DataError.Remote>
 	fun getProducts(filterParams: ProductFilterParams): ProductsPagingSource
 	suspend fun getProductFilter(categoryId: Long, brandId: Long): Result<ProductFilter, DataError.Remote>
+	suspend fun getCategory(id: Long): Result<Category, DataError.Remote>
+	fun getCategoryProducts(id: Long, filterParams: ProductFilterParams): CategoryProductsPagingSource
 }

@@ -120,4 +120,22 @@ interface RetrofitDeniseShopNetworkApi {
 		@Query("category") category: Long,
 		@Query("brand") brand: Long
 	): ProductFilterDto
+
+	@GET("category/{category}/products")
+	suspend fun getCategoryProducts(
+		@Path("category") category: Long,
+		@Query("page") page: Int,
+		@Query("page_size") pageSize: Int,
+		@Query("sort_by") sortBy: String,
+		@Query("min_price") minPrice: Int,
+		@Query("max_price") maxPrice: Int,
+		@Query("categories[]") categories: List<String>,
+		@Query("brands[]") brands: List<String>,
+		@Query("colors[]") colors: List<String>,
+		@Query("sizes[]") sizes: List<String>,
+		@Query("rating") rating: Int
+	): List<ProductDto>
+
+	@GET("category/{id}")
+	suspend fun getCategory(@Path("id") id: Long): CategoryDto
 }

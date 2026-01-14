@@ -9,12 +9,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.deniseshop.R
 import com.example.deniseshop.feature.categories.CategoriesScreen
+import com.example.deniseshop.feature.categoryproducts.CategoryProductsScreen
+import com.example.deniseshop.feature.categoryproducts.CategoryProductsViewModel
 import com.example.deniseshop.feature.changepassword.presentation.ChangePasswordBottomSheet
 import com.example.deniseshop.feature.changetheme.ChangeThemeBottomSheet
 import com.example.deniseshop.feature.editprofile.presentation.EditProfileBottomSheet
@@ -35,8 +37,6 @@ import com.example.deniseshop.ui.screens.brand.BrandScreen
 import com.example.deniseshop.ui.screens.brand.viewModels.BrandProductViewModel
 import com.example.deniseshop.ui.screens.cart.CartScreen
 import com.example.deniseshop.ui.screens.cart.CartViewModel
-import com.example.deniseshop.ui.screens.category.CategoryProductScreen
-import com.example.deniseshop.ui.screens.category.viewModels.CategoryProductViewModel
 import com.example.deniseshop.ui.screens.checkout.CheckoutScreen
 import com.example.deniseshop.ui.screens.contact.ContactScreen
 import com.example.deniseshop.ui.screens.coupon.CouponScreen
@@ -322,17 +322,13 @@ fun NavGraph(
 			route = Routes.CategoryProductScreen.routeWithArgs,
 			arguments = Routes.CategoryProductScreen.arguments
 		) { navBackStackEntry ->
-			val viewModel: CategoryProductViewModel = hiltViewModel(navBackStackEntry)
-			CategoryProductScreen(
-				onNavigate = { route, options ->
-					navController.navigate(route, options)
-				},
-				onNavigateUp = {
-					navController.navigateUp()
-				},
+			val viewModel: CategoryProductsViewModel = hiltViewModel(navBackStackEntry)
+			CategoryProductsScreen(
 				viewModel = viewModel,
-				wishlistViewModel = wishlistViewModel,
-				cartViewModel = cartViewModel
+				onNavigate = { route ->
+					navController.navigate(route)
+				},
+				onBackClick = navController::navigateUp,
 			)
 		}
 
