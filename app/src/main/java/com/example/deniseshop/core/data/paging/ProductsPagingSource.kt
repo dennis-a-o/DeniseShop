@@ -2,6 +2,7 @@ package com.example.deniseshop.core.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.deniseshop.core.data.datastore.SettingDataSource
 import com.example.deniseshop.core.data.mappers.toProduct
 import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetworkApi
 import com.example.deniseshop.core.domain.model.Product
@@ -9,6 +10,7 @@ import com.example.deniseshop.core.domain.model.ProductFilterParams
 
 class ProductsPagingSource(
 	private val api: RetrofitDeniseShopNetworkApi,
+	private val settingDataSource: SettingDataSource,
 	private val filterParams: ProductFilterParams
 ): PagingSource<Int, Product>() {
 	override fun getRefreshKey(state: PagingState<Int, Product>): Int? {
@@ -36,6 +38,11 @@ class ProductsPagingSource(
 				sizes = filterParams.sizes,
 				rating = filterParams.rating
 			)
+
+			//save search query for history suggestions
+			if (filterParams.query.isNotEmpty() && data.isNotEmpty()){
+				settingDataSource.saveSearchQuery(filterParams.query)
+			}
 
 			LoadResult.Page(
 				data = data.map { it.toProduct() },

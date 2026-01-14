@@ -27,7 +27,7 @@ class ProductsViewModel @Inject constructor(
 	private val _state = MutableStateFlow(ProductsState())
 
 	val productPagingSource = Pager(
-		config = PagingConfig(pageSize = 20),
+		config = PagingConfig(pageSize = 20, initialLoadSize = 20),
 		pagingSourceFactory = {
 			shopRepository.getProducts(
 				filterParams = ProductFilterParams(

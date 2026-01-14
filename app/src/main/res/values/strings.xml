@@ -136,4 +136,5 @@
     <string name="success">Success</string>
     <string name="error">Error</string>
     <string name="home">Home</string>
+    <string name="no_results">No results</string>
 </resources>

@@ -41,4 +41,8 @@ class OfflineUserSettingRepository @Inject constructor(
 		return settingDataSource.saveSearchQuery(query)
 	}
 
+	override suspend fun removeSearchQuery(query: String) {
+		settingDataSource.deleteSearchQuery(query)
+	}
+
 }

@@ -103,6 +103,7 @@ dependencies {
 	implementation (libs.converter.gson)
 	// Hilt
 	implementation (libs.hilt.android)
+	implementation(libs.androidx.compose.ui)
 	ksp (libs.hilt.compiler)
 	//annotationProcessor (libs.hilt.compiler)
 	implementation (libs.androidx.hilt.navigation.compose)

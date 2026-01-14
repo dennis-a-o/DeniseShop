@@ -22,6 +22,7 @@ import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPassword
 import com.example.deniseshop.feature.home.HomeScreen
 import com.example.deniseshop.feature.products.ProductsScreen
 import com.example.deniseshop.feature.profile.presentation.ProfileScreen
+import com.example.deniseshop.feature.search.SearchScreen
 import com.example.deniseshop.feature.signin.presentation.SignInScreen
 import com.example.deniseshop.feature.signup.presentation.SignUpScreen
 import com.example.deniseshop.feature.wishlists.WishlistsScreen
@@ -52,7 +53,6 @@ import com.example.deniseshop.ui.screens.product.viewModels.ProductDetailViewMod
 import com.example.deniseshop.ui.screens.rencentViewed.RecentlyViewedScreen
 import com.example.deniseshop.ui.screens.review.ReviewScreen
 import com.example.deniseshop.ui.screens.review.ReviewViewModel
-import com.example.deniseshop.ui.screens.search.SearchScreen
 import com.example.deniseshop.ui.screens.wishlist.WishlistViewModel
 
 
@@ -132,14 +132,10 @@ fun NavGraph(
 
 		composable(Routes.Search.route){
 			SearchScreen(
-				onNavigate = {route, options ->
-					navController.navigate(route, options)
-				},
-				onNavigateUp = {
-					navController.navigateUp()
-				},
-				wishlistViewModel = wishlistViewModel,
-				cartViewModel = cartViewModel
+				onBackClick = navController::navigateUp,
+				onProductClick = {
+					navController.navigate("${Routes.ProductDetail.route}/$it")
+				}
 			)
 		}
 

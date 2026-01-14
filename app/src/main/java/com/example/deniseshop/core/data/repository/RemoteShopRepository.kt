@@ -3,6 +3,7 @@ package com.example.deniseshop.core.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.deniseshop.core.data.datastore.SettingDataSource
 import com.example.deniseshop.core.data.mappers.toCategory
 import com.example.deniseshop.core.data.mappers.toHome
 import com.example.deniseshop.core.data.mappers.toProductFilter
@@ -23,7 +24,8 @@ import javax.inject.Inject
 
 class RemoteShopRepository @Inject constructor(
 	private val remoteDeniseShopDataSource: RemoteDeniseShopDataSource,
-	private val api: RetrofitDeniseShopNetworkApi
+	private val api: RetrofitDeniseShopNetworkApi,
+	private val settingDataSource: SettingDataSource
 ): ShopRepository {
 	override suspend fun getHome(): Result<Home, DataError.Remote> {
 		return when(val res = remoteDeniseShopDataSource.getHome()) {
@@ -61,6 +63,7 @@ class RemoteShopRepository @Inject constructor(
 	override fun getProducts(filterParams: ProductFilterParams): ProductsPagingSource {
 		return ProductsPagingSource(
 			api = api,
+			settingDataSource = settingDataSource,
 			filterParams = filterParams
 		)
 	}

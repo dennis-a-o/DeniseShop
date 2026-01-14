@@ -12,4 +12,5 @@ interface UserSettingRepository {
 	suspend fun setCartItem(id: Long)
 	fun getResentSearchQueries(): Flow<List<String>>
 	suspend fun setSearchQuery(query: String)
+	suspend fun removeSearchQuery(query: String)
 }
