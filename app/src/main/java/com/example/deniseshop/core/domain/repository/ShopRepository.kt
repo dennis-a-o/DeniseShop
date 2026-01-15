@@ -1,8 +1,10 @@
 package com.example.deniseshop.core.domain.repository
 
 import androidx.paging.PagingData
+import com.example.deniseshop.core.data.paging.BrandProductsPagingSource
 import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
+import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Category
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.Home
@@ -22,4 +24,8 @@ interface ShopRepository {
 	suspend fun getProductFilter(categoryId: Long, brandId: Long): Result<ProductFilter, DataError.Remote>
 	suspend fun getCategory(id: Long): Result<Category, DataError.Remote>
 	fun getCategoryProducts(id: Long, filterParams: ProductFilterParams): CategoryProductsPagingSource
+	suspend fun getBrand(id: Long): Result<Brand, DataError.Remote>
+	suspend fun getCategoryBrands(categoryId: Long): Result<List<Brand>, DataError.Remote>
+	fun getBrands(limit: Int): Flow<PagingData<Brand>>
+	fun getBrandProducts(brandId: Long, filterParams: ProductFilterParams): BrandProductsPagingSource
 }

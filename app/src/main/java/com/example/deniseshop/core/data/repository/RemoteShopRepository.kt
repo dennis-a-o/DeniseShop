@@ -4,14 +4,18 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.deniseshop.core.data.datastore.SettingDataSource
+import com.example.deniseshop.core.data.mappers.toBrand
 import com.example.deniseshop.core.data.mappers.toCategory
 import com.example.deniseshop.core.data.mappers.toHome
 import com.example.deniseshop.core.data.mappers.toProductFilter
 import com.example.deniseshop.core.data.network.RemoteDeniseShopDataSource
 import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetworkApi
+import com.example.deniseshop.core.data.paging.BrandProductsPagingSource
+import com.example.deniseshop.core.data.paging.BrandsPagingSource
 import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.data.paging.WishlistPagingSource
+import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Category
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.Home
@@ -99,6 +103,46 @@ class RemoteShopRepository @Inject constructor(
 	): CategoryProductsPagingSource {
 		return CategoryProductsPagingSource(
 			categoryId = id,
+			filterParams = filterParams,
+			api = api
+		)
+	}
+
+	override suspend fun getBrand(id: Long): Result<Brand, DataError.Remote> {
+		return when(
+			val res = remoteDeniseShopDataSource.getBrand(id)
+		) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.toBrand())
+		}
+	}
+
+	override suspend fun getCategoryBrands(categoryId: Long): Result<List<Brand>, DataError.Remote> {
+		return when(
+			val res = remoteDeniseShopDataSource.getCategoryBrands(categoryId)
+		) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.map { it.toBrand() })
+		}
+	}
+
+	override fun getBrands(limit: Int): Flow<PagingData<Brand>> {
+		return Pager(
+			config = PagingConfig(pageSize = limit, initialLoadSize = 20),
+			pagingSourceFactory = {
+				BrandsPagingSource(
+					api = api
+				)
+			}
+		).flow
+	}
+
+	override fun getBrandProducts(
+		brandId: Long,
+		filterParams: ProductFilterParams
+	): BrandProductsPagingSource {
+		return BrandProductsPagingSource(
+			brandId = brandId,
 			filterParams = filterParams,
 			api = api
 		)

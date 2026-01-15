@@ -1,5 +1,6 @@
 package com.example.deniseshop.core.data.network
 
+import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CategoryDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
@@ -138,4 +139,35 @@ interface RetrofitDeniseShopNetworkApi {
 
 	@GET("category/{id}")
 	suspend fun getCategory(@Path("id") id: Long): CategoryDto
+
+	@GET("brands")
+	suspend fun getBrands(
+		@Query("page") page: Int,
+		@Query("page_size") pageSize: Int
+	): List<BrandDto>
+
+	@GET("brand/{id}")
+	suspend fun getBrand(
+		@Path("id") id: Long
+	): BrandDto
+
+	@GET("brand/category/{category}")
+	suspend fun getCategoryBrands(
+		@Path("category") category: Long
+	): List<BrandDto>
+
+	@GET("brand/{brand}/products")
+	suspend fun  getBrandProducts(
+		@Path("brand") brand: Long,
+		@Query("page") page: Int,
+		@Query("page_size") pageSize: Int,
+		@Query("sort_by") sortBy: String,
+		@Query("min_price") minPrice: Int,
+		@Query("max_price") maxPrice: Int,
+		@Query("categories[]") categories: List<String>,
+		@Query("brands[]") brands: List<String>,
+		@Query("colors[]") colors: List<String>,
+		@Query("sizes[]") sizes: List<String>,
+		@Query("rating") rating: Int
+	): List<ProductDto>
 }

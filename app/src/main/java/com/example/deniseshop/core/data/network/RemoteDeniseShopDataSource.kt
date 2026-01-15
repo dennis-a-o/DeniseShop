@@ -1,5 +1,6 @@
 package com.example.deniseshop.core.data.network
 
+import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CategoryDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
@@ -33,4 +34,6 @@ interface RemoteDeniseShopDataSource {
 	suspend fun getProducts(filterParams: ProductFilterParams): Result<List<ProductDto>, DataError.Remote>
 	suspend fun getProductFilter(categoryId: Long, brandId: Long): Result<ProductFilterDto, DataError.Remote>
 	suspend fun getCategory(id: Long): Result<CategoryDto, DataError.Remote>
+	suspend fun getBrand(id: Long): Result<BrandDto, DataError.Remote>
+	suspend fun getCategoryBrands(categoryId: Long): Result<List<BrandDto>, DataError.Remote>
 }

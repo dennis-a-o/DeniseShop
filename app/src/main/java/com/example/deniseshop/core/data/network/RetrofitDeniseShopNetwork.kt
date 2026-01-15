@@ -1,5 +1,6 @@
 package com.example.deniseshop.core.data.network
 
+import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CategoryDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
@@ -164,6 +165,18 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 	override suspend fun getCategory(id: Long): Result<CategoryDto, DataError.Remote> {
 		return safeCall<CategoryDto> {
 			api.getCategory(id)
+		}
+	}
+
+	override suspend fun getBrand(id: Long): Result<BrandDto, DataError.Remote> {
+		return safeCall<BrandDto> {
+			api.getBrand(id)
+		}
+	}
+
+	override suspend fun getCategoryBrands(categoryId: Long): Result<List<BrandDto>, DataError.Remote> {
+		return safeCall<List<BrandDto>> {
+			api.getCategoryBrands(categoryId)
 		}
 	}
 }
