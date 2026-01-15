@@ -14,6 +14,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.deniseshop.R
+import com.example.deniseshop.feature.brandproducts.BrandProductsScreen
+import com.example.deniseshop.feature.brandproducts.BrandProductsViewModel
 import com.example.deniseshop.feature.brands.BrandsScreen
 import com.example.deniseshop.feature.categories.CategoriesScreen
 import com.example.deniseshop.feature.categoryproducts.CategoryProductsScreen
@@ -33,8 +35,6 @@ import com.example.deniseshop.ui.models.UiAddress
 import com.example.deniseshop.ui.screens.address.AddressFormScreen
 import com.example.deniseshop.ui.screens.address.AddressScreen
 import com.example.deniseshop.ui.screens.address.viewModels.AddressFormViewModel
-import com.example.deniseshop.ui.screens.brand.BrandProductScreen
-import com.example.deniseshop.ui.screens.brand.viewModels.BrandProductViewModel
 import com.example.deniseshop.ui.screens.cart.CartScreen
 import com.example.deniseshop.ui.screens.cart.CartViewModel
 import com.example.deniseshop.ui.screens.checkout.CheckoutScreen
@@ -332,17 +332,13 @@ fun NavGraph(
 			route = Routes.BrandProductScreen.routeWithArgs,
 			arguments = Routes.BrandProductScreen.arguments
 		) { navBackStackEntry ->
-			val viewModel: BrandProductViewModel = hiltViewModel(navBackStackEntry)
-			BrandProductScreen(
-				onNavigate = { route, options ->
-					navController.navigate(route, options)
-				},
-				onNavigateUp = {
-					navController.navigateUp()
-				},
+			val viewModel: BrandProductsViewModel = hiltViewModel(navBackStackEntry)
+			BrandProductsScreen(
 				viewModel = viewModel,
-				wishlistViewModel = wishlistViewModel,
-				cartViewModel = cartViewModel
+				onBackClick = navController::navigateUp,
+				onNavigate = { route ->
+					navController.navigate(route)
+				}
 			)
 		}
 
