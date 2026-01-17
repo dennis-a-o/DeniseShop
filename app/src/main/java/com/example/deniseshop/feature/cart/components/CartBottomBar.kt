@@ -38,7 +38,7 @@ fun CartBottomBar(
 			confirmButton = {
 				Button(
 					onClick = {
-						dialogState = false;
+						dialogState = false
 						onClearAllClick()
 					}
 				) {

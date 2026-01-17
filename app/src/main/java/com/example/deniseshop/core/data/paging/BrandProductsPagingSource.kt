@@ -3,14 +3,14 @@ package com.example.deniseshop.core.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.deniseshop.core.data.mappers.toProduct
-import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetworkApi
+import com.example.deniseshop.core.data.network.RemoteDeniseShopDataSource
 import com.example.deniseshop.core.domain.model.Product
 import com.example.deniseshop.core.domain.model.ProductFilterParams
 
 class BrandProductsPagingSource(
 	private val brandId: Long,
 	private val filterParams: ProductFilterParams,
-	private val api: RetrofitDeniseShopNetworkApi,
+	private val remote: RemoteDeniseShopDataSource
 ): PagingSource<Int, Product>() {
 	override fun getRefreshKey(state: PagingState<Int, Product>): Int? {
 		return state.anchorPosition?.let { anchorPosition ->
@@ -24,18 +24,12 @@ class BrandProductsPagingSource(
 		val pageSize = params.loadSize
 
 		return try {
-			val data = api.getBrandProducts(
-				page = page,
-				pageSize = pageSize,
-				brand = brandId,
-				sortBy = filterParams.sortBy.value,
-				minPrice = filterParams.minPrice,
-				maxPrice = filterParams.maxPrice,
-				categories = filterParams.categories,
-				brands = filterParams.brands,
-				colors = filterParams.categories,
-				sizes = filterParams.sizes,
-				rating = filterParams.rating
+			val data = remote.getBrandProducts(
+				brandId = brandId,
+				filterParams = filterParams.copy(
+					page = page,
+					pageSize = pageSize
+				)
 			)
 
 			LoadResult.Page(

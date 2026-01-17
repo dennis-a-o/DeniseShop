@@ -3,11 +3,11 @@ package com.example.deniseshop.core.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.deniseshop.core.data.mappers.toBrand
-import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetworkApi
+import com.example.deniseshop.core.data.network.RemoteDeniseShopDataSource
 import com.example.deniseshop.core.domain.model.Brand
 
 class BrandsPagingSource(
-	private val api: RetrofitDeniseShopNetworkApi,
+	private val remote: RemoteDeniseShopDataSource
 ): PagingSource<Int, Brand>() {
 	override fun getRefreshKey(state: PagingState<Int, Brand>): Int? {
 		return state.anchorPosition?.let { anchorPosition ->
@@ -21,7 +21,7 @@ class BrandsPagingSource(
 		val pageSize = params.loadSize
 
 		return try {
-			val data = api.getBrands(
+			val data = remote.getBrands(
 				page = page,
 				pageSize = pageSize,
 			)

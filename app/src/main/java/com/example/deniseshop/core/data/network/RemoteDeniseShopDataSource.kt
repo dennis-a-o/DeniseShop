@@ -3,6 +3,7 @@ package com.example.deniseshop.core.data.network
 import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
+import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
@@ -31,13 +32,16 @@ interface RemoteDeniseShopDataSource {
 	suspend fun deleteUser(): Result<Unit, DataError.Remote>
 	suspend fun getHome(): Result<HomeDto, DataError.Remote>
 	suspend fun getCategories(): Result<List<CategoryDto>, DataError.Remote>
-	suspend fun getWishlists(page: Int, pageSize: Int): Result<List<WishlistDto>, DataError.Remote>
+	suspend fun getWishlists(page: Int, pageSize: Int): List<WishlistDto>
 	suspend fun addToWishlist(productId: Long): Result<Unit, DataError.Remote>
 	suspend fun removeFromWishlist(id: Long): Result<Unit, DataError.Remote>
-	suspend fun getProducts(filterParams: ProductFilterParams): Result<List<ProductDto>, DataError.Remote>
+	suspend fun getProducts(filterParams: ProductFilterParams): List<ProductDto>
 	suspend fun getProductFilter(categoryId: Long, brandId: Long): Result<ProductFilterDto, DataError.Remote>
 	suspend fun getCategory(id: Long): Result<CategoryDto, DataError.Remote>
+	suspend fun getCategoryProducts(categoryId:Long, filterParams: ProductFilterParams):List<ProductDto>
 	suspend fun getBrand(id: Long): Result<BrandDto, DataError.Remote>
+	suspend fun getBrands(page: Int, pageSize: Int):List<BrandDto>
+	suspend fun getBrandProducts(brandId:Long, filterParams: ProductFilterParams):List<ProductDto>
 	suspend fun getCategoryBrands(categoryId: Long): Result<List<BrandDto>, DataError.Remote>
 	suspend fun getCart(): Result<CartDto, DataError.Remote>
 	suspend fun addToCart(productData: ProductData): Result<Unit, DataError.Remote>
@@ -47,4 +51,6 @@ interface RemoteDeniseShopDataSource {
 	suspend fun decreaseCartItemQuantity(productId: Long): Result<Unit, DataError.Remote>
 	suspend fun applyCoupon(coupon: String): Result<MessageDto, DataError>
 	suspend fun clearCoupon(): Result<MessageDto, DataError.Remote>
+	suspend fun getFlashSale(id: Long): Result<FlashSaleDto, DataError.Remote>
+	suspend fun getFlashSaleProducts(flashSaleId:Long, filterParams: ProductFilterParams):List<ProductDto>
 }

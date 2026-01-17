@@ -3,11 +3,11 @@ package com.example.deniseshop.core.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.deniseshop.core.data.mappers.toWishlist
-import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetworkApi
+import com.example.deniseshop.core.data.network.RemoteDeniseShopDataSource
 import com.example.deniseshop.core.domain.model.Wishlist
 
 class WishlistPagingSource(
-	private val api: RetrofitDeniseShopNetworkApi
+	private val remote: RemoteDeniseShopDataSource,
 ): PagingSource<Int, Wishlist>() {
 	override fun getRefreshKey(state: PagingState<Int, Wishlist>): Int? {
 		return state.anchorPosition?.let { anchorPosition ->
@@ -21,7 +21,7 @@ class WishlistPagingSource(
 		val pageSize = params.loadSize
 
 		return try {
-			val data = api.getWishlists(page = page, pageSize = pageSize)
+			val data = remote.getWishlists(page = page, pageSize = pageSize)
 
 			LoadResult.Page(
 				data = data.map { it.toWishlist() },

@@ -7,8 +7,8 @@ import com.example.deniseshop.core.data.network.RemoteDeniseShopDataSource
 import com.example.deniseshop.core.domain.model.Product
 import com.example.deniseshop.core.domain.model.ProductFilterParams
 
-class CategoryProductsPagingSource(
-	private val categoryId: Long,
+class FlashSaleProductsPagingSource(
+	private val flashSaleId: Long,
 	private val filterParams: ProductFilterParams,
 	private val remote: RemoteDeniseShopDataSource
 ): PagingSource<Int, Product>() {
@@ -24,8 +24,8 @@ class CategoryProductsPagingSource(
 		val pageSize = params.loadSize
 
 		return try {
-			val data = remote.getCategoryProducts(
-				categoryId = categoryId,
+			val data = remote.getFlashSaleProducts(
+				flashSaleId = flashSaleId,
 				filterParams = filterParams.copy(
 					page = page,
 					pageSize = pageSize

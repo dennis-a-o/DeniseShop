@@ -3,11 +3,13 @@ package com.example.deniseshop.core.domain.repository
 import androidx.paging.PagingData
 import com.example.deniseshop.core.data.paging.BrandProductsPagingSource
 import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
+import com.example.deniseshop.core.data.paging.FlashSaleProductsPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Cart
 import com.example.deniseshop.core.domain.model.Category
 import com.example.deniseshop.core.domain.model.DataError
+import com.example.deniseshop.core.domain.model.FlashSale
 import com.example.deniseshop.core.domain.model.Home
 import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductFilter
@@ -38,4 +40,6 @@ interface ShopRepository {
 	suspend fun decreaseCartItemQuantity(productId: Long): Result<Unit, DataError.Remote>
 	suspend fun applyCoupon(coupon: String): Result<String, DataError>
 	suspend fun clearCoupon(): Result<String, DataError.Remote>
+	suspend fun getFlashSale(id: Long): Result<FlashSale, DataError.Remote>
+	fun getFlashSaleProducts(flashSaleId: Long, filterParams: ProductFilterParams): FlashSaleProductsPagingSource
 }

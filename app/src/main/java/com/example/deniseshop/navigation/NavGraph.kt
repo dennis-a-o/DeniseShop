@@ -24,6 +24,8 @@ import com.example.deniseshop.feature.categoryproducts.CategoryProductsViewModel
 import com.example.deniseshop.feature.changepassword.presentation.ChangePasswordBottomSheet
 import com.example.deniseshop.feature.changetheme.ChangeThemeBottomSheet
 import com.example.deniseshop.feature.editprofile.presentation.EditProfileBottomSheet
+import com.example.deniseshop.feature.flashsaleproducts.FlashSaleProductsScreen
+import com.example.deniseshop.feature.flashsaleproducts.FlashSaleProductsViewModel
 import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPasswordScreen
 import com.example.deniseshop.feature.home.HomeScreen
 import com.example.deniseshop.feature.products.ProductsScreen
@@ -98,8 +100,6 @@ fun NavGraph(
 	val wishlistViewModel: WishlistViewModel = hiltViewModel()
 	val cartViewModel: CartViewModel = hiltViewModel()
 
-	val cartBadgeCount = cartViewModel.cartCountState.collectAsState()
-	val wishlistBadgeCount = wishlistViewModel.wishlistCount.collectAsState()
 	NavHost(
 		navController = navController,
 		startDestination = Routes.Home.route,
@@ -364,17 +364,13 @@ fun NavGraph(
 			route = Routes.FlashSaleScreen.routeWithArgs,
 			arguments = Routes.FlashSaleScreen.arguments
 		){ backStackEntry ->
-			val viewModel: FlashSaleViewModel = hiltViewModel(backStackEntry)
-			FlashSaleScreen(
-				onNavigate = { route, options ->
-					navController.navigate(route, options)
+			val viewModel: FlashSaleProductsViewModel = hiltViewModel(backStackEntry)
+			FlashSaleProductsScreen(
+				viewModel = viewModel,
+				onBackClick = navController::navigateUp,
+				onNavigate = { route ->
+					navController.navigate(route)
 				},
-				onNavigateUp = {
-					navController.navigateUp()
-				},
-				viewModel,
-				wishlistViewModel,
-				cartViewModel
 			)
 		}
 

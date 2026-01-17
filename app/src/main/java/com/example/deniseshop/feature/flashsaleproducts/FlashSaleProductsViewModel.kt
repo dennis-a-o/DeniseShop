@@ -1,5 +1,6 @@
-package com.example.deniseshop.feature.products
+package com.example.deniseshop.feature.flashsaleproducts
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -7,9 +8,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductFilterParams
+import com.example.deniseshop.core.domain.model.ProductSortOption
 import com.example.deniseshop.core.domain.model.onSuccess
 import com.example.deniseshop.core.domain.repository.ShopRepository
 import com.example.deniseshop.core.domain.repository.UserSettingRepository
+import com.example.deniseshop.core.presentation.models.ProductFilterState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,16 +23,21 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductsViewModel @Inject constructor(
+class FlashSaleProductsViewModel @Inject constructor(
 	private val shopRepository: ShopRepository,
-	private val settingRepository: UserSettingRepository
+	private val settingRepository: UserSettingRepository,
+	savedStateHandle: SavedStateHandle,
 ): ViewModel() {
-	private val _state = MutableStateFlow(ProductsState())
+	private val flashSaleId: Long = savedStateHandle["flashSaleId"] ?: 0
+	private val _state = MutableStateFlow(FlashSaleProductsState())
 
-	val productPagingSource = Pager(
+	val state = _state.asStateFlow()
+
+	val flashSaleProductsPagingSource = Pager(
 		config = PagingConfig(pageSize = 20, initialLoadSize = 20),
 		pagingSourceFactory = {
-			shopRepository.getProducts(
+			shopRepository.getFlashSaleProducts(
+				flashSaleId = flashSaleId,
 				filterParams = ProductFilterParams(
 					pageSize = 20,
 					minPrice = _state.value.filterState.priceRange.start.toInt(),
@@ -59,28 +67,62 @@ class ProductsViewModel @Inject constructor(
 			initialValue = emptyList(),
 		)
 
-	val state = _state.asStateFlow()
-
 	init {
+		getFlashSale()
 		getProductFilter()
 	}
 
-	fun onProductsEvent(event: ProductsEvent){
-		when(event) {
-			is ProductsEvent.CartToggle -> onCartToggle(event.productId)
-			is ProductsEvent.ProductFilterStateChange -> {
-				_state.update {
-					it.copy(
-						filterState = event.filterState
+	fun onFilterStateChange(filterState: ProductFilterState){
+		_state.update {
+			it.copy(
+				filterState = filterState
+			)
+		}
+	}
+
+	fun onSortOptionChange(sortOption: ProductSortOption){
+		_state.update {
+			it.copy(
+				sortOption = sortOption
+			)
+		}
+	}
+
+	fun onCartToggle(productId: Long){
+		viewModelScope.launch {
+			if (productId in cartItems.value){
+				shopRepository.removeFromCart(productId)
+			}else{
+				shopRepository.addToCart(
+					ProductData(
+						productId = productId,
+						quantity = null,
+						size = null,
+						color = null
 					)
-				}
+				)
 			}
-			is ProductsEvent.SortOptionChange -> {
-				_state.update {
-					it.copy(sortOption = event.sortOption)
-				}
+		}
+	}
+
+	fun onWishlistToggle(productId: Long){
+		viewModelScope.launch {
+			if (productId in wishlistItems.value){
+				shopRepository.removeFromWishlist(productId)
+			}else{
+				shopRepository.addToWishlist(productId)
 			}
-			is ProductsEvent.WishlistToggle -> onWishlistToggle(event.productId)
+		}
+	}
+
+	private fun getFlashSale(){
+		viewModelScope.launch {
+			shopRepository.getFlashSale(flashSaleId)
+				.onSuccess { data ->
+					_state.update {
+						it.copy(flashSale = data)
+					}
+				}
 		}
 	}
 
@@ -92,30 +134,6 @@ class ProductsViewModel @Inject constructor(
 						it.copy(filter = data)
 					}
 				}
-		}
-	}
-
-	private fun onCartToggle(productId: Long){
-		viewModelScope.launch {
-			if (productId in cartItems.value){
-				shopRepository.removeFromCart(productId)
-			}else{
-				shopRepository.addToCart(
-					ProductData(
-						productId = productId
-					)
-				)
-			}
-		}
-	}
-
-	private fun onWishlistToggle(productId: Long){
-		viewModelScope.launch {
-			if (productId in wishlistItems.value){
-				shopRepository.removeFromWishlist(productId)
-			}else{
-				shopRepository.addToWishlist(productId)
-			}
 		}
 	}
 }

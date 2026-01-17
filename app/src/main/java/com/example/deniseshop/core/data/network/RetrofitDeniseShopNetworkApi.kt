@@ -3,6 +3,7 @@ package com.example.deniseshop.core.data.network
 import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
+import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
@@ -11,6 +12,8 @@ import com.example.deniseshop.core.data.dto.ProductFilterDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
+import com.example.deniseshop.data.models.ApiFlashSale
+import com.example.deniseshop.data.models.ApiProduct
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.DELETE
@@ -211,4 +214,24 @@ interface RetrofitDeniseShopNetworkApi {
 
 	@DELETE("coupon/clear")
 	suspend fun clearCoupon(): MessageDto
+
+	@GET("flashsale/{id}")
+	suspend fun getFlashSale(
+		@Path("id") id: Long,
+	): FlashSaleDto
+
+	@GET("flashsale/{flashSale}/products")
+	suspend fun getFlashSaleProducts(
+		@Path("flashSale") flashSale: Long,
+		@Query("page") page: Int,
+		@Query("page_size") pageSize: Int,
+		@Query("sort_by") sortBy: String,
+		@Query("min_price") minPrice: Int,
+		@Query("max_price") maxPrice: Int,
+		@Query("categories[]") categories: List<String>,
+		@Query("brands[]") brands: List<String>,
+		@Query("colors[]") colors: List<String>,
+		@Query("sizes[]") sizes: List<String>,
+		@Query("rating") rating: Int
+	): List<ProductDto>
 }

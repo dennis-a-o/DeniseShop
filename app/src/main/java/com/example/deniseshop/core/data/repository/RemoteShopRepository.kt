@@ -7,19 +7,21 @@ import com.example.deniseshop.core.data.datastore.SettingDataSource
 import com.example.deniseshop.core.data.mappers.toBrand
 import com.example.deniseshop.core.data.mappers.toCart
 import com.example.deniseshop.core.data.mappers.toCategory
+import com.example.deniseshop.core.data.mappers.toFlashSale
 import com.example.deniseshop.core.data.mappers.toHome
 import com.example.deniseshop.core.data.mappers.toProductFilter
 import com.example.deniseshop.core.data.network.RemoteDeniseShopDataSource
-import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetworkApi
 import com.example.deniseshop.core.data.paging.BrandProductsPagingSource
 import com.example.deniseshop.core.data.paging.BrandsPagingSource
 import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
+import com.example.deniseshop.core.data.paging.FlashSaleProductsPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.data.paging.WishlistPagingSource
 import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Cart
 import com.example.deniseshop.core.domain.model.Category
 import com.example.deniseshop.core.domain.model.DataError
+import com.example.deniseshop.core.domain.model.FlashSale
 import com.example.deniseshop.core.domain.model.Home
 import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductFilter
@@ -32,7 +34,6 @@ import javax.inject.Inject
 
 class RemoteShopRepository @Inject constructor(
 	private val remoteDeniseShopDataSource: RemoteDeniseShopDataSource,
-	private val api: RetrofitDeniseShopNetworkApi,
 	private val settingDataSource: SettingDataSource
 ): ShopRepository {
 	override suspend fun getHome(): Result<Home, DataError.Remote> {
@@ -54,7 +55,7 @@ class RemoteShopRepository @Inject constructor(
 			config = PagingConfig(pageSize = limit),
 			pagingSourceFactory = {
 				WishlistPagingSource(
-					api = api
+					remote = remoteDeniseShopDataSource
 				)
 			}
 		).flow
@@ -70,9 +71,9 @@ class RemoteShopRepository @Inject constructor(
 
 	override fun getProducts(filterParams: ProductFilterParams): ProductsPagingSource {
 		return ProductsPagingSource(
-			api = api,
 			settingDataSource = settingDataSource,
-			filterParams = filterParams
+			filterParams = filterParams,
+			remote = remoteDeniseShopDataSource
 		)
 	}
 
@@ -107,7 +108,7 @@ class RemoteShopRepository @Inject constructor(
 		return CategoryProductsPagingSource(
 			categoryId = id,
 			filterParams = filterParams,
-			api = api
+			remote = remoteDeniseShopDataSource
 		)
 	}
 
@@ -134,7 +135,7 @@ class RemoteShopRepository @Inject constructor(
 			config = PagingConfig(pageSize = limit, initialLoadSize = 20),
 			pagingSourceFactory = {
 				BrandsPagingSource(
-					api = api
+					remote = remoteDeniseShopDataSource
 				)
 			}
 		).flow
@@ -147,7 +148,7 @@ class RemoteShopRepository @Inject constructor(
 		return BrandProductsPagingSource(
 			brandId = brandId,
 			filterParams = filterParams,
-			api = api
+			remote = remoteDeniseShopDataSource
 		)
 	}
 
@@ -190,5 +191,23 @@ class RemoteShopRepository @Inject constructor(
 			is Result.Error -> Result.Error(res.error)
 			is Result.Success-> Result.Success(res.data.message)
 		}
+	}
+
+	override suspend fun getFlashSale(id: Long): Result<FlashSale, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.getFlashSale(id)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success-> Result.Success(res.data.toFlashSale())
+		}
+	}
+
+	override fun getFlashSaleProducts(
+		flashSaleId: Long,
+		filterParams: ProductFilterParams
+	): FlashSaleProductsPagingSource {
+		return FlashSaleProductsPagingSource(
+			flashSaleId = flashSaleId,
+			filterParams = filterParams,
+			remote = remoteDeniseShopDataSource
+		)
 	}
 }
