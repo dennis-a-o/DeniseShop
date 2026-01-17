@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductFilterParams
 import com.example.deniseshop.core.domain.model.onError
 import com.example.deniseshop.core.domain.model.onSuccess
@@ -97,14 +98,22 @@ class ProductsViewModel @Inject constructor(
 
 	private fun onCartToggle(productId: Long){
 		viewModelScope.launch {
-			//TODO
+			if (productId in cartItems.value){
+				shopRepository.removeFromCart(productId)
+			}else{
+				shopRepository.addToCart(
+					ProductData(
+						productId = productId
+					)
+				)
+			}
 		}
 	}
 
 	private fun onWishlistToggle(productId: Long){
 		viewModelScope.launch {
 			if (productId in wishlistItems.value){
-				shopRepository.removeWishlist(productId)
+				shopRepository.removeFromWishlist(productId)
 			}else{
 				shopRepository.addToWishlist(productId)
 			}

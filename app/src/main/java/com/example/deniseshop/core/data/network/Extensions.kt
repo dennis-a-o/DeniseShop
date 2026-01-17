@@ -32,7 +32,7 @@ suspend  inline fun <reified T> safeCall(
 	}
 }
 
-suspend  inline fun <reified T> safeCallResponse(
+suspend  inline fun <reified T> safeCallAwaitable(
 	action: () -> Response<T>
 ): Result<T, DataError> {
 	return try {

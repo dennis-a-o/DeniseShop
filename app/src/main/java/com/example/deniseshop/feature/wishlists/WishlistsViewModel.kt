@@ -40,7 +40,7 @@ class WishlistsViewModel @Inject constructor(
 		onError: (UiText) -> Unit
 	){
 		viewModelScope.launch {
-			shopRepository.removeWishlist(id)
+			shopRepository.removeFromWishlist(id)
 				.onSuccess {
 					onSuccess()
 				}

@@ -137,4 +137,9 @@
     <string name="error">Error</string>
     <string name="home">Home</string>
     <string name="no_results">No results</string>
+    <string name="color_">Color:</string>
+    <string name="size_">Size:</string>
+    <string name="coupon_discount">Coupon discount</string>
+    <string name="free_shipping">Free shipping</string>
+    <string name="no_items">No items</string>
 </resources>

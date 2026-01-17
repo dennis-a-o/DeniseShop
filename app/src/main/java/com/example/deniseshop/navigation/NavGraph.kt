@@ -17,6 +17,7 @@ import com.example.deniseshop.R
 import com.example.deniseshop.feature.brandproducts.BrandProductsScreen
 import com.example.deniseshop.feature.brandproducts.BrandProductsViewModel
 import com.example.deniseshop.feature.brands.BrandsScreen
+import com.example.deniseshop.feature.cart.CartScreen
 import com.example.deniseshop.feature.categories.CategoriesScreen
 import com.example.deniseshop.feature.categoryproducts.CategoryProductsScreen
 import com.example.deniseshop.feature.categoryproducts.CategoryProductsViewModel
@@ -35,7 +36,6 @@ import com.example.deniseshop.ui.models.UiAddress
 import com.example.deniseshop.ui.screens.address.AddressFormScreen
 import com.example.deniseshop.ui.screens.address.AddressScreen
 import com.example.deniseshop.ui.screens.address.viewModels.AddressFormViewModel
-import com.example.deniseshop.ui.screens.cart.CartScreen
 import com.example.deniseshop.ui.screens.cart.CartViewModel
 import com.example.deniseshop.ui.screens.checkout.CheckoutScreen
 import com.example.deniseshop.ui.screens.contact.ContactScreen
@@ -259,14 +259,11 @@ fun NavGraph(
 
 		composable(Routes.Cart.route){
 			CartScreen(
-				onNavigate = { route, options ->
-					navController.navigate(route, options)
+				onBackClick = navController::navigateUp,
+				onNavigate = { route->
+					navController.navigate(route)
 				},
-				onNavigateUp = {
-					navController.navigateUp()
-				},
-				viewModel = cartViewModel,
-				wishlistCount = wishlistBadgeCount.value
+				onShowSnackBar = onShowSnackBar
 			)
 		}
 

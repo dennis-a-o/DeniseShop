@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.deniseshop.core.data.datastore.SettingDataSource
 import com.example.deniseshop.core.data.mappers.toBrand
+import com.example.deniseshop.core.data.mappers.toCart
 import com.example.deniseshop.core.data.mappers.toCategory
 import com.example.deniseshop.core.data.mappers.toHome
 import com.example.deniseshop.core.data.mappers.toProductFilter
@@ -16,9 +17,11 @@ import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.data.paging.WishlistPagingSource
 import com.example.deniseshop.core.domain.model.Brand
+import com.example.deniseshop.core.domain.model.Cart
 import com.example.deniseshop.core.domain.model.Category
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.Home
+import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductFilter
 import com.example.deniseshop.core.domain.model.ProductFilterParams
 import com.example.deniseshop.core.domain.model.Result
@@ -61,8 +64,8 @@ class RemoteShopRepository @Inject constructor(
 		return remoteDeniseShopDataSource.addToWishlist(productId)
 	}
 
-	override suspend fun removeWishlist(id: Long): Result<Unit, DataError.Remote> {
-		return remoteDeniseShopDataSource.removeWishlist(id)
+	override suspend fun removeFromWishlist(id: Long): Result<Unit, DataError.Remote> {
+		return remoteDeniseShopDataSource.removeFromWishlist(id)
 	}
 
 	override fun getProducts(filterParams: ProductFilterParams): ProductsPagingSource {
@@ -146,5 +149,46 @@ class RemoteShopRepository @Inject constructor(
 			filterParams = filterParams,
 			api = api
 		)
+	}
+
+	override suspend fun getCart(): Result<Cart, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.getCart()) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success-> Result.Success(res.data.toCart())
+		}
+	}
+
+	override suspend fun addToCart(productData: ProductData): Result<Unit, DataError.Remote> {
+		return remoteDeniseShopDataSource.addToCart(productData)
+	}
+
+	override suspend fun removeFromCart(productId: Long): Result<Unit, DataError.Remote> {
+		return remoteDeniseShopDataSource.removeFromCart(productId)
+	}
+
+	override suspend fun clearCart(): Result<Unit, DataError.Remote> {
+		return remoteDeniseShopDataSource.clearCart()
+	}
+
+	override suspend fun increaseCartItemQuantity(productId: Long): Result<Unit, DataError.Remote> {
+		return remoteDeniseShopDataSource.increaseCartItemQuantity(productId)
+	}
+
+	override suspend fun decreaseCartItemQuantity(productId: Long): Result<Unit, DataError.Remote> {
+		return remoteDeniseShopDataSource.decreaseCartItemQuantity(productId)
+	}
+
+	override suspend fun applyCoupon(coupon: String): Result<String, DataError> {
+		return when(val res = remoteDeniseShopDataSource.applyCoupon(coupon)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success-> Result.Success(res.data.message)
+		}
+	}
+
+	override suspend fun clearCoupon(): Result<String, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.clearCoupon()) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success-> Result.Success(res.data.message)
+		}
 	}
 }

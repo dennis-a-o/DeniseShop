@@ -1,15 +1,18 @@
 package com.example.deniseshop.core.data.network
 
 import com.example.deniseshop.core.data.dto.BrandDto
+import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
+import com.example.deniseshop.core.data.dto.MessageDto
 import com.example.deniseshop.core.data.dto.ProductDto
 import com.example.deniseshop.core.data.dto.ProductFilterDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
 import com.example.deniseshop.core.domain.model.DataError
+import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductFilterParams
 import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.User
@@ -22,7 +25,7 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 	private val api: RetrofitDeniseShopNetworkApi
 ): RemoteDeniseShopDataSource {
 	override suspend fun signUp(user: UserSignUp): Result<Unit, DataError> {
-		return safeCallResponse <Unit> {
+		return safeCallAwaitable <Unit> {
 			api.signUp(
 				firstName = user.firstName,
 				lastName = user.lastName,
@@ -38,7 +41,7 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 		email: String,
 		password: String
 	): Result<UserCredentialDto, DataError> {
-		return safeCallResponse <UserCredentialDto> {
+		return safeCallAwaitable <UserCredentialDto> {
 			api.signIn(
 				email = email,
 				password = password
@@ -59,7 +62,7 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 	}
 
 	override suspend fun updateUser(user: User): Result<UserDto, DataError> {
-		return safeCallResponse<UserDto> {
+		return safeCallAwaitable<UserDto> {
 			api.updateUser(
 				firstName = user.firstName,
 				lastName = user.lastName,
@@ -79,7 +82,7 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 		currentPassword: String,
 		newPassword: String
 	): Result<Unit, DataError> {
-		return safeCallResponse<Unit> {
+		return safeCallAwaitable<Unit> {
 			api.changePassword(
 				currentPassword = currentPassword,
 				newPassword = newPassword
@@ -126,9 +129,9 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 		}
 	}
 
-	override suspend fun removeWishlist(id: Long): Result<Unit, DataError.Remote> {
+	override suspend fun removeFromWishlist(id: Long): Result<Unit, DataError.Remote> {
 		return safeCall {
-			api.removeWishlist(id)
+			api.removeFromWishlist(id)
 		}
 	}
 
@@ -177,6 +180,59 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 	override suspend fun getCategoryBrands(categoryId: Long): Result<List<BrandDto>, DataError.Remote> {
 		return safeCall<List<BrandDto>> {
 			api.getCategoryBrands(categoryId)
+		}
+	}
+
+	override suspend fun getCart(): Result<CartDto, DataError.Remote> {
+		return safeCall<CartDto>{
+			api.getCart()
+		}
+	}
+
+	override suspend fun addToCart(productData: ProductData): Result<Unit, DataError.Remote> {
+		return safeCall {
+			api.addToCart(
+				product = productData.productId,
+				quantity = productData.quantity,
+				color = productData.color,
+				size = productData.size
+			)
+		}
+	}
+
+	override suspend fun removeFromCart(productId: Long): Result<Unit, DataError.Remote> {
+		return safeCall {
+			api.removeFromCart(productId)
+		}
+	}
+
+	override suspend fun clearCart(): Result<Unit, DataError.Remote> {
+		return safeCall {
+			api.clearCart()
+		}
+	}
+
+	override suspend fun increaseCartItemQuantity(productId: Long): Result<Unit, DataError.Remote> {
+		return safeCall {
+			api.increaseCartItemQuantity(productId)
+		}
+	}
+
+	override suspend fun decreaseCartItemQuantity(productId: Long): Result<Unit, DataError.Remote> {
+		return safeCall {
+			api.decreaseCartItemQuantity(productId)
+		}
+	}
+
+	override suspend fun applyCoupon(coupon: String): Result<MessageDto, DataError> {
+		return safeCallAwaitable<MessageDto> {
+			api.applyCoupon(coupon).awaitResponse()
+		}
+	}
+
+	override suspend fun clearCoupon(): Result<MessageDto, DataError.Remote> {
+		return safeCall<MessageDto> {
+			api.clearCoupon()
 		}
 	}
 }

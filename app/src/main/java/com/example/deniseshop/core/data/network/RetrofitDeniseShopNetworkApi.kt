@@ -1,9 +1,11 @@
 package com.example.deniseshop.core.data.network
 
 import com.example.deniseshop.core.data.dto.BrandDto
+import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
+import com.example.deniseshop.core.data.dto.MessageDto
 import com.example.deniseshop.core.data.dto.ProductDto
 import com.example.deniseshop.core.data.dto.ProductFilterDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
@@ -97,7 +99,7 @@ interface RetrofitDeniseShopNetworkApi {
 	)
 
 	@DELETE("wishlist/{id}")
-	suspend fun removeWishlist(
+	suspend fun removeFromWishlist(
 		@Path("id") id: Long,
 	)
 
@@ -170,4 +172,43 @@ interface RetrofitDeniseShopNetworkApi {
 		@Query("sizes[]") sizes: List<String>,
 		@Query("rating") rating: Int
 	): List<ProductDto>
+
+	@GET("cart")
+	suspend fun getCart(): CartDto
+
+	@POST("cart/add")
+	@FormUrlEncoded
+	suspend fun addToCart(
+		@Field("product_id") product: Long,
+		@Field("quantity") quantity: Int?,
+		@Field("color") color: String?,
+		@Field("size") size: String?,
+	)
+
+	@DELETE("cart/{id}/delete")
+	suspend fun removeFromCart(
+		@Path("id") id: Long,
+	)
+
+	@DELETE("cart/clear")
+	suspend fun clearCart()
+
+	@POST("cart/{id}/increase")
+	suspend fun increaseCartItemQuantity(
+		@Path("id") id: Long,
+	)
+
+	@POST("cart/{id}/decrease")
+	suspend fun decreaseCartItemQuantity(
+		@Path("id") id: Long,
+	)
+
+	@POST("coupon/apply")
+	@FormUrlEncoded
+	fun applyCoupon(
+		@Field("coupon") coupon: String
+	): Call<MessageDto>
+
+	@DELETE("coupon/clear")
+	suspend fun clearCoupon(): MessageDto
 }
