@@ -5,6 +5,7 @@ import com.example.deniseshop.core.data.paging.BrandProductsPagingSource
 import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.FlashSaleProductsPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
+import com.example.deniseshop.core.data.paging.RecentViewedProductsPagingSource
 import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Cart
 import com.example.deniseshop.core.domain.model.Category
@@ -42,4 +43,6 @@ interface ShopRepository {
 	suspend fun clearCoupon(): Result<String, DataError.Remote>
 	suspend fun getFlashSale(id: Long): Result<FlashSale, DataError.Remote>
 	fun getFlashSaleProducts(flashSaleId: Long, filterParams: ProductFilterParams): FlashSaleProductsPagingSource
+	fun getRecentViewedProducts(): RecentViewedProductsPagingSource
+	suspend fun clearRecentViewedProducts(): Result<Unit, DataError.Remote>
 }

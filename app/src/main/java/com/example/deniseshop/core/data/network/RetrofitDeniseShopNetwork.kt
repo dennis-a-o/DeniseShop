@@ -310,4 +310,20 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 			rating = filterParams.rating
 		)
 	}
+
+	override suspend fun getRecentViewedProducts(
+		page: Int,
+		pageSize: Int
+	): List<ProductDto> {
+		return api.getRecentViewedProducts(
+			page = page,
+			pageSize = pageSize
+		)
+	}
+
+	override suspend fun clearRecentViewedProducts(): Result<Unit, DataError.Remote> {
+		return safeCall {
+			api.clearRecentViewedProducts()
+		}
+	}
 }

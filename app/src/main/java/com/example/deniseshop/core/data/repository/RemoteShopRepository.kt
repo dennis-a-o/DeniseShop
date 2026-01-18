@@ -16,6 +16,7 @@ import com.example.deniseshop.core.data.paging.BrandsPagingSource
 import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.FlashSaleProductsPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
+import com.example.deniseshop.core.data.paging.RecentViewedProductsPagingSource
 import com.example.deniseshop.core.data.paging.WishlistPagingSource
 import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Cart
@@ -209,5 +210,15 @@ class RemoteShopRepository @Inject constructor(
 			filterParams = filterParams,
 			remote = remoteDeniseShopDataSource
 		)
+	}
+
+	override fun getRecentViewedProducts(): RecentViewedProductsPagingSource {
+		return RecentViewedProductsPagingSource(
+			remote = remoteDeniseShopDataSource
+		)
+	}
+
+	override suspend fun clearRecentViewedProducts(): Result<Unit, DataError.Remote> {
+		return remoteDeniseShopDataSource.clearRecentViewedProducts()
 	}
 }

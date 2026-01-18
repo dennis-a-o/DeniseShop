@@ -53,4 +53,6 @@ interface RemoteDeniseShopDataSource {
 	suspend fun clearCoupon(): Result<MessageDto, DataError.Remote>
 	suspend fun getFlashSale(id: Long): Result<FlashSaleDto, DataError.Remote>
 	suspend fun getFlashSaleProducts(flashSaleId:Long, filterParams: ProductFilterParams):List<ProductDto>
+	suspend fun getRecentViewedProducts(page: Int, pageSize: Int): List<ProductDto>
+	suspend fun clearRecentViewedProducts(): Result<Unit, DataError.Remote>
 }

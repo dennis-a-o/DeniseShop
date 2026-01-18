@@ -2,7 +2,6 @@ package com.example.deniseshop.navigation
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +29,7 @@ import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPassword
 import com.example.deniseshop.feature.home.HomeScreen
 import com.example.deniseshop.feature.products.ProductsScreen
 import com.example.deniseshop.feature.profile.presentation.ProfileScreen
+import com.example.deniseshop.feature.recentviewed.RecentViewedScreen
 import com.example.deniseshop.feature.search.SearchScreen
 import com.example.deniseshop.feature.signin.presentation.SignInScreen
 import com.example.deniseshop.feature.signup.presentation.SignUpScreen
@@ -43,8 +43,6 @@ import com.example.deniseshop.ui.screens.checkout.CheckoutScreen
 import com.example.deniseshop.ui.screens.contact.ContactScreen
 import com.example.deniseshop.ui.screens.coupon.CouponScreen
 import com.example.deniseshop.ui.screens.faqs.FaqsScreen
-import com.example.deniseshop.ui.screens.flashsale.FlashSaleScreen
-import com.example.deniseshop.ui.screens.flashsale.FlashSaleViewModel
 import com.example.deniseshop.ui.screens.order.OrderDetailScreen
 import com.example.deniseshop.ui.screens.order.OrderScreen
 import com.example.deniseshop.ui.screens.order.viewModels.OrderDetailViewModel
@@ -292,13 +290,12 @@ fun NavGraph(
 		}
 
 		composable (Routes.RecentlyViewed.route){
-			RecentlyViewedScreen(
-				onNavigate = { route, options ->
-					navController.navigate(route, options)
+			RecentViewedScreen(
+				onBackClick = navController::navigateUp,
+				onProductClick = {
+					navController.navigate("${Routes.ProductDetail.route}/$it")
 				},
-				onNavigateUp = {
-					navController.navigateUp()
-				}
+				onShowSnackBar = onShowSnackBar
 			)
 		}
 

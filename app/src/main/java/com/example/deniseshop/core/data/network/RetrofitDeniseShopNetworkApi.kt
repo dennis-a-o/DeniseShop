@@ -14,6 +14,7 @@ import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
 import com.example.deniseshop.data.models.ApiFlashSale
 import com.example.deniseshop.data.models.ApiProduct
+import com.example.deniseshop.data.models.ApiResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.DELETE
@@ -234,4 +235,13 @@ interface RetrofitDeniseShopNetworkApi {
 		@Query("sizes[]") sizes: List<String>,
 		@Query("rating") rating: Int
 	): List<ProductDto>
+
+	@GET("recent-viewed")
+	suspend fun getRecentViewedProducts(
+		@Query("page") page: Int,
+		@Query("page_size") pageSize: Int,
+	): List<ProductDto>
+
+	@DELETE("recent-viewed/clear")
+	suspend fun clearRecentViewedProducts()
 }
