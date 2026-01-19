@@ -142,4 +142,6 @@
     <string name="coupon_discount">Coupon discount</string>
     <string name="free_shipping">Free shipping</string>
     <string name="no_items">No items</string>
+    <string name="brand_c">Brand:</string>
+    <string name="category_c">Category:</string>
 </resources>

@@ -7,8 +7,11 @@ import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
+import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
 import com.example.deniseshop.core.data.dto.ProductFilterDto
+import com.example.deniseshop.core.data.dto.ReviewDto
+import com.example.deniseshop.core.data.dto.ReviewStatDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
@@ -55,4 +58,8 @@ interface RemoteDeniseShopDataSource {
 	suspend fun getFlashSaleProducts(flashSaleId:Long, filterParams: ProductFilterParams):List<ProductDto>
 	suspend fun getRecentViewedProducts(page: Int, pageSize: Int): List<ProductDto>
 	suspend fun clearRecentViewedProducts(): Result<Unit, DataError.Remote>
+	suspend fun getProductDetail(id: Long): Result<ProductDetailDto, DataError.Remote>
+	suspend fun setProductViewed(id: Long): Result<Unit, DataError.Remote>
+	suspend fun getProductReviewStat(productId: Long): Result<ReviewStatDto, DataError.Remote>
+	suspend fun getReviews(productId: Long, page: Int, pageSize: Int): List<ReviewDto>
 }

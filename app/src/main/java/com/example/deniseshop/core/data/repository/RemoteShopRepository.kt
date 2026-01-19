@@ -9,7 +9,9 @@ import com.example.deniseshop.core.data.mappers.toCart
 import com.example.deniseshop.core.data.mappers.toCategory
 import com.example.deniseshop.core.data.mappers.toFlashSale
 import com.example.deniseshop.core.data.mappers.toHome
+import com.example.deniseshop.core.data.mappers.toProductDetail
 import com.example.deniseshop.core.data.mappers.toProductFilter
+import com.example.deniseshop.core.data.mappers.toReviewStat
 import com.example.deniseshop.core.data.network.RemoteDeniseShopDataSource
 import com.example.deniseshop.core.data.paging.BrandProductsPagingSource
 import com.example.deniseshop.core.data.paging.BrandsPagingSource
@@ -17,6 +19,7 @@ import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.FlashSaleProductsPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.data.paging.RecentViewedProductsPagingSource
+import com.example.deniseshop.core.data.paging.ReviewsPagingSource
 import com.example.deniseshop.core.data.paging.WishlistPagingSource
 import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Cart
@@ -25,9 +28,11 @@ import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.FlashSale
 import com.example.deniseshop.core.domain.model.Home
 import com.example.deniseshop.core.domain.model.ProductData
+import com.example.deniseshop.core.domain.model.ProductDetail
 import com.example.deniseshop.core.domain.model.ProductFilter
 import com.example.deniseshop.core.domain.model.ProductFilterParams
 import com.example.deniseshop.core.domain.model.Result
+import com.example.deniseshop.core.domain.model.ReviewStat
 import com.example.deniseshop.core.domain.model.Wishlist
 import com.example.deniseshop.core.domain.repository.ShopRepository
 import kotlinx.coroutines.flow.Flow
@@ -220,5 +225,30 @@ class RemoteShopRepository @Inject constructor(
 
 	override suspend fun clearRecentViewedProducts(): Result<Unit, DataError.Remote> {
 		return remoteDeniseShopDataSource.clearRecentViewedProducts()
+	}
+
+	override suspend fun getProductDetail(id: Long): Result<ProductDetail, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.getProductDetail(id)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.toProductDetail())
+		}
+	}
+
+	override suspend fun setProductViewed(id: Long): Result<Unit, DataError.Remote> {
+		return remoteDeniseShopDataSource.setProductViewed(id)
+	}
+
+	override suspend fun getProductReviewStat(productId: Long): Result<ReviewStat, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.getProductReviewStat((productId))) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.toReviewStat())
+		}
+	}
+
+	override fun getReviews(productId: Long): ReviewsPagingSource {
+		return ReviewsPagingSource(
+			productId = productId,
+			remote = remoteDeniseShopDataSource
+		)
 	}
 }

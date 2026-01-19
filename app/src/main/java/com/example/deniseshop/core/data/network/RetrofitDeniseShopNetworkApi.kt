@@ -7,14 +7,14 @@ import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
+import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
 import com.example.deniseshop.core.data.dto.ProductFilterDto
+import com.example.deniseshop.core.data.dto.ReviewDto
+import com.example.deniseshop.core.data.dto.ReviewStatDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
-import com.example.deniseshop.data.models.ApiFlashSale
-import com.example.deniseshop.data.models.ApiProduct
-import com.example.deniseshop.data.models.ApiResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.DELETE
@@ -244,4 +244,26 @@ interface RetrofitDeniseShopNetworkApi {
 
 	@DELETE("recent-viewed/clear")
 	suspend fun clearRecentViewedProducts()
+
+	@GET("product/{id}")
+	suspend fun getProductDetail(
+		@Path("id") id: Long
+	): ProductDetailDto
+
+	@POST("product/{id}")
+	suspend fun setProductViewed(
+		@Path("id") id: Long
+	)
+
+	@GET("review-stat/{product}")
+	suspend fun getReviewStat(
+		@Path("product") product: Long
+	): ReviewStatDto
+
+	@GET("reviews/{product}")
+	suspend fun getReviews(
+		@Path("product") product: Long,
+		@Query("page") page: Int,
+		@Query("page_size") pageSize: Int
+	): List<ReviewDto>
 }

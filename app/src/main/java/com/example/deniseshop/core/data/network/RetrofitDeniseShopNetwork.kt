@@ -7,8 +7,11 @@ import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
+import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
 import com.example.deniseshop.core.data.dto.ProductFilterDto
+import com.example.deniseshop.core.data.dto.ReviewDto
+import com.example.deniseshop.core.data.dto.ReviewStatDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
@@ -325,5 +328,35 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 		return safeCall {
 			api.clearRecentViewedProducts()
 		}
+	}
+
+	override suspend fun getProductDetail(id: Long): Result<ProductDetailDto, DataError.Remote> {
+		return safeCall<ProductDetailDto> {
+			api.getProductDetail(id)
+		}
+	}
+
+	override suspend fun setProductViewed(id: Long): Result<Unit, DataError.Remote> {
+		return safeCall {
+			api.setProductViewed(id)
+		}
+	}
+
+	override suspend fun getProductReviewStat(productId: Long): Result<ReviewStatDto, DataError.Remote> {
+		return safeCall<ReviewStatDto> {
+			api.getReviewStat(productId)
+		}
+	}
+
+	override suspend fun getReviews(
+		productId: Long,
+		page: Int,
+		pageSize: Int
+	): List<ReviewDto> {
+		return api.getReviews(
+			product = productId,
+			page = page,
+			pageSize = pageSize
+		)
 	}
 }

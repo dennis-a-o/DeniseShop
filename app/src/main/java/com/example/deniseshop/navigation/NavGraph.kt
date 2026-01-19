@@ -27,6 +27,8 @@ import com.example.deniseshop.feature.flashsaleproducts.FlashSaleProductsScreen
 import com.example.deniseshop.feature.flashsaleproducts.FlashSaleProductsViewModel
 import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPasswordScreen
 import com.example.deniseshop.feature.home.HomeScreen
+import com.example.deniseshop.feature.productdetail.ProductDetailScreen
+import com.example.deniseshop.feature.productdetail.ProductDetailViewModel
 import com.example.deniseshop.feature.products.ProductsScreen
 import com.example.deniseshop.feature.profile.presentation.ProfileScreen
 import com.example.deniseshop.feature.recentviewed.RecentViewedScreen
@@ -38,7 +40,6 @@ import com.example.deniseshop.ui.models.UiAddress
 import com.example.deniseshop.ui.screens.address.AddressFormScreen
 import com.example.deniseshop.ui.screens.address.AddressScreen
 import com.example.deniseshop.ui.screens.address.viewModels.AddressFormViewModel
-import com.example.deniseshop.ui.screens.cart.CartViewModel
 import com.example.deniseshop.ui.screens.checkout.CheckoutScreen
 import com.example.deniseshop.ui.screens.contact.ContactScreen
 import com.example.deniseshop.ui.screens.coupon.CouponScreen
@@ -48,12 +49,8 @@ import com.example.deniseshop.ui.screens.order.OrderScreen
 import com.example.deniseshop.ui.screens.order.viewModels.OrderDetailViewModel
 import com.example.deniseshop.ui.screens.page.PageScreen
 import com.example.deniseshop.ui.screens.page.PageViewModel
-import com.example.deniseshop.ui.screens.product.ProductDetailScreen
-import com.example.deniseshop.ui.screens.product.viewModels.ProductDetailViewModel
-import com.example.deniseshop.ui.screens.rencentViewed.RecentlyViewedScreen
 import com.example.deniseshop.ui.screens.review.ReviewScreen
 import com.example.deniseshop.ui.screens.review.ReviewViewModel
-import com.example.deniseshop.ui.screens.wishlist.WishlistViewModel
 
 
 @Composable
@@ -94,9 +91,6 @@ fun NavGraph(
 			}
 		)
 	}
-
-	val wishlistViewModel: WishlistViewModel = hiltViewModel()
-	val cartViewModel: CartViewModel = hiltViewModel()
 
 	NavHost(
 		navController = navController,
@@ -156,16 +150,13 @@ fun NavGraph(
 			arguments = Routes.ProductDetail.arguments
 		) { backStackEntry ->
 			val viewModel: ProductDetailViewModel = hiltViewModel(backStackEntry)
+
 			ProductDetailScreen(
-				onNavigate = {route, options ->
-					navController.navigate(route, options)
-				},
-				onNavigateUp = {
-					navController.navigateUp()
-				},
 				viewModel = viewModel,
-				cartViewModel = cartViewModel,
-				wishlistViewModel = wishlistViewModel
+				onBackClick = navController::popBackStack,
+				onNavigate = { route,->
+					navController.navigate(route)
+				},
 			)
 		}
 

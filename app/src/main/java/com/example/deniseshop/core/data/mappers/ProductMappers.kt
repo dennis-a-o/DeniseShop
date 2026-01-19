@@ -1,8 +1,10 @@
 package com.example.deniseshop.core.data.mappers
 
+import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
 import com.example.deniseshop.core.data.dto.ProductFilterDto
 import com.example.deniseshop.core.domain.model.Product
+import com.example.deniseshop.core.domain.model.ProductDetail
 import com.example.deniseshop.core.domain.model.ProductFilter
 
 fun ProductDto.toProduct(): Product {
@@ -33,4 +35,10 @@ fun ProductFilterDto.toProductFilter() = ProductFilter(
 	sizes = sizes?: emptyList(),
 	maxPrice = maxPrice ?: 1_000_000L,
 	currency = currency ?: "KES"
+)
+
+fun ProductDetailDto.toProductDetail() = ProductDetail(
+	product = product.toProduct(),
+	reviewStat = reviewStat.toReviewStat(),
+	reviews = reviews.map { it.toReview() }
 )

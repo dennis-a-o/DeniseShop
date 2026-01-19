@@ -6,6 +6,7 @@ import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.FlashSaleProductsPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.data.paging.RecentViewedProductsPagingSource
+import com.example.deniseshop.core.data.paging.ReviewsPagingSource
 import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Cart
 import com.example.deniseshop.core.domain.model.Category
@@ -13,9 +14,11 @@ import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.FlashSale
 import com.example.deniseshop.core.domain.model.Home
 import com.example.deniseshop.core.domain.model.ProductData
+import com.example.deniseshop.core.domain.model.ProductDetail
 import com.example.deniseshop.core.domain.model.ProductFilter
 import com.example.deniseshop.core.domain.model.ProductFilterParams
 import com.example.deniseshop.core.domain.model.Result
+import com.example.deniseshop.core.domain.model.ReviewStat
 import com.example.deniseshop.core.domain.model.Wishlist
 import kotlinx.coroutines.flow.Flow
 
@@ -45,4 +48,8 @@ interface ShopRepository {
 	fun getFlashSaleProducts(flashSaleId: Long, filterParams: ProductFilterParams): FlashSaleProductsPagingSource
 	fun getRecentViewedProducts(): RecentViewedProductsPagingSource
 	suspend fun clearRecentViewedProducts(): Result<Unit, DataError.Remote>
+	suspend fun getProductDetail(id: Long): Result<ProductDetail, DataError.Remote>
+	suspend fun setProductViewed(id: Long): Result<Unit, DataError.Remote>
+	suspend fun getProductReviewStat(productId: Long): Result<ReviewStat, DataError.Remote>
+	fun getReviews(productId: Long): ReviewsPagingSource
 }
