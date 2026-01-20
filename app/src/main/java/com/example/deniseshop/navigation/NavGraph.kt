@@ -32,6 +32,8 @@ import com.example.deniseshop.feature.productdetail.ProductDetailViewModel
 import com.example.deniseshop.feature.products.ProductsScreen
 import com.example.deniseshop.feature.profile.presentation.ProfileScreen
 import com.example.deniseshop.feature.recentviewed.RecentViewedScreen
+import com.example.deniseshop.feature.reviews.ReviewsScreen
+import com.example.deniseshop.feature.reviews.ReviewsViewModel
 import com.example.deniseshop.feature.search.SearchScreen
 import com.example.deniseshop.feature.signin.presentation.SignInScreen
 import com.example.deniseshop.feature.signup.presentation.SignUpScreen
@@ -49,8 +51,6 @@ import com.example.deniseshop.ui.screens.order.OrderScreen
 import com.example.deniseshop.ui.screens.order.viewModels.OrderDetailViewModel
 import com.example.deniseshop.ui.screens.page.PageScreen
 import com.example.deniseshop.ui.screens.page.PageViewModel
-import com.example.deniseshop.ui.screens.review.ReviewScreen
-import com.example.deniseshop.ui.screens.review.ReviewViewModel
 
 
 @Composable
@@ -164,12 +164,10 @@ fun NavGraph(
 			route = Routes.Reviews.routeWithArgs,
 			arguments = Routes.Reviews.arguments,
 		){ backStackEntry ->
-			val viewModel: ReviewViewModel = hiltViewModel(backStackEntry)
-			ReviewScreen(
-				onNavigateUp = {
-					navController.navigateUp()
-				},
-				viewModel = viewModel
+			val viewModel: ReviewsViewModel = hiltViewModel(backStackEntry)
+			ReviewsScreen(
+				viewModel = viewModel,
+				onBackClick = navController::navigateUp
 			)
 		}
 
