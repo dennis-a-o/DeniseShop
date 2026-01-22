@@ -144,4 +144,9 @@
     <string name="no_items">No items</string>
     <string name="brand_c">Brand:</string>
     <string name="category_c">Category:</string>
+    <string name="payment_method">Payment method</string>
+    <string name="qty_">Qty:</string>
+    <string name="order_placed_successfully">Order placed successfully</string>
+    <string name="continue_shopping">Continue shopping</string>
+    <string name="thank_you_for_shopping">Thank you for purchasing our product</string>
 </resources>

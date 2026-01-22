@@ -1,6 +1,5 @@
 package com.example.deniseshop.ui
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -18,18 +17,16 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.deniseshop.core.presentation.designsystem.DeniseShopNavigationBar
 import com.example.deniseshop.navigation.NavGraph
 import com.example.deniseshop.navigation.TopLevelRoutes
 
 @Composable
 fun DeniseShopApp(
-	viewIntentData: Uri?,
-	onClearIntentData:() -> Unit
+	navController: NavHostController,
 ){
-	val navController = rememberNavController()
 	val snackBarHostState = remember { SnackbarHostState() }
 	val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
@@ -66,8 +63,6 @@ fun DeniseShopApp(
 		) {
 			NavGraph(
 				navController = navController,
-				viewIntentData = viewIntentData,
-				onClearIntentData = { onClearIntentData() },
 				onShowSnackBar = { message, action ->
 					snackBarHostState.showSnackbar(
 						message = message,

@@ -1,6 +1,5 @@
 package com.example.deniseshop.navigation
 
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,8 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.example.deniseshop.R
 import com.example.deniseshop.feature.brandproducts.BrandProductsScreen
 import com.example.deniseshop.feature.brandproducts.BrandProductsViewModel
@@ -22,6 +24,8 @@ import com.example.deniseshop.feature.categoryproducts.CategoryProductsScreen
 import com.example.deniseshop.feature.categoryproducts.CategoryProductsViewModel
 import com.example.deniseshop.feature.changepassword.presentation.ChangePasswordBottomSheet
 import com.example.deniseshop.feature.changetheme.ChangeThemeBottomSheet
+import com.example.deniseshop.feature.checkout.CheckoutScreen
+import com.example.deniseshop.feature.checkout.CheckoutViewModel
 import com.example.deniseshop.feature.editprofile.presentation.EditProfileBottomSheet
 import com.example.deniseshop.feature.flashsaleproducts.FlashSaleProductsScreen
 import com.example.deniseshop.feature.flashsaleproducts.FlashSaleProductsViewModel
@@ -42,7 +46,6 @@ import com.example.deniseshop.ui.models.UiAddress
 import com.example.deniseshop.ui.screens.address.AddressFormScreen
 import com.example.deniseshop.ui.screens.address.AddressScreen
 import com.example.deniseshop.ui.screens.address.viewModels.AddressFormViewModel
-import com.example.deniseshop.ui.screens.checkout.CheckoutScreen
 import com.example.deniseshop.ui.screens.contact.ContactScreen
 import com.example.deniseshop.ui.screens.coupon.CouponScreen
 import com.example.deniseshop.ui.screens.faqs.FaqsScreen
@@ -56,8 +59,6 @@ import com.example.deniseshop.ui.screens.page.PageViewModel
 @Composable
 fun NavGraph(
 	navController: NavHostController,
-	viewIntentData: Uri?,
-	onClearIntentData: () -> Unit,
 	onShowSnackBar: suspend (String, String?) -> Boolean,
 	modifier: Modifier = Modifier
 ){
@@ -254,19 +255,47 @@ fun NavGraph(
 			)
 		}
 
-		composable("checkout"){
+		composable(
+			route = "checkout",
+			arguments = listOf(
+				navArgument("status"){
+					type = NavType.StringType
+					nullable = true
+					defaultValue = null
+				},
+				navArgument("token"){
+					type = NavType.StringType
+					nullable = true
+					defaultValue = null
+				},
+				navArgument("payerId"){
+					type = NavType.StringType
+					nullable = true
+					defaultValue = null
+				}
+			),
+			deepLinks =  listOf(
+				navDeepLink {
+					uriPattern = "app://com.example.deniseshop?status={status}&token={token}&payerId={payerId}"
+				}
+			)
+		){ backStackEntry ->
+			val viewModel: CheckoutViewModel = hiltViewModel(backStackEntry)
 			CheckoutScreen(
-				onNavigate = { route, options ->
-					navController.navigate(route, options)
+				viewModel = viewModel,
+				onBackClick = navController::navigateUp,
+				onCheckoutDone = {
+					navController.navigate(Routes.Home.route){
+						popUpTo(navController.graph.id){
+							inclusive = true
+						}
+						launchSingleTop = true
+					}
 				},
-				onNavigateUp = {
-					navController.navigateUp()
+				onEditAddAddressClick = {
+					//TODO
 				},
-				onNavigateAddress =  { route, options ->
-					navController.navigate(route, options)
-				} ,
-				viewIntentData = viewIntentData,
-				onClearIntentData = { onClearIntentData() }
+				onShowSnackBar = onShowSnackBar
 			)
 		}
 

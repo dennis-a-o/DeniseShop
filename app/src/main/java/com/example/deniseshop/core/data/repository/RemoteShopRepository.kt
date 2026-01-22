@@ -7,6 +7,7 @@ import com.example.deniseshop.core.data.datastore.SettingDataSource
 import com.example.deniseshop.core.data.mappers.toBrand
 import com.example.deniseshop.core.data.mappers.toCart
 import com.example.deniseshop.core.data.mappers.toCategory
+import com.example.deniseshop.core.data.mappers.toCheckout
 import com.example.deniseshop.core.data.mappers.toFlashSale
 import com.example.deniseshop.core.data.mappers.toHome
 import com.example.deniseshop.core.data.mappers.toProductDetail
@@ -24,6 +25,7 @@ import com.example.deniseshop.core.data.paging.WishlistPagingSource
 import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Cart
 import com.example.deniseshop.core.domain.model.Category
+import com.example.deniseshop.core.domain.model.Checkout
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.FlashSale
 import com.example.deniseshop.core.domain.model.Home
@@ -250,5 +252,48 @@ class RemoteShopRepository @Inject constructor(
 			productId = productId,
 			remote = remoteDeniseShopDataSource
 		)
+	}
+
+	override suspend fun getCheckout(): Result<Checkout, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.getCheckout()) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.toCheckout())
+		}
+	}
+
+	override suspend fun placeOrder(): Result<String, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.placeOrder()) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.message)
+		}
+	}
+
+	override suspend fun createPaypalPayment(): Result<String, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.createPaypalPayment()) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.url)
+		}
+	}
+
+	override suspend fun paypalPaymentSuccess(
+		token: String,
+		payerId: String
+	): Result<String, DataError> {
+		return when(
+			val res = remoteDeniseShopDataSource.paypalPaymentSuccess(
+				token = token,
+				payerId = payerId
+			)
+		) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.message)
+		}
+	}
+
+	override suspend fun paypalPaymentCancel(): Result<String, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.paypalPaymentCancel()) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.message)
+		}
 	}
 }

@@ -16,11 +16,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.util.Consumer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.example.deniseshop.ui.models.ThemeConfig
 import com.example.deniseshop.ui.theme.DeniseShopTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +35,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 	private val viewModel: MainActivityViewModel by viewModels()
-	private var viewIntentData by mutableStateOf<Uri?>(null)
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		val splashScreen = installSplashScreen()
@@ -58,40 +61,23 @@ class MainActivity : ComponentActivity() {
 		setContent {
 			val darkTheme = shouldUseDarkTheme(uiState)
 
+			val navController = rememberNavController()
+
+			DisposableEffect(navController) {
+				val listener = Consumer<Intent> { intent ->
+					navController.handleDeepLink(intent)
+				}
+				addOnNewIntentListener(listener)
+				onDispose { removeOnNewIntentListener(listener) }
+			}
+
 			DeniseShopTheme(darkTheme = darkTheme) {
 				DeniseShopApp(
-					viewIntentData = viewIntentData,
-					onClearIntentData = { viewIntentData = null }
+					navController = navController,
 				)
 			}
 		}
 		createNotification(this)
-	}
-
-	override fun onNewIntent(intent: Intent) {
-		super.onNewIntent(intent)
-		handleIntent(intent)
-	}
-
-	private fun handleIntent(intent: Intent){
-		viewIntentData = if(intent.action == Intent.ACTION_VIEW && intent.scheme.equals("${application.packageName}.payments")){
-			intent.data
-		}else{
-			null
-		}
-	}
-
-	@Composable
-	private fun shouldUseDarkTheme(
-		uiState: MainActivityUiState,
-	): Boolean = when (uiState) {
-		MainActivityUiState.Loading -> isSystemInDarkTheme()
-		is MainActivityUiState.Success -> when(uiState.uiSetting.theme){
-			ThemeConfig.FOLLOW_SYSTEM -> isSystemInDarkTheme()
-			ThemeConfig.DARK -> true
-			ThemeConfig.LIGHT -> false
-			null -> isSystemInDarkTheme()
-		}
 	}
 
 	private fun createNotification(context:Context){
@@ -103,7 +89,20 @@ class MainActivity : ComponentActivity() {
 			notificationManager.createNotificationChannel(channel)
 		}
 	}
+}
 
+
+@Composable
+private fun shouldUseDarkTheme(
+	uiState: MainActivityUiState,
+): Boolean = when (uiState) {
+	MainActivityUiState.Loading -> isSystemInDarkTheme()
+	is MainActivityUiState.Success -> when(uiState.uiSetting.theme){
+		ThemeConfig.FOLLOW_SYSTEM -> isSystemInDarkTheme()
+		ThemeConfig.DARK -> true
+		ThemeConfig.LIGHT -> false
+		null -> isSystemInDarkTheme()
+	}
 }
 
 

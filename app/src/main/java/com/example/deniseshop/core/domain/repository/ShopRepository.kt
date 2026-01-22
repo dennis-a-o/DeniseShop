@@ -10,6 +10,7 @@ import com.example.deniseshop.core.data.paging.ReviewsPagingSource
 import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Cart
 import com.example.deniseshop.core.domain.model.Category
+import com.example.deniseshop.core.domain.model.Checkout
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.FlashSale
 import com.example.deniseshop.core.domain.model.Home
@@ -52,4 +53,9 @@ interface ShopRepository {
 	suspend fun setProductViewed(id: Long): Result<Unit, DataError.Remote>
 	suspend fun getProductReviewStat(productId: Long): Result<ReviewStat, DataError.Remote>
 	fun getReviews(productId: Long): ReviewsPagingSource
+	suspend fun getCheckout(): Result<Checkout, DataError.Remote>
+	suspend fun placeOrder(): Result<String, DataError.Remote>
+	suspend fun createPaypalPayment(): Result<String, DataError.Remote>
+	suspend fun paypalPaymentSuccess(token: String, payerId: String): Result<String, DataError>
+	suspend fun paypalPaymentCancel(): Result<String, DataError.Remote>
 }

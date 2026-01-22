@@ -3,10 +3,12 @@ package com.example.deniseshop.core.data.network
 import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
+import com.example.deniseshop.core.data.dto.CheckoutDto
 import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
+import com.example.deniseshop.core.data.dto.PaymentUrlDto
 import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
 import com.example.deniseshop.core.data.dto.ProductFilterDto
@@ -358,5 +360,41 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 			page = page,
 			pageSize = pageSize
 		)
+	}
+
+	override suspend fun getCheckout(): Result<CheckoutDto, DataError.Remote> {
+		return safeCall<CheckoutDto> {
+			api.getCheckout()
+		}
+	}
+
+	override suspend fun placeOrder(): Result<MessageDto, DataError.Remote> {
+		return safeCall<MessageDto> {
+			api.placeOrder()
+		}
+	}
+
+	override suspend fun createPaypalPayment(): Result<PaymentUrlDto, DataError.Remote> {
+		return safeCall<PaymentUrlDto> {
+			api.createPaypalPayment()
+		}
+	}
+
+	override suspend fun paypalPaymentSuccess(
+		token: String,
+		payerId: String
+	): Result<MessageDto, DataError> {
+		return safeCallAwaitable<MessageDto> {
+			api.paypalPaymentSuccess(
+				token = token,
+				payerId = payerId
+			).awaitResponse()
+		}
+	}
+
+	override suspend fun paypalPaymentCancel(): Result<MessageDto, DataError.Remote> {
+		return safeCall<MessageDto> {
+			api.paypalPaymentCancel()
+		}
 	}
 }

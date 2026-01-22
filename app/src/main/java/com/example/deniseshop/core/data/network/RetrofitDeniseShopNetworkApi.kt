@@ -3,10 +3,12 @@ package com.example.deniseshop.core.data.network
 import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
+import com.example.deniseshop.core.data.dto.CheckoutDto
 import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
+import com.example.deniseshop.core.data.dto.PaymentUrlDto
 import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
 import com.example.deniseshop.core.data.dto.ProductFilterDto
@@ -266,4 +268,22 @@ interface RetrofitDeniseShopNetworkApi {
 		@Query("page") page: Int,
 		@Query("page_size") pageSize: Int
 	): List<ReviewDto>
+
+	@GET("checkout")
+	suspend fun getCheckout(): CheckoutDto
+
+	@POST("checkout/place-order")
+	suspend fun placeOrder(): MessageDto
+
+	@POST("payment/create-paypal-payment")
+	suspend fun createPaypalPayment(): PaymentUrlDto
+
+	@GET("payment/paypal-success")
+	fun paypalPaymentSuccess(
+		@Query("token") token: String,
+		@Query("payer_id") payerId: String
+	): Call<MessageDto>
+
+	@GET("payment/paypal-cancel")
+	suspend fun paypalPaymentCancel(): MessageDto
 }

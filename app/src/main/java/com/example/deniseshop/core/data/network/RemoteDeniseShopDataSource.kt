@@ -3,10 +3,12 @@ package com.example.deniseshop.core.data.network
 import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
+import com.example.deniseshop.core.data.dto.CheckoutDto
 import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
+import com.example.deniseshop.core.data.dto.PaymentUrlDto
 import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
 import com.example.deniseshop.core.data.dto.ProductFilterDto
@@ -22,6 +24,7 @@ import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.User
 import com.example.deniseshop.core.domain.model.UserSignUp
 import okhttp3.MultipartBody
+import retrofit2.http.Query
 
 interface RemoteDeniseShopDataSource {
 	suspend fun signUp(user: UserSignUp): Result<Unit, DataError>
@@ -62,4 +65,9 @@ interface RemoteDeniseShopDataSource {
 	suspend fun setProductViewed(id: Long): Result<Unit, DataError.Remote>
 	suspend fun getProductReviewStat(productId: Long): Result<ReviewStatDto, DataError.Remote>
 	suspend fun getReviews(productId: Long, page: Int, pageSize: Int): List<ReviewDto>
+	suspend fun getCheckout(): Result<CheckoutDto, DataError.Remote>
+	suspend fun placeOrder(): Result<MessageDto, DataError.Remote>
+	suspend fun createPaypalPayment(): Result<PaymentUrlDto, DataError.Remote>
+	suspend fun paypalPaymentSuccess(token: String, payerId: String): Result<MessageDto, DataError>
+	suspend fun paypalPaymentCancel(): Result<MessageDto, DataError.Remote>
 }
