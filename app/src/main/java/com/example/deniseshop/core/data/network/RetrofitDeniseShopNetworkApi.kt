@@ -1,5 +1,6 @@
 package com.example.deniseshop.core.data.network
 
+import com.example.deniseshop.core.data.dto.AddressDto
 import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
@@ -17,6 +18,8 @@ import com.example.deniseshop.core.data.dto.ReviewStatDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
+import com.example.deniseshop.data.models.ApiAddress
+import com.example.deniseshop.data.models.ApiResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.DELETE
@@ -286,4 +289,50 @@ interface RetrofitDeniseShopNetworkApi {
 
 	@GET("payment/paypal-cancel")
 	suspend fun paypalPaymentCancel(): MessageDto
+
+	@GET("address")
+	suspend fun getAddresses(): List<AddressDto>
+
+	@GET("address/{id}")
+	suspend fun getAddress(@Path("id") id: Long ): AddressDto?
+
+	@GET("address/countries")
+	suspend fun getCountries(): List<String>
+
+	@POST("address/add")
+	@FormUrlEncoded
+	fun addAddress(
+		@Field("name") name: String,
+		@Field("email") email: String,
+		@Field("phone") phone: String,
+		@Field("country") country: String,
+		@Field("state") state: String,
+		@Field("city") city: String,
+		@Field("address") address: String,
+		@Field("zip_code") zipCode: String,
+		@Field("type") type: String,
+		@Field("default") default: Boolean
+	): Call<MessageDto>
+
+	@FormUrlEncoded
+	@POST("address/{id}/update")
+	fun updateAddress(
+		@Path("id") id: Long,
+		@Field("name") name: String,
+		@Field("email") email: String,
+		@Field("phone") phone: String,
+		@Field("country") country: String,
+		@Field("state") state: String,
+		@Field("city") city: String,
+		@Field("address") address: String,
+		@Field("zip_code") zipCode: String,
+		@Field("type") type: String,
+		@Field("default") default: Boolean
+	): Call<MessageDto>
+
+	@PUT("address/{id}/default")
+	suspend fun setDefaultAddress(@Path("id") id: Long): MessageDto
+
+	@DELETE("address/{id}/delete")
+	suspend fun deleteAddress(@Path("id") id: Long): MessageDto
 }

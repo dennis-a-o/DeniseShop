@@ -1,5 +1,6 @@
 package com.example.deniseshop.core.data.network
 
+import com.example.deniseshop.core.data.dto.AddressDto
 import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
@@ -17,6 +18,7 @@ import com.example.deniseshop.core.data.dto.ReviewStatDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
+import com.example.deniseshop.core.domain.model.Address
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductFilterParams
@@ -70,4 +72,11 @@ interface RemoteDeniseShopDataSource {
 	suspend fun createPaypalPayment(): Result<PaymentUrlDto, DataError.Remote>
 	suspend fun paypalPaymentSuccess(token: String, payerId: String): Result<MessageDto, DataError>
 	suspend fun paypalPaymentCancel(): Result<MessageDto, DataError.Remote>
+	suspend fun getAddresses(): Result<List<AddressDto>, DataError.Remote>
+	suspend fun getAddress(id: Long): Result<AddressDto?, DataError.Remote>
+	suspend fun getCountries(): Result<List<String>, DataError.Remote>
+	suspend fun addAddress(address: Address): Result<MessageDto, DataError>
+	suspend fun updateAddress(address: Address): Result<MessageDto, DataError>
+	suspend fun setDefaultAddress(id: Long): Result<MessageDto, DataError.Remote>
+	suspend fun deleteAddress(id: Long): Result<MessageDto, DataError.Remote>
 }

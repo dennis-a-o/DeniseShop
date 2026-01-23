@@ -149,4 +149,7 @@
     <string name="order_placed_successfully">Order placed successfully</string>
     <string name="continue_shopping">Continue shopping</string>
     <string name="thank_you_for_shopping">Thank you for purchasing our product</string>
+    <string name="defaults">Default</string>
+    <string name="no_address">No addresses</string>
+    <string name="addresses">Addresses</string>
 </resources>

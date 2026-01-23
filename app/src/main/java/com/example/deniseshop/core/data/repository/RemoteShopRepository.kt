@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.deniseshop.core.data.datastore.SettingDataSource
+import com.example.deniseshop.core.data.mappers.toAddress
 import com.example.deniseshop.core.data.mappers.toBrand
 import com.example.deniseshop.core.data.mappers.toCart
 import com.example.deniseshop.core.data.mappers.toCategory
@@ -22,6 +23,7 @@ import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.data.paging.RecentViewedProductsPagingSource
 import com.example.deniseshop.core.data.paging.ReviewsPagingSource
 import com.example.deniseshop.core.data.paging.WishlistPagingSource
+import com.example.deniseshop.core.domain.model.Address
 import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Cart
 import com.example.deniseshop.core.domain.model.Category
@@ -292,6 +294,52 @@ class RemoteShopRepository @Inject constructor(
 
 	override suspend fun paypalPaymentCancel(): Result<String, DataError.Remote> {
 		return when(val res = remoteDeniseShopDataSource.paypalPaymentCancel()) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.message)
+		}
+	}
+
+	override suspend fun getAddresses(): Result<List<Address>, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.getAddresses()) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.map { it.toAddress() })
+		}
+	}
+
+	override suspend fun getAddress(id: Long): Result<Address?, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.getAddress(id)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data?.toAddress())
+		}
+	}
+
+	override suspend fun getCountries(): Result<List<String>, DataError.Remote> {
+		return remoteDeniseShopDataSource.getCountries()
+	}
+
+	override suspend fun addAddress(address: Address): Result<String, DataError> {
+		return when(val res = remoteDeniseShopDataSource.addAddress(address)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.message)
+		}
+	}
+
+	override suspend fun updateAddress(address: Address): Result<String, DataError> {
+		return when(val res = remoteDeniseShopDataSource.updateAddress(address)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.message)
+		}
+	}
+
+	override suspend fun setDefaultAddress(id: Long): Result<String, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.setDefaultAddress(id)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.message)
+		}
+	}
+
+	override suspend fun deleteAddress(id: Long): Result<String, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.deleteAddress(id)) {
 			is Result.Error -> Result.Error(res.error)
 			is Result.Success -> Result.Success(res.data.message)
 		}

@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.example.deniseshop.R
+import com.example.deniseshop.feature.addresses.AddressesScreen
 import com.example.deniseshop.feature.brandproducts.BrandProductsScreen
 import com.example.deniseshop.feature.brandproducts.BrandProductsViewModel
 import com.example.deniseshop.feature.brands.BrandsScreen
@@ -215,14 +216,20 @@ fun NavGraph(
 		}
 
 		composable (Routes.AllAddress.route){
-			AddressScreen(
-				onNavigate = {route, options ->
-					navController.navigate(route, options)
+			AddressesScreen(
+				onBackClick = navController::popBackStack,
+				onAddressClick = {
+					navController.navigate("${Routes.AddEditAddress.route}/$it")
 				},
-				onNavigateUp = {
-					navController.navigateUp()
-				}
+				onShowSnackBar = onShowSnackBar
 			)
+		}
+
+		composable(
+			route = Routes.AddEditAddress.routeWithArgs,
+			arguments = Routes.AddEditAddress.arguments
+		) {
+
 		}
 
 		composable<UiAddress>{ backStackEntry ->

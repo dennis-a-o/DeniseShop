@@ -1,5 +1,6 @@
 package com.example.deniseshop.core.data.network
 
+import com.example.deniseshop.core.data.dto.AddressDto
 import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
@@ -17,6 +18,7 @@ import com.example.deniseshop.core.data.dto.ReviewStatDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
+import com.example.deniseshop.core.domain.model.Address
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductFilterParams
@@ -395,6 +397,71 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 	override suspend fun paypalPaymentCancel(): Result<MessageDto, DataError.Remote> {
 		return safeCall<MessageDto> {
 			api.paypalPaymentCancel()
+		}
+	}
+
+	override suspend fun getAddresses(): Result<List<AddressDto>, DataError.Remote> {
+		return safeCall<List<AddressDto>> {
+			api.getAddresses()
+		}
+	}
+
+	override suspend fun getAddress(id: Long): Result<AddressDto?, DataError.Remote> {
+		return safeCall<AddressDto?> {
+			api.getAddress(id)
+		}
+	}
+
+	override suspend fun getCountries(): Result<List<String>, DataError.Remote> {
+		return safeCall<List<String>> {
+			api.getCountries()
+		}
+	}
+
+	override suspend fun addAddress(address: Address): Result<MessageDto, DataError> {
+		return safeCallAwaitable<MessageDto> {
+			api.addAddress(
+				name = address.name,
+				email = address.email,
+				phone = address.phone,
+				country = address.country,
+				state = address.state,
+				city = address.city,
+				address = address.address,
+				zipCode = address.zipCode,
+				type = address.type,
+				default = address.default
+			).awaitResponse()
+		}
+	}
+
+	override suspend fun updateAddress(address: Address): Result<MessageDto, DataError> {
+		return safeCallAwaitable<MessageDto> {
+			api.updateAddress(
+				id = address.id,
+				name = address.name,
+				email = address.email,
+				phone = address.phone,
+				country = address.country,
+				state = address.state,
+				city = address.city,
+				address = address.address,
+				zipCode = address.zipCode,
+				type = address.type,
+				default = address.default
+			).awaitResponse()
+		}
+	}
+
+	override suspend fun setDefaultAddress(id: Long): Result<MessageDto, DataError.Remote> {
+		return safeCall<MessageDto> {
+			api.setDefaultAddress(id)
+		}
+	}
+
+	override suspend fun deleteAddress(id: Long): Result<MessageDto, DataError.Remote> {
+		return safeCall<MessageDto> {
+			api.deleteAddress(id)
 		}
 	}
 }
