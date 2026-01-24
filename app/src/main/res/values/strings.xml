@@ -152,4 +152,15 @@
     <string name="defaults">Default</string>
     <string name="no_address">No addresses</string>
     <string name="addresses">Addresses</string>
+    <string name="edit_address">Edit address</string>
+    <string name="add_address">Add address</string>
+    <string name="name">Name</string>
+    <string name="mobile_number">Mobile number</string>
+    <string name="country">Country</string>
+    <string name="state">State</string>
+    <string name="city">City</string>
+    <string name="zip_code">Zip code</string>
+    <string name="type">Type</string>
+    <string name="billing">Billing</string>
+    <string name="set_as_default_address">Set as default</string>
 </resources>

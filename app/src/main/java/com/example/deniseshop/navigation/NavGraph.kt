@@ -15,6 +15,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.example.deniseshop.R
+import com.example.deniseshop.feature.addeditaddress.AddEditAddressScreen
+import com.example.deniseshop.feature.addeditaddress.AddEditAddressViewModel
 import com.example.deniseshop.feature.addresses.AddressesScreen
 import com.example.deniseshop.feature.brandproducts.BrandProductsScreen
 import com.example.deniseshop.feature.brandproducts.BrandProductsViewModel
@@ -43,10 +45,6 @@ import com.example.deniseshop.feature.search.SearchScreen
 import com.example.deniseshop.feature.signin.presentation.SignInScreen
 import com.example.deniseshop.feature.signup.presentation.SignUpScreen
 import com.example.deniseshop.feature.wishlists.WishlistsScreen
-import com.example.deniseshop.ui.models.UiAddress
-import com.example.deniseshop.ui.screens.address.AddressFormScreen
-import com.example.deniseshop.ui.screens.address.AddressScreen
-import com.example.deniseshop.ui.screens.address.viewModels.AddressFormViewModel
 import com.example.deniseshop.ui.screens.contact.ContactScreen
 import com.example.deniseshop.ui.screens.coupon.CouponScreen
 import com.example.deniseshop.ui.screens.faqs.FaqsScreen
@@ -228,27 +226,12 @@ fun NavGraph(
 		composable(
 			route = Routes.AddEditAddress.routeWithArgs,
 			arguments = Routes.AddEditAddress.arguments
-		) {
-
-		}
-
-		composable<UiAddress>{ backStackEntry ->
-			val viewModel: AddressFormViewModel = hiltViewModel(backStackEntry)
-			AddressFormScreen(
-				onNavigateUp = {
-					navController.navigateUp()
-				},
-				viewModel = viewModel
-			)
-		}
-
-		composable(Routes.AddressForm.route){
-			val viewModel: AddressFormViewModel = hiltViewModel()
-			AddressFormScreen(
-				onNavigateUp = {
-					navController.navigateUp()
-				},
-				viewModel = viewModel
+		) { backStackEntry ->
+			val viewModel: AddEditAddressViewModel = hiltViewModel(backStackEntry)
+			AddEditAddressScreen(
+				viewModel = viewModel,
+				onBackClick = navController::popBackStack,
+				onShowSnackBar = onShowSnackBar
 			)
 		}
 
@@ -300,7 +283,7 @@ fun NavGraph(
 					}
 				},
 				onEditAddAddressClick = {
-					//TODO
+					navController.navigate("${Routes.AddEditAddress.route}/$it")
 				},
 				onShowSnackBar = onShowSnackBar
 			)

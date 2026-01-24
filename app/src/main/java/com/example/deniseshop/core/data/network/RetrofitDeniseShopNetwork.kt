@@ -429,8 +429,8 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 				city = address.city,
 				address = address.address,
 				zipCode = address.zipCode,
-				type = address.type,
-				default = address.default
+				type = address.type.name.lowercase(),
+				default = if(address.default) 1 else 0
 			).awaitResponse()
 		}
 	}
@@ -447,8 +447,8 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 				city = address.city,
 				address = address.address,
 				zipCode = address.zipCode,
-				type = address.type,
-				default = address.default
+				type = address.type.name.lowercase(),
+				default = if(address.default) 1 else 0
 			).awaitResponse()
 		}
 	}

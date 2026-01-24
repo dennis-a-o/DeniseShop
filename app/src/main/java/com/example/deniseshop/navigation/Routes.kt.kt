@@ -43,16 +43,16 @@ sealed class Routes(val route: String){
 	data object Profile: Routes("profile")
 	data object AllAddress: Routes("allAddress")
 	data object AddEditAddress: Routes("addEditAddress"){
-		private  const val ID = "id"
-		val routeWithArgs = "$route/{$ID}"
+		private  const val ADDRESS_ID = "addressId"
+		val routeWithArgs = "$route/{$ADDRESS_ID}"
 		val arguments = listOf(
-			navArgument(ID){
+			navArgument(ADDRESS_ID){
 				type = NavType.LongType
 				defaultValue = 0L
 			}
 		)
 	}
-	data object AddressForm: Routes("addressForm")
+
 	data object PromoCodes: Routes("promoCodes")
 	data object RecentlyViewed: Routes("recentlyViewed")
 	data object PageScreen: Routes("page"){

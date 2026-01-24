@@ -296,7 +296,7 @@ interface RetrofitDeniseShopNetworkApi {
 	@GET("address/{id}")
 	suspend fun getAddress(@Path("id") id: Long ): AddressDto?
 
-	@GET("address/countries")
+	@GET("address/countries/list")
 	suspend fun getCountries(): List<String>
 
 	@POST("address/add")
@@ -311,7 +311,7 @@ interface RetrofitDeniseShopNetworkApi {
 		@Field("address") address: String,
 		@Field("zip_code") zipCode: String,
 		@Field("type") type: String,
-		@Field("default") default: Boolean
+		@Field("default") default: Int
 	): Call<MessageDto>
 
 	@FormUrlEncoded
@@ -327,7 +327,7 @@ interface RetrofitDeniseShopNetworkApi {
 		@Field("address") address: String,
 		@Field("zip_code") zipCode: String,
 		@Field("type") type: String,
-		@Field("default") default: Boolean
+		@Field("default") default: Int
 	): Call<MessageDto>
 
 	@PUT("address/{id}/default")

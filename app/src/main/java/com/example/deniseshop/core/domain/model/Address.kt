@@ -11,6 +11,6 @@ data class Address(
 	val city: String,
 	val address: String,
 	val zipCode: String,
-	val type: String,
+	val type: AddressType,
 	val default: Boolean
 )
