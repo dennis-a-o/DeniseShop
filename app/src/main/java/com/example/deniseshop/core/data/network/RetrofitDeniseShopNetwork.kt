@@ -9,6 +9,8 @@ import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
+import com.example.deniseshop.core.data.dto.OrderDetailDto
+import com.example.deniseshop.core.data.dto.OrderDto
 import com.example.deniseshop.core.data.dto.PaymentUrlDto
 import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
@@ -26,6 +28,8 @@ import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.User
 import com.example.deniseshop.core.domain.model.UserSignUp
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
@@ -463,5 +467,43 @@ class RetrofitDeniseShopNetwork @Inject constructor(
 		return safeCall<MessageDto> {
 			api.deleteAddress(id)
 		}
+	}
+
+	override suspend fun getOrders(
+		page: Int,
+		pageSize: Int
+	): List<OrderDto> {
+		return api.getOrders(
+			page = page,
+			pageSize = pageSize
+		)
+	}
+
+	override suspend fun getOrderDetail(id: Long): Result<OrderDetailDto?, DataError.Remote> {
+		return safeCall<OrderDetailDto?> {
+			api.getOrderDetail(id)
+		}
+	}
+
+	override suspend fun addReview(
+		orderItemId: Long,
+		review: String,
+		rating: Int
+	): Result<MessageDto, DataError> {
+		return safeCallAwaitable<MessageDto> {
+			api.addReview(
+				itemId = orderItemId,
+				review = review,
+				rating = rating
+			).awaitResponse()
+		}
+	}
+
+	override suspend fun downloadItem(id: Long): Response<ResponseBody> {
+		return api.downloadOrderItem(id)
+	}
+
+	override suspend fun downloadInvoice(orderId: Long): Response<ResponseBody> {
+		return api.downloadOrderInvoice(orderId)
 	}
 }

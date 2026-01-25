@@ -34,6 +34,7 @@ import com.example.deniseshop.feature.flashsaleproducts.FlashSaleProductsScreen
 import com.example.deniseshop.feature.flashsaleproducts.FlashSaleProductsViewModel
 import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPasswordScreen
 import com.example.deniseshop.feature.home.HomeScreen
+import com.example.deniseshop.feature.orders.OrdersScreen
 import com.example.deniseshop.feature.productdetail.ProductDetailScreen
 import com.example.deniseshop.feature.productdetail.ProductDetailViewModel
 import com.example.deniseshop.feature.products.ProductsScreen
@@ -172,12 +173,10 @@ fun NavGraph(
 		}
 
 		composable(Routes.Orders.route) {
-			OrderScreen(
-				onNavigate = { route, options ->
-					navController.navigate(route, options)
-				},
-				onNavigateUp = {
-					navController.navigateUp()
+			OrdersScreen(
+				onBackClick = navController::popBackStack,
+				onOrderClick = {
+					navController.navigate("${Routes.OrderDetail.route}/$it")
 				}
 			)
 		}

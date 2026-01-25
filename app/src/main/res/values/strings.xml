@@ -163,4 +163,5 @@
     <string name="type">Type</string>
     <string name="billing">Billing</string>
     <string name="set_as_default_address">Set as default</string>
+    <string name="order">Order</string>
 </resources>

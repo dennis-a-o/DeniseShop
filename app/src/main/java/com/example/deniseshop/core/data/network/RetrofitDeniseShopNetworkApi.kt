@@ -9,6 +9,8 @@ import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
+import com.example.deniseshop.core.data.dto.OrderDetailDto
+import com.example.deniseshop.core.data.dto.OrderDto
 import com.example.deniseshop.core.data.dto.PaymentUrlDto
 import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
@@ -18,10 +20,13 @@ import com.example.deniseshop.core.data.dto.ReviewStatDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
-import com.example.deniseshop.data.models.ApiAddress
+import com.example.deniseshop.data.models.ApiOrder
+import com.example.deniseshop.data.models.ApiOrderDetail
 import com.example.deniseshop.data.models.ApiResponse
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -32,6 +37,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Streaming
 
 interface RetrofitDeniseShopNetworkApi {
 	@POST("auth/register")
@@ -335,4 +341,35 @@ interface RetrofitDeniseShopNetworkApi {
 
 	@DELETE("address/{id}/delete")
 	suspend fun deleteAddress(@Path("id") id: Long): MessageDto
+
+	@GET("orders")
+	suspend fun getOrders(
+		@Query("page") page: Int,
+		@Query("page_size") pageSize: Int
+	): List<OrderDto>
+
+	@GET("order/{id}")
+	suspend fun getOrderDetail(
+		@Path("id") id: Long
+	): OrderDetailDto?
+
+	@POST("order/add-review/{item_id}")
+	@FormUrlEncoded
+	fun addReview(
+		@Path("item_id") itemId: Long,
+		@Field("rating") rating: Int,
+		@Field("review") review: String
+	): Call<MessageDto>
+
+	@GET("order/item/{item_id}/download")
+	@Streaming
+	suspend fun downloadOrderItem(
+		@Path("item_id") itemId: Long
+	): Response<ResponseBody>
+
+	@GET("order/{order_id}/invoice")
+	@Streaming
+	suspend fun downloadOrderInvoice(
+		@Path("order_id") orderId: Long
+	): Response<ResponseBody>
 }

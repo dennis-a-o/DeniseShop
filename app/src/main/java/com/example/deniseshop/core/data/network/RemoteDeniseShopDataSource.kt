@@ -9,6 +9,8 @@ import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
+import com.example.deniseshop.core.data.dto.OrderDetailDto
+import com.example.deniseshop.core.data.dto.OrderDto
 import com.example.deniseshop.core.data.dto.PaymentUrlDto
 import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
@@ -26,6 +28,8 @@ import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.User
 import com.example.deniseshop.core.domain.model.UserSignUp
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.Query
 
 interface RemoteDeniseShopDataSource {
@@ -79,4 +83,9 @@ interface RemoteDeniseShopDataSource {
 	suspend fun updateAddress(address: Address): Result<MessageDto, DataError>
 	suspend fun setDefaultAddress(id: Long): Result<MessageDto, DataError.Remote>
 	suspend fun deleteAddress(id: Long): Result<MessageDto, DataError.Remote>
+	suspend fun getOrders(page: Int, pageSize: Int): List<OrderDto>
+	suspend fun getOrderDetail(id: Long): Result<OrderDetailDto?, DataError.Remote>
+	suspend fun addReview(orderItemId: Long, review:String, rating: Int): Result<MessageDto, DataError>
+	suspend fun downloadItem(id: Long): Response<ResponseBody>
+	suspend fun downloadInvoice(orderId: Long): Response<ResponseBody>
 }

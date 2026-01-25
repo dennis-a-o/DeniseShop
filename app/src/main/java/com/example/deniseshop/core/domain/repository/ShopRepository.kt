@@ -1,9 +1,13 @@
 package com.example.deniseshop.core.domain.repository
 
 import androidx.paging.PagingData
+import com.example.deniseshop.core.data.dto.MessageDto
+import com.example.deniseshop.core.data.dto.OrderDetailDto
+import com.example.deniseshop.core.data.dto.OrderDto
 import com.example.deniseshop.core.data.paging.BrandProductsPagingSource
 import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.FlashSaleProductsPagingSource
+import com.example.deniseshop.core.data.paging.OrdersPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.data.paging.RecentViewedProductsPagingSource
 import com.example.deniseshop.core.data.paging.ReviewsPagingSource
@@ -15,6 +19,7 @@ import com.example.deniseshop.core.domain.model.Checkout
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.FlashSale
 import com.example.deniseshop.core.domain.model.Home
+import com.example.deniseshop.core.domain.model.OrderDetail
 import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductDetail
 import com.example.deniseshop.core.domain.model.ProductFilter
@@ -23,6 +28,8 @@ import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.ReviewStat
 import com.example.deniseshop.core.domain.model.Wishlist
 import kotlinx.coroutines.flow.Flow
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 interface ShopRepository {
 	suspend fun getHome(): Result<Home,  DataError.Remote>
@@ -66,4 +73,9 @@ interface ShopRepository {
 	suspend fun updateAddress(address: Address): Result<String, DataError>
 	suspend fun setDefaultAddress(id: Long): Result<String, DataError.Remote>
 	suspend fun deleteAddress(id: Long): Result<String, DataError.Remote>
+	fun getOrders(): OrdersPagingSource
+	suspend fun getOrderDetail(id: Long): Result<OrderDetail?, DataError.Remote>
+	suspend fun addReview(orderItemId: Long, review:String, rating: Int): Result<String, DataError>
+	suspend fun downloadItem(id: Long): kotlin.Result<String>
+	suspend fun downloadInvoice(orderId: Long): kotlin.Result<String>
 }

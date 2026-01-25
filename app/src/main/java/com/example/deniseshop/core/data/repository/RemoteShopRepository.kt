@@ -1,5 +1,6 @@
 package com.example.deniseshop.core.data.repository
 
+import android.os.Environment
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -19,6 +20,7 @@ import com.example.deniseshop.core.data.paging.BrandProductsPagingSource
 import com.example.deniseshop.core.data.paging.BrandsPagingSource
 import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.FlashSaleProductsPagingSource
+import com.example.deniseshop.core.data.paging.OrdersPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
 import com.example.deniseshop.core.data.paging.RecentViewedProductsPagingSource
 import com.example.deniseshop.core.data.paging.ReviewsPagingSource
@@ -31,6 +33,7 @@ import com.example.deniseshop.core.domain.model.Checkout
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.FlashSale
 import com.example.deniseshop.core.domain.model.Home
+import com.example.deniseshop.core.domain.model.OrderDetail
 import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductDetail
 import com.example.deniseshop.core.domain.model.ProductFilter
@@ -39,7 +42,13 @@ import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.ReviewStat
 import com.example.deniseshop.core.domain.model.Wishlist
 import com.example.deniseshop.core.domain.repository.ShopRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import okio.use
+import retrofit2.Response
+import java.io.File
 import javax.inject.Inject
 
 class RemoteShopRepository @Inject constructor(
@@ -342,6 +351,95 @@ class RemoteShopRepository @Inject constructor(
 		return when(val res = remoteDeniseShopDataSource.deleteAddress(id)) {
 			is Result.Error -> Result.Error(res.error)
 			is Result.Success -> Result.Success(res.data.message)
+		}
+	}
+
+	override fun getOrders(): OrdersPagingSource {
+		return OrdersPagingSource(
+			remote = remoteDeniseShopDataSource
+		)
+	}
+
+	override suspend fun getOrderDetail(id: Long): Result<OrderDetail?, DataError.Remote> {
+		TODO("Not yet implemented")
+	}
+
+	override suspend fun addReview(
+		orderItemId: Long,
+		review: String,
+		rating: Int
+	): Result<String, DataError> {
+		return when(
+			val res = remoteDeniseShopDataSource.addReview(
+				orderItemId = orderItemId,
+				review = review,
+				rating = rating
+			)
+		) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.message)
+		}
+	}
+
+	override suspend fun downloadItem(id: Long): kotlin.Result<String> {
+		return withContext(Dispatchers.IO){
+			try {
+				val response = remoteDeniseShopDataSource.downloadItem(id)
+				if (response.isSuccessful){
+					val body = response.body() ?: return@withContext kotlin.Result.failure(Exception("Empty body"))
+					val  fileName = response.headers()["Content-Disposition"]
+						?.split(";")?.get(1)
+						?.split("=")?.get(1)
+						?.removeSurrounding("\"")
+
+					val destination = File(
+						Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+						fileName?: "Item.zip"
+					)
+
+					body.byteStream().use { input ->
+						destination.outputStream().use { output ->
+							input.copyTo(output)
+						}
+					}
+					kotlin.Result.success("Downloaded ${destination.name} successfully,check your Downloads folder.")
+				}else{
+					kotlin.Result.failure(Exception("Download failed"))
+				}
+			}catch (e: Exception){
+				kotlin.Result.failure(e)
+			}
+		}
+	}
+
+	override suspend fun downloadInvoice(orderId: Long): kotlin.Result<String> {
+		return withContext(Dispatchers.IO){
+			try {
+				val response = remoteDeniseShopDataSource.downloadInvoice(orderId)
+				if (response.isSuccessful){
+					val body = response.body() ?: return@withContext kotlin.Result.failure(Exception("Empty body"))
+					val  fileName = response.headers()["Content-Disposition"]
+						?.split(";")?.get(1)
+						?.split("=")?.get(1)
+						?.removeSurrounding("\"")
+
+					val destination = File(
+						Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+						fileName?: "Invoice.pdf"
+					)
+
+					body.byteStream().use { input ->
+						destination.outputStream().use { output ->
+							input.copyTo(output)
+						}
+					}
+					kotlin.Result.success("Downloaded ${destination.name} successfully,check your Downloads folder.")
+				}else{
+					kotlin.Result.failure(Exception("Download failed"))
+				}
+			}catch (e: Exception){
+				kotlin.Result.failure(e)
+			}
 		}
 	}
 }
