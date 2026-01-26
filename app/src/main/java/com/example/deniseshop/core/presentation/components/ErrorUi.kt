@@ -26,10 +26,11 @@ fun ErrorUi(
 	onErrorAction: () -> Unit,
 	title: String = stringResource(R.string.anErrorOccurred),
 	message: String = stringResource(R.string.pleaseCheckYourConnectionAgain),
-	buttonText: String = stringResource(R.string.tryAgain)
+	buttonText: String = stringResource(R.string.tryAgain),
+	modifier: Modifier = Modifier
 ){
 	Box(
-		modifier = Modifier.fillMaxSize(),
+		modifier = modifier.fillMaxSize(),
 		contentAlignment = Alignment.Center
 	){
 		Column (

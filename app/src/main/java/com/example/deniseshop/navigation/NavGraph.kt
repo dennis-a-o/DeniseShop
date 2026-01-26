@@ -38,6 +38,8 @@ import com.example.deniseshop.feature.home.HomeScreen
 import com.example.deniseshop.feature.orderdetail.OrderDetailScreen
 import com.example.deniseshop.feature.orderdetail.OrderDetailViewModel
 import com.example.deniseshop.feature.orders.OrdersScreen
+import com.example.deniseshop.feature.page.PageScreen
+import com.example.deniseshop.feature.page.PageViewModel
 import com.example.deniseshop.feature.productdetail.ProductDetailScreen
 import com.example.deniseshop.feature.productdetail.ProductDetailViewModel
 import com.example.deniseshop.feature.products.ProductsScreen
@@ -51,8 +53,6 @@ import com.example.deniseshop.feature.signup.presentation.SignUpScreen
 import com.example.deniseshop.feature.wishlists.WishlistsScreen
 import com.example.deniseshop.ui.screens.contact.ContactScreen
 import com.example.deniseshop.ui.screens.coupon.CouponScreen
-import com.example.deniseshop.ui.screens.page.PageScreen
-import com.example.deniseshop.ui.screens.page.PageViewModel
 
 
 @Composable
@@ -347,10 +347,8 @@ fun NavGraph(
 		) { navBackStackEntry ->
 			val viewModel: PageViewModel = hiltViewModel(navBackStackEntry)
 			PageScreen(
-				onNavigateUp = {
-					navController.navigateUp()
-				},
-				viewModel = viewModel
+				viewModel = viewModel,
+				onBackClick = navController::popBackStack
 			)
 		}
 

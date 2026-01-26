@@ -2,17 +2,12 @@ package com.example.deniseshop.feature.profile.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -24,11 +19,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.deniseshop.R
+import com.example.deniseshop.core.domain.model.PageType
 import com.example.deniseshop.feature.profile.presentation.components.DeleteAccountDialog
 import com.example.deniseshop.feature.profile.presentation.components.ProfileItem
 import com.example.deniseshop.feature.profile.presentation.components.ProfileUser
@@ -177,7 +172,7 @@ private fun ProfileScreen(
 				name = stringResource(R.string.aboutus),
 				iconResourceId = R.drawable.ic_info,
 				onClick = {
-					onNavigate("${Routes.PageScreen.route}/About Us")
+					onNavigate("${Routes.PageScreen.route}/${PageType.ABOUT_US}")
 				}
 			)
 			Spacer(Modifier.height(8.dp))
@@ -201,7 +196,7 @@ private fun ProfileScreen(
 				name = stringResource(R.string.privacyPolicy),
 				iconResourceId = R.drawable.ic_privacy_tip,
 				onClick = {
-					onNavigate("${Routes.PageScreen.route}/Privacy Policy")
+					onNavigate("${Routes.PageScreen.route}/${PageType.PRIVACY_POLICY}")
 				}
 			)
 			Spacer(Modifier.height(8.dp))
@@ -209,7 +204,7 @@ private fun ProfileScreen(
 				name = stringResource(R.string.termsAndConditons),
 				iconResourceId = R.drawable.ic_policy,
 				onClick = {
-					onNavigate("${Routes.PageScreen.route}/Terms Conditions")
+					onNavigate("${Routes.PageScreen.route}/${PageType.TERMS_CONDITIONS}")
 				}
 			)
 			Spacer(Modifier.height(8.dp))
@@ -217,7 +212,7 @@ private fun ProfileScreen(
 				name = stringResource(R.string.shippingPolicy),
 				iconResourceId = R.drawable.ic_local_shipping,
 				onClick = {
-					onNavigate("${Routes.PageScreen.route}/Shipping Policy")
+					onNavigate("${Routes.PageScreen.route}/${PageType.SHIPPING_POLICY}")
 				}
 			)
 			Spacer(Modifier.height(8.dp))

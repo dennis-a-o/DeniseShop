@@ -36,9 +36,7 @@ import com.example.deniseshop.core.domain.model.Cart
 import com.example.deniseshop.core.domain.model.Category
 import com.example.deniseshop.core.domain.model.Checkout
 import com.example.deniseshop.core.domain.model.Contact
-import com.example.deniseshop.core.domain.model.Coupon
 import com.example.deniseshop.core.domain.model.DataError
-import com.example.deniseshop.core.domain.model.Faq
 import com.example.deniseshop.core.domain.model.FlashSale
 import com.example.deniseshop.core.domain.model.Home
 import com.example.deniseshop.core.domain.model.OrderDetail
@@ -57,8 +55,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
-import kotlin.io.copyTo
-import kotlin.io.use
 
 class RemoteShopRepository @Inject constructor(
 	private val remoteDeniseShopDataSource: RemoteDeniseShopDataSource,

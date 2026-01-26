@@ -56,10 +56,10 @@ sealed class Routes(val route: String){
 	data object PromoCodes: Routes("promoCodes")
 	data object RecentlyViewed: Routes("recentlyViewed")
 	data object PageScreen: Routes("page"){
-		private  const val PAGE_NAME = "pageName"
-		val routeWithArgs = "$route/{$PAGE_NAME}"
+		private  const val PAGE = "page"
+		val routeWithArgs = "$route/{$PAGE}"
 		val arguments = listOf(
-			navArgument(PAGE_NAME){type = NavType.StringType }
+			navArgument(PAGE){type = NavType.StringType }
 		)
 	}
 	data object  FaqsScreen: Routes("faqs")
