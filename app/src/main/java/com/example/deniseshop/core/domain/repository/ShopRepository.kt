@@ -3,6 +3,8 @@ package com.example.deniseshop.core.domain.repository
 import androidx.paging.PagingData
 import com.example.deniseshop.core.data.paging.BrandProductsPagingSource
 import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
+import com.example.deniseshop.core.data.paging.CouponsPagingSource
+import com.example.deniseshop.core.data.paging.FaqsPagingSource
 import com.example.deniseshop.core.data.paging.FlashSaleProductsPagingSource
 import com.example.deniseshop.core.data.paging.OrdersPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
@@ -13,10 +15,13 @@ import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Cart
 import com.example.deniseshop.core.domain.model.Category
 import com.example.deniseshop.core.domain.model.Checkout
+import com.example.deniseshop.core.domain.model.Contact
 import com.example.deniseshop.core.domain.model.DataError
 import com.example.deniseshop.core.domain.model.FlashSale
 import com.example.deniseshop.core.domain.model.Home
 import com.example.deniseshop.core.domain.model.OrderDetail
+import com.example.deniseshop.core.domain.model.Page
+import com.example.deniseshop.core.domain.model.PageType
 import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductDetail
 import com.example.deniseshop.core.domain.model.ProductFilter
@@ -73,4 +78,8 @@ interface ShopRepository {
 	suspend fun addReview(orderItemId: Long, review:String, rating: Int): Result<String, DataError>
 	suspend fun downloadItem(id: Long): kotlin.Result<String>
 	suspend fun downloadInvoice(orderId: Long): kotlin.Result<String>
+	fun getFaqs(): FaqsPagingSource
+	fun getCoupons(): CouponsPagingSource
+	suspend fun getContact(): Result<List<Contact>, DataError.Remote>
+	suspend fun getPage(page: PageType): Result<Page, DataError.Remote>
 }

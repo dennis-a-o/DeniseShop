@@ -5,7 +5,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.Html
 import android.widget.TextView
-import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,8 +23,7 @@ fun HtmlText(
 	val color = MaterialTheme.colorScheme.outline
 
 	AndroidView(
-		modifier = modifier
-			.background(MaterialTheme.colorScheme.background),
+		modifier = modifier,
 		factory = { context ->
 			TextView(
 				context

@@ -5,12 +5,16 @@ import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
 import com.example.deniseshop.core.data.dto.CheckoutDto
+import com.example.deniseshop.core.data.dto.ContactDto
+import com.example.deniseshop.core.data.dto.CouponDto
+import com.example.deniseshop.core.data.dto.FaqDto
 import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
 import com.example.deniseshop.core.data.dto.OrderDetailDto
 import com.example.deniseshop.core.data.dto.OrderDto
+import com.example.deniseshop.core.data.dto.PageDto
 import com.example.deniseshop.core.data.dto.PaymentUrlDto
 import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
@@ -22,6 +26,7 @@ import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
 import com.example.deniseshop.core.domain.model.Address
 import com.example.deniseshop.core.domain.model.DataError
+import com.example.deniseshop.core.domain.model.PageType
 import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductFilterParams
 import com.example.deniseshop.core.domain.model.Result
@@ -87,4 +92,8 @@ interface RemoteDeniseShopDataSource {
 	suspend fun addReview(orderItemId: Long, review:String, rating: Int): Result<MessageDto, DataError>
 	suspend fun downloadItem(id: Long): Response<ResponseBody>
 	suspend fun downloadInvoice(orderId: Long): Response<ResponseBody>
+	suspend fun getFaqs(page: Int, pageSize: Int): List<FaqDto>
+	suspend fun getCoupons(page: Int,pageSize: Int): List<CouponDto>
+	suspend fun getContact(): Result<List<ContactDto>, DataError.Remote>
+	suspend fun getPage(page: PageType): Result<PageDto, DataError.Remote>
 }

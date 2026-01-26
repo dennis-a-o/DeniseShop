@@ -10,9 +10,11 @@ import com.example.deniseshop.core.data.mappers.toBrand
 import com.example.deniseshop.core.data.mappers.toCart
 import com.example.deniseshop.core.data.mappers.toCategory
 import com.example.deniseshop.core.data.mappers.toCheckout
+import com.example.deniseshop.core.data.mappers.toContact
 import com.example.deniseshop.core.data.mappers.toFlashSale
 import com.example.deniseshop.core.data.mappers.toHome
 import com.example.deniseshop.core.data.mappers.toOrderDetail
+import com.example.deniseshop.core.data.mappers.toPage
 import com.example.deniseshop.core.data.mappers.toProductDetail
 import com.example.deniseshop.core.data.mappers.toProductFilter
 import com.example.deniseshop.core.data.mappers.toReviewStat
@@ -20,6 +22,8 @@ import com.example.deniseshop.core.data.network.RemoteDeniseShopDataSource
 import com.example.deniseshop.core.data.paging.BrandProductsPagingSource
 import com.example.deniseshop.core.data.paging.BrandsPagingSource
 import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
+import com.example.deniseshop.core.data.paging.CouponsPagingSource
+import com.example.deniseshop.core.data.paging.FaqsPagingSource
 import com.example.deniseshop.core.data.paging.FlashSaleProductsPagingSource
 import com.example.deniseshop.core.data.paging.OrdersPagingSource
 import com.example.deniseshop.core.data.paging.ProductsPagingSource
@@ -31,10 +35,15 @@ import com.example.deniseshop.core.domain.model.Brand
 import com.example.deniseshop.core.domain.model.Cart
 import com.example.deniseshop.core.domain.model.Category
 import com.example.deniseshop.core.domain.model.Checkout
+import com.example.deniseshop.core.domain.model.Contact
+import com.example.deniseshop.core.domain.model.Coupon
 import com.example.deniseshop.core.domain.model.DataError
+import com.example.deniseshop.core.domain.model.Faq
 import com.example.deniseshop.core.domain.model.FlashSale
 import com.example.deniseshop.core.domain.model.Home
 import com.example.deniseshop.core.domain.model.OrderDetail
+import com.example.deniseshop.core.domain.model.Page
+import com.example.deniseshop.core.domain.model.PageType
 import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.ProductDetail
 import com.example.deniseshop.core.domain.model.ProductFilter
@@ -443,6 +452,28 @@ class RemoteShopRepository @Inject constructor(
 			}catch (e: Exception){
 				kotlin.Result.failure(e)
 			}
+		}
+	}
+
+	override fun getFaqs() = FaqsPagingSource(
+		remote = remoteDeniseShopDataSource
+	)
+
+	override fun getCoupons() = CouponsPagingSource(
+		remote = remoteDeniseShopDataSource
+	)
+
+	override suspend fun getContact(): Result<List<Contact>, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.getContact()) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.map { it.toContact() })
+		}
+	}
+
+	override suspend fun getPage(page: PageType): Result<Page, DataError.Remote> {
+		return when(val res = remoteDeniseShopDataSource.getPage(page)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data.toPage())
 		}
 	}
 }

@@ -5,12 +5,16 @@ import com.example.deniseshop.core.data.dto.BrandDto
 import com.example.deniseshop.core.data.dto.CartDto
 import com.example.deniseshop.core.data.dto.CategoryDto
 import com.example.deniseshop.core.data.dto.CheckoutDto
+import com.example.deniseshop.core.data.dto.ContactDto
+import com.example.deniseshop.core.data.dto.CouponDto
+import com.example.deniseshop.core.data.dto.FaqDto
 import com.example.deniseshop.core.data.dto.FlashSaleDto
 import com.example.deniseshop.core.data.dto.HomeDto
 import com.example.deniseshop.core.data.dto.ImageDto
 import com.example.deniseshop.core.data.dto.MessageDto
 import com.example.deniseshop.core.data.dto.OrderDetailDto
 import com.example.deniseshop.core.data.dto.OrderDto
+import com.example.deniseshop.core.data.dto.PageDto
 import com.example.deniseshop.core.data.dto.PaymentUrlDto
 import com.example.deniseshop.core.data.dto.ProductDetailDto
 import com.example.deniseshop.core.data.dto.ProductDto
@@ -369,4 +373,24 @@ interface RetrofitDeniseShopNetworkApi {
 	suspend fun downloadOrderInvoice(
 		@Path("order_id") orderId: Long
 	): Response<ResponseBody>
+
+	@GET("faqs")
+	suspend fun getFaqs(
+		@Query("page") page: Int,
+		@Query("page_size") pageSize: Int
+	): List<FaqDto>
+
+	@GET("coupons")
+	suspend fun getCoupons(
+		@Query("page") page: Int,
+		@Query("page_size") pageSize: Int
+	): List<CouponDto>
+
+	@GET("contact")
+	suspend fun getContact(): List<ContactDto>
+
+	@GET("page")
+	suspend fun getPage(
+		@Query("name") name:String
+	): PageDto
 }
