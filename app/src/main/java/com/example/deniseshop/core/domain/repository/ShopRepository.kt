@@ -1,9 +1,6 @@
 package com.example.deniseshop.core.domain.repository
 
 import androidx.paging.PagingData
-import com.example.deniseshop.core.data.dto.MessageDto
-import com.example.deniseshop.core.data.dto.OrderDetailDto
-import com.example.deniseshop.core.data.dto.OrderDto
 import com.example.deniseshop.core.data.paging.BrandProductsPagingSource
 import com.example.deniseshop.core.data.paging.CategoryProductsPagingSource
 import com.example.deniseshop.core.data.paging.FlashSaleProductsPagingSource
@@ -28,8 +25,6 @@ import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.ReviewStat
 import com.example.deniseshop.core.domain.model.Wishlist
 import kotlinx.coroutines.flow.Flow
-import okhttp3.ResponseBody
-import retrofit2.Response
 
 interface ShopRepository {
 	suspend fun getHome(): Result<Home,  DataError.Remote>

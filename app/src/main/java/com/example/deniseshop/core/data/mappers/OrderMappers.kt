@@ -36,7 +36,7 @@ fun OrderProductDto.toOrderProduct() = OrderProduct(
 	size = size,
 	color = color,
 	rated = rated,
-	downloadable = downloadable
+	downloadable = downloadable ?: false
 )
 
 fun OrderDetailDto.toOrderDetail() = OrderDetail(

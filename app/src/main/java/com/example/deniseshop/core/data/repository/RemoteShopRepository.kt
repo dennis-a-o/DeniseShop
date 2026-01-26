@@ -12,6 +12,7 @@ import com.example.deniseshop.core.data.mappers.toCategory
 import com.example.deniseshop.core.data.mappers.toCheckout
 import com.example.deniseshop.core.data.mappers.toFlashSale
 import com.example.deniseshop.core.data.mappers.toHome
+import com.example.deniseshop.core.data.mappers.toOrderDetail
 import com.example.deniseshop.core.data.mappers.toProductDetail
 import com.example.deniseshop.core.data.mappers.toProductFilter
 import com.example.deniseshop.core.data.mappers.toReviewStat
@@ -45,11 +46,10 @@ import com.example.deniseshop.core.domain.repository.ShopRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
-import okio.use
-import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
+import kotlin.io.copyTo
+import kotlin.io.use
 
 class RemoteShopRepository @Inject constructor(
 	private val remoteDeniseShopDataSource: RemoteDeniseShopDataSource,
@@ -361,7 +361,10 @@ class RemoteShopRepository @Inject constructor(
 	}
 
 	override suspend fun getOrderDetail(id: Long): Result<OrderDetail?, DataError.Remote> {
-		TODO("Not yet implemented")
+		return when(val res = remoteDeniseShopDataSource.getOrderDetail(id)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success -> Result.Success(res.data?.toOrderDetail())
+		}
 	}
 
 	override suspend fun addReview(

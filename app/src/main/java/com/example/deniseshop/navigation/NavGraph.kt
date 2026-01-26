@@ -34,6 +34,8 @@ import com.example.deniseshop.feature.flashsaleproducts.FlashSaleProductsScreen
 import com.example.deniseshop.feature.flashsaleproducts.FlashSaleProductsViewModel
 import com.example.deniseshop.feature.forgotpassword.presentation.ForgotPasswordScreen
 import com.example.deniseshop.feature.home.HomeScreen
+import com.example.deniseshop.feature.orderdetail.OrderDetailScreen
+import com.example.deniseshop.feature.orderdetail.OrderDetailViewModel
 import com.example.deniseshop.feature.orders.OrdersScreen
 import com.example.deniseshop.feature.productdetail.ProductDetailScreen
 import com.example.deniseshop.feature.productdetail.ProductDetailViewModel
@@ -49,9 +51,6 @@ import com.example.deniseshop.feature.wishlists.WishlistsScreen
 import com.example.deniseshop.ui.screens.contact.ContactScreen
 import com.example.deniseshop.ui.screens.coupon.CouponScreen
 import com.example.deniseshop.ui.screens.faqs.FaqsScreen
-import com.example.deniseshop.ui.screens.order.OrderDetailScreen
-import com.example.deniseshop.ui.screens.order.OrderScreen
-import com.example.deniseshop.ui.screens.order.viewModels.OrderDetailViewModel
 import com.example.deniseshop.ui.screens.page.PageScreen
 import com.example.deniseshop.ui.screens.page.PageViewModel
 
@@ -187,10 +186,9 @@ fun NavGraph(
 		) { backStackEntry ->
 			val viewModel: OrderDetailViewModel = hiltViewModel(backStackEntry)
 			OrderDetailScreen(
-				onNavigateUp = {
-					navController.navigateUp()
-				},
-				viewModel = viewModel
+				viewModel = viewModel,
+				onBackClick = navController::popBackStack,
+				onShowSnackBar = onShowSnackBar
 			)
 		}
 

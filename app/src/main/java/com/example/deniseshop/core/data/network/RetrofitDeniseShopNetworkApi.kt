@@ -20,9 +20,6 @@ import com.example.deniseshop.core.data.dto.ReviewStatDto
 import com.example.deniseshop.core.data.dto.UserCredentialDto
 import com.example.deniseshop.core.data.dto.UserDto
 import com.example.deniseshop.core.data.dto.WishlistDto
-import com.example.deniseshop.data.models.ApiOrder
-import com.example.deniseshop.data.models.ApiOrderDetail
-import com.example.deniseshop.data.models.ApiResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call

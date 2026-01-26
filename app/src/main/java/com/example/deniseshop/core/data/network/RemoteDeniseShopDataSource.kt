@@ -30,7 +30,6 @@ import com.example.deniseshop.core.domain.model.UserSignUp
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.Query
 
 interface RemoteDeniseShopDataSource {
 	suspend fun signUp(user: UserSignUp): Result<Unit, DataError>

@@ -14,5 +14,5 @@ data class OrderProductDto(
 	@SerialName(  "size") val size: String?,
 	@SerialName(  "color") val color: String?,
 	@SerialName(  "rated") val rated: Boolean,
-	@SerialName(  "downloadable") val downloadable: Boolean
+	@SerialName(  "downloadable") val downloadable: Boolean?
 )
