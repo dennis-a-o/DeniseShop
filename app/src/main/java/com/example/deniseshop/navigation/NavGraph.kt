@@ -29,6 +29,7 @@ import com.example.deniseshop.feature.changepassword.presentation.ChangePassword
 import com.example.deniseshop.feature.changetheme.ChangeThemeBottomSheet
 import com.example.deniseshop.feature.checkout.CheckoutScreen
 import com.example.deniseshop.feature.checkout.CheckoutViewModel
+import com.example.deniseshop.feature.contact.ContactScreen
 import com.example.deniseshop.feature.coupons.CouponsScreen
 import com.example.deniseshop.feature.editprofile.presentation.EditProfileBottomSheet
 import com.example.deniseshop.feature.faqs.FaqsScreen
@@ -52,8 +53,6 @@ import com.example.deniseshop.feature.search.SearchScreen
 import com.example.deniseshop.feature.signin.presentation.SignInScreen
 import com.example.deniseshop.feature.signup.presentation.SignUpScreen
 import com.example.deniseshop.feature.wishlists.WishlistsScreen
-import com.example.deniseshop.ui.screens.contact.ContactScreen
-import com.example.deniseshop.ui.screens.coupon.CouponScreen
 
 
 @Composable
@@ -358,7 +357,7 @@ fun NavGraph(
 		}
 
 		composable(Routes.ContactScreen.route){
-			ContactScreen(onNavigateUp = { navController.navigateUp() })
+			ContactScreen(onBackClick = navController::popBackStack)
 		}
 
 		composable(
