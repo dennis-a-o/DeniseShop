@@ -29,6 +29,7 @@ import com.example.deniseshop.feature.changepassword.presentation.ChangePassword
 import com.example.deniseshop.feature.changetheme.ChangeThemeBottomSheet
 import com.example.deniseshop.feature.checkout.CheckoutScreen
 import com.example.deniseshop.feature.checkout.CheckoutViewModel
+import com.example.deniseshop.feature.coupons.CouponsScreen
 import com.example.deniseshop.feature.editprofile.presentation.EditProfileBottomSheet
 import com.example.deniseshop.feature.faqs.FaqsScreen
 import com.example.deniseshop.feature.flashsaleproducts.FlashSaleProductsScreen
@@ -287,10 +288,8 @@ fun NavGraph(
 		}
 
 		composable(Routes.PromoCodes.route) {
-			CouponScreen(
-				onNavigateUp = {
-					navController.navigateUp()
-				},
+			CouponsScreen(
+				onBackClick = navController::popBackStack
 			)
 		}
 
