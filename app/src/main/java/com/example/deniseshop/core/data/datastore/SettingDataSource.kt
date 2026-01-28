@@ -13,9 +13,11 @@ interface SettingDataSource {
 	suspend fun deleteSearchQuery(query: String)
 	suspend fun saveThemeMode(themeMode: ThemeMode)
 	suspend fun saveWishlistItemId(id: Long)
+	suspend fun saveWishlistItems(items: List<Long>)
 	suspend fun deleteWishlistItem(id: Long)
 	suspend fun clearWishlist()
 	suspend fun saveCartItemId(id: Long)
+	suspend fun saveCartItems(items: List<Long>)
 	suspend fun deleteCartItem(id:Long)
 	suspend fun clearCart()
 	fun getUser(): Flow<User?>

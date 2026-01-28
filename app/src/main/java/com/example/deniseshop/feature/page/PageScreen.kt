@@ -31,8 +31,8 @@ import com.example.deniseshop.R
 import com.example.deniseshop.core.domain.model.Page
 import com.example.deniseshop.core.presentation.ScreenState
 import com.example.deniseshop.core.presentation.components.ErrorUi
+import com.example.deniseshop.core.presentation.components.HtmlText
 import com.example.deniseshop.core.presentation.components.LoadingUi
-import com.example.deniseshop.ui.components.HtmlText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

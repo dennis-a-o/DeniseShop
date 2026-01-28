@@ -18,10 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.deniseshop.ui.theme.Purple100
-import com.example.deniseshop.utils.datetimeToMillisecond
+import com.example.deniseshop.core.presentation.theme.Purple100
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 enum class CountDownType(private val type: Int) {
@@ -190,5 +191,16 @@ fun FlashSaleCountDown(
 				delay(1000L)
 			}
 		}
+	}
+}
+
+
+fun datetimeToMillisecond(datetime: String): Long{
+	val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+	try {
+		val dateObject = inputFormat.parse(datetime)
+		return dateObject!!.time
+	}catch(e :Exception){
+		return 0L
 	}
 }

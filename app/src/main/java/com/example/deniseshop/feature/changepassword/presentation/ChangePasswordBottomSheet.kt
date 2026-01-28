@@ -33,8 +33,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.deniseshop.R
+import com.example.deniseshop.core.presentation.components.ButtonWithProgressIndicator
 import com.example.deniseshop.core.presentation.components.DeniseShopTextField
-import com.example.deniseshop.ui.components.ButtonWithProgressIndicator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

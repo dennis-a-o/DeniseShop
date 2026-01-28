@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -58,12 +59,14 @@ fun ChangeThemeBottomSheet(
 						.clickable {
 							viewModel.setThemeMode(themeMode)
 						}
-						.fillMaxWidth(),
-					verticalAlignment = Alignment.CenterVertically
+						.fillMaxWidth()
+						.padding(vertical = 16.dp),
+					verticalAlignment = Alignment.CenterVertically,
 				){
 					RadioButton(
 						selected = themeMode == currentThemeMode,
-						onClick = {})
+						onClick = null)
+					Spacer(Modifier.width(16.dp))
 					Text(
 						text = themeMode.value,
 						style = MaterialTheme.typography.bodyMedium

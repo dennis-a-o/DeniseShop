@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.example.deniseshop.DeniseShopApplication"
+        android:name="com.example.deniseshop.app.DeniseShopApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -23,7 +23,7 @@
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
         <activity
-            android:name="com.example.deniseshop.ui.MainActivity"
+            android:name="com.example.deniseshop.app.MainActivity"
             android:launchMode="singleTop"
             android:exported="true"
             android:label="@string/title_activity_main">

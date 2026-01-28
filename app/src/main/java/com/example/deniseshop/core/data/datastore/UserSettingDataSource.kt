@@ -113,6 +113,12 @@ class UserSettingDataSource @Inject constructor(
 		}
 	}
 
+	override suspend fun saveWishlistItems(items: List<Long>) {
+		dataStore.edit { prefs ->
+			prefs[WISHLIST_ID_SET] = items.map { it.toString() }.toSet()
+		}
+	}
+
 	override suspend fun deleteWishlistItem(id: Long) {
 		dataStore.edit { prefs ->
 			val currentSet = prefs[WISHLIST_ID_SET]?.toMutableSet() ?: mutableSetOf()
@@ -125,7 +131,7 @@ class UserSettingDataSource @Inject constructor(
 
 	override suspend fun clearWishlist() {
 		dataStore.edit { prefs ->
-			prefs[WISHLIST_ID_SET] = emptySet<String>()
+			prefs[WISHLIST_ID_SET] = emptySet()
 		}
 	}
 
@@ -136,6 +142,12 @@ class UserSettingDataSource @Inject constructor(
 			currentSet.add("$id")
 
 			prefs[CART_ID_SET] = currentSet
+		}
+	}
+
+	override suspend fun saveCartItems(items: List<Long>) {
+		dataStore.edit { prefs ->
+			prefs[CART_ID_SET] = items.map { it.toString() }.toSet()
 		}
 	}
 
@@ -151,7 +163,7 @@ class UserSettingDataSource @Inject constructor(
 
 	override suspend fun clearCart() {
 		dataStore.edit { prefs ->
-			prefs[CART_ID_SET] = emptySet<String>()
+			prefs[CART_ID_SET] = emptySet()
 		}
 	}
 

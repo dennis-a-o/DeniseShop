@@ -1,20 +1,32 @@
 package com.example.deniseshop.core.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
 import com.example.deniseshop.core.data.datastore.SettingDataSource
 import com.example.deniseshop.core.data.network.BASE_URL
 import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetworkApi
 import com.example.deniseshop.core.data.network.interceptors.AuthenticationInterceptor
-import com.example.deniseshop.data.source.PreferencesDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import java.io.File
 import javax.inject.Singleton
+
+private const val USER_PREFERENCES = "deniseshop_user_preferences.preferences_pb"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -28,12 +40,12 @@ object CoreModule {
 		coerceInputValues = true
 	}
 
-/*	@Provides
+	@Provides
 	@Singleton
 	fun providesAuthenticationInterceptor(
-		dataStorePreferencesRepository: PreferencesDataSource
+		settingDataSource: SettingDataSource
 	): AuthenticationInterceptor{
-		return AuthenticationInterceptor(dataStorePreferencesRepository)
+		return AuthenticationInterceptor(settingDataSource)
 	}
 
 	@Provides
@@ -58,28 +70,32 @@ object CoreModule {
 			.addConverterFactory(
 				json.asConverterFactory("application/json".toMediaType())
 			)
-	}*/
+	}
 
 	@Singleton
 	@Provides
 	fun provideApi(
-		//builder: Retrofit.Builder,
-		json: Json,
-		settingDataSource: SettingDataSource
+		builder: Retrofit.Builder,
 	): RetrofitDeniseShopNetworkApi {
-		val authenticationInterceptor = AuthenticationInterceptor(settingDataSource)
-
-		val okHttpClient = OkHttpClient.Builder()
-			.addInterceptor(authenticationInterceptor)
-			.build()
-
-		return Retrofit.Builder()
-			.baseUrl(BASE_URL)
-			.client(okHttpClient)
-			.addConverterFactory(
-				json.asConverterFactory("application/json".toMediaType())
-			)
+		return builder
 			.build()
 			.create(RetrofitDeniseShopNetworkApi::class.java)
+	}
+
+	@Provides
+	@Singleton
+	internal  fun providesDeniseShopPreferenceDataStore(
+		@ApplicationContext context: Context,
+	): DataStore<Preferences> {
+
+		return PreferenceDataStoreFactory.create(
+			corruptionHandler = ReplaceFileCorruptionHandler(
+				produceNewData = { emptyPreferences() }
+			),
+			scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+			produceFile = {
+				File(context.filesDir, USER_PREFERENCES)
+			},
+		)
 	}
 }

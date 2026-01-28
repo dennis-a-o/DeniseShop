@@ -13,56 +13,48 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavOptions
-import com.example.deniseshop.navigation.Routes
+import com.example.deniseshop.core.presentation.components.IconWithBadge
+import com.example.deniseshop.core.presentation.theme.DeniseShopTheme
 import com.example.deniseshop.navigation.TopLevelRoutes
-import com.example.deniseshop.ui.components.IconWithBadge
-import com.example.deniseshop.ui.theme.DeniseShopTheme
 
 @Composable
 fun DeniseShopNavigationBar(
-	onNavigate: (String, NavOptions?) -> Unit,
-	currentRoute: String,
-	wishlistBadgeCount:Int
+	topLevelRoutes: List<TopLevelRoutes>,
+	currentRoute: TopLevelRoutes?,
+	wishlistBadgeCount:Int,
+	onRouteClick: (TopLevelRoutes) -> Unit,
 ){
 	NavigationBar(
 		modifier = Modifier.shadow(elevation = 8.dp),
 		containerColor =  MaterialTheme.colorScheme.background,
 	){
-		TopLevelRoutes.entries.forEach { item ->
-			val isActive = currentRoute == item.route
+		topLevelRoutes.forEach { route ->
+			val selected = currentRoute == route
 			NavigationBarItem(
-				selected = isActive,
+				selected = selected,
 				onClick = {
-					onNavigate(
-						item.route,
-						NavOptions.Builder().apply {
-							setPopUpTo(Routes.Home.route, inclusive = false, saveState = true)
-							setLaunchSingleTop(true)
-							setRestoreState(true)
-						}.build()
-					)
+					onRouteClick(route)
 				},
 				icon = {
-					if (item == TopLevelRoutes.WISHLIST){
+					if (route == TopLevelRoutes.WISHLIST){
 						IconWithBadge(
 							badge = wishlistBadgeCount,
-							icon = if (isActive) item.iconActiveId  else item.iconId,
+							icon = if (selected) route.iconActiveId  else route.iconId,
 							modifier = Modifier,
 							tint = MaterialTheme.colorScheme.primary
 						)
 					}else{
 						Icon(
-							painter = painterResource(id = if (isActive) item.iconActiveId  else item.iconId),
-							contentDescription = stringResource( item.textId),
+							painter = painterResource(id = if (selected) route.iconActiveId  else route.iconId),
+							contentDescription = stringResource( route.textId),
 							tint = MaterialTheme.colorScheme.primary
 						)
 					}
 				},
 				label = {
 					Text(
-						text = stringResource(item.textId),
-						fontWeight = if(isActive) FontWeight.Bold else FontWeight.Normal
+						text = stringResource(route.textId),
+						fontWeight = if(selected) FontWeight.Bold else FontWeight.Normal
 					)
 				}
 			)
@@ -74,6 +66,11 @@ fun DeniseShopNavigationBar(
 @Composable
 private fun DeniseShopNavigationBarPreview(){
 	DeniseShopTheme {
-		DeniseShopNavigationBar(onNavigate = {_,_-> }, currentRoute = "", wishlistBadgeCount = 8)
+		DeniseShopNavigationBar(
+			topLevelRoutes = TopLevelRoutes.entries,
+			onRouteClick = { },
+			currentRoute = TopLevelRoutes.HOME,
+			wishlistBadgeCount = 8
+		)
 	}
 }

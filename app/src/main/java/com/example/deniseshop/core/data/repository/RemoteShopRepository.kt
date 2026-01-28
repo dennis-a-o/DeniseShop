@@ -49,6 +49,8 @@ import com.example.deniseshop.core.domain.model.ProductFilterParams
 import com.example.deniseshop.core.domain.model.Result
 import com.example.deniseshop.core.domain.model.ReviewStat
 import com.example.deniseshop.core.domain.model.Wishlist
+import com.example.deniseshop.core.domain.model.onError
+import com.example.deniseshop.core.domain.model.onSuccess
 import com.example.deniseshop.core.domain.repository.ShopRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -86,11 +88,23 @@ class RemoteShopRepository @Inject constructor(
 	}
 
 	override suspend fun addToWishlist(productId: Long): Result<Unit, DataError.Remote> {
-		return remoteDeniseShopDataSource.addToWishlist(productId)
+		return when(val res = remoteDeniseShopDataSource.addToWishlist(productId)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success-> {
+				settingDataSource.saveWishlistItemId(productId)
+				Result.Success(Unit)
+			}
+		}
 	}
 
 	override suspend fun removeFromWishlist(id: Long): Result<Unit, DataError.Remote> {
-		return remoteDeniseShopDataSource.removeFromWishlist(id)
+		return when(val res = remoteDeniseShopDataSource.removeFromWishlist(id)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success-> {
+				settingDataSource.deleteWishlistItem(id)
+				Result.Success(Unit)
+			}
+		}
 	}
 
 	override fun getProducts(filterParams: ProductFilterParams): ProductsPagingSource {
@@ -184,15 +198,33 @@ class RemoteShopRepository @Inject constructor(
 	}
 
 	override suspend fun addToCart(productData: ProductData): Result<Unit, DataError.Remote> {
-		return remoteDeniseShopDataSource.addToCart(productData)
+		return when(val res = remoteDeniseShopDataSource.addToCart(productData)){
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success-> {
+			settingDataSource.saveCartItemId(productData.productId)
+			Result.Success(Unit)
+		}
+		}
 	}
 
 	override suspend fun removeFromCart(productId: Long): Result<Unit, DataError.Remote> {
-		return remoteDeniseShopDataSource.removeFromCart(productId)
+		return when(val res = remoteDeniseShopDataSource.removeFromCart(productId)) {
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success-> {
+				settingDataSource.deleteCartItem(productId)
+				Result.Success(Unit)
+			}
+		}
 	}
 
 	override suspend fun clearCart(): Result<Unit, DataError.Remote> {
-		return remoteDeniseShopDataSource.clearCart()
+		return when(val res = remoteDeniseShopDataSource.clearCart()){
+			is Result.Error -> Result.Error(res.error)
+			is Result.Success-> {
+				settingDataSource.clearCart()
+				Result.Success(Unit)
+			}
+		}
 	}
 
 	override suspend fun increaseCartItemQuantity(productId: Long): Result<Unit, DataError.Remote> {
@@ -280,7 +312,10 @@ class RemoteShopRepository @Inject constructor(
 	override suspend fun placeOrder(): Result<String, DataError.Remote> {
 		return when(val res = remoteDeniseShopDataSource.placeOrder()) {
 			is Result.Error -> Result.Error(res.error)
-			is Result.Success -> Result.Success(res.data.message)
+			is Result.Success ->{
+				settingDataSource.clearCart()
+				Result.Success(res.data.message)
+			}
 		}
 	}
 
@@ -302,7 +337,12 @@ class RemoteShopRepository @Inject constructor(
 			)
 		) {
 			is Result.Error -> Result.Error(res.error)
-			is Result.Success -> Result.Success(res.data.message)
+			is Result.Success ->{
+				//clear local cart
+				settingDataSource.clearCart()
+
+				Result.Success(res.data.message)
+			}
 		}
 	}
 
@@ -470,6 +510,28 @@ class RemoteShopRepository @Inject constructor(
 		return when(val res = remoteDeniseShopDataSource.getPage(page)) {
 			is Result.Error -> Result.Error(res.error)
 			is Result.Success -> Result.Success(res.data.toPage())
+		}
+	}
+
+	override suspend fun syncWishlistItems() {
+		withContext(Dispatchers.IO){
+			try {
+				val items = remoteDeniseShopDataSource.getWishlists(1,20)
+					.map { it.productId }
+
+				settingDataSource.saveWishlistItems(items)
+			}catch (e: Exception){ }
+		}
+	}
+
+	override suspend fun syncCartItems() {
+		withContext(Dispatchers.IO){
+			remoteDeniseShopDataSource.getCart()
+				.onSuccess { cart ->
+					val items = cart.cartItems.map { it.productId }
+					settingDataSource.saveCartItems(items)
+				}
+				.onError {  }
 		}
 	}
 }

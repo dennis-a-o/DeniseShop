@@ -8,13 +8,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.example.deniseshop.R
+import com.example.deniseshop.app.ui.DeniseShopState
 import com.example.deniseshop.feature.addeditaddress.AddEditAddressScreen
 import com.example.deniseshop.feature.addeditaddress.AddEditAddressViewModel
 import com.example.deniseshop.feature.addresses.AddressesScreen
@@ -57,10 +57,12 @@ import com.example.deniseshop.feature.wishlists.WishlistsScreen
 
 @Composable
 fun NavGraph(
-	navController: NavHostController,
+	appState: DeniseShopState,
 	onShowSnackBar: suspend (String, String?) -> Boolean,
 	modifier: Modifier = Modifier
 ){
+	val navController = appState.navController
+
 	var showEditProfileBottomSheet by remember { mutableStateOf(false) }
 	var showChangePasswordBottomSheet by remember { mutableStateOf(false) }
 	var showChangeThemeBottomSheet by remember { mutableStateOf(false) }

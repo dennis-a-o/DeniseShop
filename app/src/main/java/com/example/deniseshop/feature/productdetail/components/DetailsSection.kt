@@ -32,7 +32,7 @@ import com.example.deniseshop.R
 import com.example.deniseshop.core.domain.model.Product
 import com.example.deniseshop.core.presentation.components.RatingStar
 import com.example.deniseshop.feature.productdetail.ProductDetailEvent
-import com.example.deniseshop.ui.theme.Orange100
+import com.example.deniseshop.core.presentation.theme.Orange100
 import java.util.Locale
 
 @Composable

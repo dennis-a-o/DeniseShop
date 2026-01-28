@@ -25,9 +25,9 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.deniseshop.R
-import com.example.deniseshop.ui.components.ButtonWithProgressIndicator
-import com.example.deniseshop.ui.components.DeniseShopTextField
-import com.example.deniseshop.ui.components.RatingStar
+import com.example.deniseshop.core.presentation.components.ButtonWithProgressIndicator
+import com.example.deniseshop.core.presentation.components.DeniseShopTextField
+import com.example.deniseshop.core.presentation.components.RatingStar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

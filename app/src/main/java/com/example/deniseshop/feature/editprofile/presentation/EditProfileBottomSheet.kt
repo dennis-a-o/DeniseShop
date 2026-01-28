@@ -50,8 +50,8 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.deniseshop.R
-import com.example.deniseshop.ui.components.ButtonWithProgressIndicator
-import com.example.deniseshop.ui.components.DeniseShopTextField
+import com.example.deniseshop.core.presentation.components.ButtonWithProgressIndicator
+import com.example.deniseshop.core.presentation.components.DeniseShopTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

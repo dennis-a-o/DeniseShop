@@ -8,7 +8,6 @@ import com.example.deniseshop.core.data.network.AUTH_HEADER
 import com.example.deniseshop.core.data.network.BASE_URL
 import com.example.deniseshop.core.data.network.REFRESH_TOKEN
 import com.example.deniseshop.core.data.network.TOKEN_TYPE
-import com.example.deniseshop.data.api.ApiParameters
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -38,7 +37,7 @@ class AuthenticationInterceptor @Inject constructor(
 		}
 
 		val authenticatedRequest = chain.request().newBuilder()
-			.header(ApiParameters.AUTH_HEADER, ApiParameters.TOKEN_TYPE + accessToken)
+			.header(AUTH_HEADER, TOKEN_TYPE + accessToken)
 			.build()
 
 		val authenticatedResponse = chain.proceed(authenticatedRequest)
@@ -57,7 +56,7 @@ class AuthenticationInterceptor @Inject constructor(
 
 				//Proceed with original request with updated token
 				val newRequest = originalRequest.newBuilder()
-					.header(ApiParameters.AUTH_HEADER, ApiParameters.TOKEN_TYPE + newToken.accessToken)
+					.header(AUTH_HEADER, TOKEN_TYPE + newToken.accessToken)
 					.build()
 
 				return chain.proceed(newRequest)

@@ -82,4 +82,6 @@ interface ShopRepository {
 	fun getCoupons(): CouponsPagingSource
 	suspend fun getContact(): Result<List<Contact>, DataError.Remote>
 	suspend fun getPage(page: PageType): Result<Page, DataError.Remote>
+	suspend fun syncWishlistItems()
+	suspend fun syncCartItems()
 }

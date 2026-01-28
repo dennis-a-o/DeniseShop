@@ -2,12 +2,9 @@ package com.example.deniseshop.feature.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,6 +27,7 @@ import com.example.deniseshop.R
 import com.example.deniseshop.core.domain.model.Home
 import com.example.deniseshop.core.presentation.ScreenState
 import com.example.deniseshop.core.presentation.components.ErrorUi
+import com.example.deniseshop.core.presentation.components.IconWithBadge
 import com.example.deniseshop.feature.home.components.BrandSection
 import com.example.deniseshop.feature.home.components.CategorySection
 import com.example.deniseshop.feature.home.components.FeaturedSection
@@ -38,7 +36,6 @@ import com.example.deniseshop.feature.home.components.NewArrivalSection
 import com.example.deniseshop.feature.home.components.RecentViewedSection
 import com.example.deniseshop.feature.home.components.SectionSlider
 import com.example.deniseshop.navigation.Routes
-import com.example.deniseshop.ui.components.IconWithBadge
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

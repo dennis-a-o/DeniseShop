@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.example.deniseshop.R
 import com.example.deniseshop.core.domain.model.Checkout
 import com.example.deniseshop.core.domain.model.PaymentMethod
+import com.example.deniseshop.core.presentation.components.ButtonWithProgressIndicator
 import com.example.deniseshop.core.presentation.components.ErrorUi
 import com.example.deniseshop.core.presentation.components.LoadingUi
 import com.example.deniseshop.feature.checkout.components.AddressSection
@@ -45,7 +46,6 @@ import com.example.deniseshop.feature.checkout.components.CheckoutItem
 import com.example.deniseshop.feature.checkout.components.CheckoutSuccessDialog
 import com.example.deniseshop.feature.checkout.components.CheckoutSummarySection
 import com.example.deniseshop.feature.checkout.components.PaymentMethodSection
-import com.example.deniseshop.ui.components.ButtonWithProgressIndicator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

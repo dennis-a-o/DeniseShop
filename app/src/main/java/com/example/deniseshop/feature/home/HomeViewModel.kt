@@ -3,6 +3,7 @@ package com.example.deniseshop.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.deniseshop.core.domain.model.Home
+import com.example.deniseshop.core.domain.model.ProductData
 import com.example.deniseshop.core.domain.model.onError
 import com.example.deniseshop.core.domain.model.onSuccess
 import com.example.deniseshop.core.domain.repository.ShopRepository
@@ -49,11 +50,27 @@ class HomeViewModel @Inject constructor(
 	}
 
 	fun onCartToggle(productId: Long){
-
+		viewModelScope.launch {
+			if (productId in cartItems.value){
+				shopRepository.removeFromCart(productId)
+			}else{
+				shopRepository.addToCart(
+					ProductData(
+						productId = productId
+					)
+				)
+			}
+		}
 	}
 
 	fun onWishlistToggle(productId: Long){
-
+		viewModelScope.launch {
+			if (productId in wishlistItems.value){
+				shopRepository.removeFromWishlist(productId)
+			}else{
+				shopRepository.addToWishlist(productId)
+			}
+		}
 	}
 
 	private fun getHome(){
