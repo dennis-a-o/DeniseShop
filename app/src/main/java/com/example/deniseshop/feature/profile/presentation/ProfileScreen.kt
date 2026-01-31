@@ -27,16 +27,13 @@ import com.example.deniseshop.core.domain.model.PageType
 import com.example.deniseshop.feature.profile.presentation.components.DeleteAccountDialog
 import com.example.deniseshop.feature.profile.presentation.components.ProfileItem
 import com.example.deniseshop.feature.profile.presentation.components.ProfileUser
-import com.example.deniseshop.navigation.Routes
+import com.example.deniseshop.navigation.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
 	viewModel: ProfileViewModel = hiltViewModel(),
-	onNavigate: (String) -> Unit,
-	onShowEditAccountBottomSheet: () -> Unit,
-	onShowChangePasswordBottomSheet: () -> Unit,
-	onShowThemeBottomSheet: () -> Unit,
+	onNavigate: (Route) -> Unit,
 	onShowSnackBar: suspend (String, String?) -> Boolean
 ) {
 	val state by viewModel.state.collectAsState()
@@ -79,9 +76,6 @@ fun ProfileScreen(
 		ProfileScreen(
 			state = state,
 			onNavigate = onNavigate,
-			onEditProfileClick = onShowEditAccountBottomSheet,
-			onChangePasswordClick = onShowChangePasswordBottomSheet,
-			onChangeThemeClick = onShowThemeBottomSheet,
 			onDeleteProfileClick = {
 				showDeleteDialog = true
 			},
@@ -95,10 +89,7 @@ fun ProfileScreen(
 @Composable
 private fun ProfileScreen(
 	state: ProfileState,
-	onNavigate: (String) -> Unit,
-	onEditProfileClick: () -> Unit,
-	onChangePasswordClick: () -> Unit,
-	onChangeThemeClick: () -> Unit,
+	onNavigate: (Route) -> Unit,
 	onDeleteProfileClick: () -> Unit,
 	onEvent: (ProfileEvent) -> Unit,
 	modifier: Modifier = Modifier
@@ -117,8 +108,8 @@ private fun ProfileScreen(
 		) {
 			ProfileUser(
 				state = state,
-				onEdit = onEditProfileClick,
-				onSignIn = { onNavigate(Routes.SignInScreen.route) }
+				onEdit = { onNavigate(Route.EditProfile) },
+				onSignIn = { onNavigate(Route.SignIn) }
 			)
 			Spacer(Modifier.height(8.dp))
 			if (state.user != null){
@@ -126,7 +117,7 @@ private fun ProfileScreen(
 					name = stringResource(R.string.orders),
 					iconResourceId = R.drawable.ic_inventory,
 					onClick = {
-						onNavigate(Routes.Orders.route)
+						onNavigate(Route.Orders)
 					}
 				)
 				Spacer(Modifier.height(8.dp))
@@ -134,7 +125,7 @@ private fun ProfileScreen(
 					name = stringResource(R.string.myAddress),
 					iconResourceId = R.drawable.ic_person_pin_circle,
 					onClick = {
-						onNavigate(Routes.AllAddress.route)
+						onNavigate(Route.Addresses)
 					}
 				)
 				Spacer(Modifier.height(8.dp))
@@ -142,7 +133,7 @@ private fun ProfileScreen(
 					name = stringResource(R.string.promoCodes),
 					iconResourceId = R.drawable.ic_discount,
 					onClick = {
-						onNavigate(Routes.PromoCodes.route)
+						onNavigate(Route.Coupons)
 					}
 				)
 				Spacer(Modifier.height(8.dp))
@@ -150,14 +141,14 @@ private fun ProfileScreen(
 					name = stringResource(R.string.recentViewed),
 					iconResourceId = R.drawable.ic_timeline,
 					onClick = {
-						onNavigate(Routes.RecentlyViewed.route)
+						onNavigate(Route.RecentViewed)
 					}
 				)
 				Spacer(Modifier.height(8.dp))
 				ProfileItem(
 					name = stringResource(R.string.changePassword),
 					iconResourceId = R.drawable.ic_password,
-					onClick = onChangePasswordClick
+					onClick = { onNavigate(Route.ChangePassword) }
 				)
 				Spacer(Modifier.height(8.dp))
 			}
@@ -165,14 +156,14 @@ private fun ProfileScreen(
 			ProfileItem(
 				name = stringResource(R.string.changeTheme),
 				iconResourceId = R.drawable.ic_style,
-				onClick = onChangeThemeClick
+				onClick = { onNavigate(Route.ChangeTheme) }
 			)
 			Spacer(Modifier.height(8.dp))
 			ProfileItem(
 				name = stringResource(R.string.aboutus),
 				iconResourceId = R.drawable.ic_info,
 				onClick = {
-					onNavigate("${Routes.PageScreen.route}/${PageType.ABOUT_US}")
+					onNavigate(Route.Page(PageType.ABOUT_US))
 				}
 			)
 			Spacer(Modifier.height(8.dp))
@@ -180,7 +171,7 @@ private fun ProfileScreen(
 				name = stringResource(R.string.contactUs),
 				iconResourceId = R.drawable.ic_contact_support,
 				onClick = {
-					onNavigate(Routes.ContactScreen.route)
+					onNavigate(Route.Contact)
 				}
 			)
 			Spacer(Modifier.height(8.dp))
@@ -188,7 +179,7 @@ private fun ProfileScreen(
 				name = stringResource(R.string.faqs),
 				iconResourceId = R.drawable.ic_question_answer,
 				onClick = {
-					onNavigate(Routes.FaqsScreen.route)
+					onNavigate(Route.Faqs)
 				}
 			)
 			Spacer(Modifier.height(8.dp))
@@ -196,7 +187,7 @@ private fun ProfileScreen(
 				name = stringResource(R.string.privacyPolicy),
 				iconResourceId = R.drawable.ic_privacy_tip,
 				onClick = {
-					onNavigate("${Routes.PageScreen.route}/${PageType.PRIVACY_POLICY}")
+					onNavigate(Route.Page(PageType.PRIVACY_POLICY))
 				}
 			)
 			Spacer(Modifier.height(8.dp))
@@ -204,7 +195,7 @@ private fun ProfileScreen(
 				name = stringResource(R.string.termsAndConditons),
 				iconResourceId = R.drawable.ic_policy,
 				onClick = {
-					onNavigate("${Routes.PageScreen.route}/${PageType.TERMS_CONDITIONS}")
+					onNavigate(Route.Page(PageType.TERMS_CONDITIONS))
 				}
 			)
 			Spacer(Modifier.height(8.dp))
@@ -212,7 +203,7 @@ private fun ProfileScreen(
 				name = stringResource(R.string.shippingPolicy),
 				iconResourceId = R.drawable.ic_local_shipping,
 				onClick = {
-					onNavigate("${Routes.PageScreen.route}/${PageType.SHIPPING_POLICY}")
+					onNavigate(Route.Page(PageType.SHIPPING_POLICY))
 				}
 			)
 			Spacer(Modifier.height(8.dp))

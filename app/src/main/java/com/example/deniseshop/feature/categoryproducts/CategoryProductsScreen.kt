@@ -43,14 +43,14 @@ import com.example.deniseshop.core.presentation.components.ProductFilterBottomSh
 import com.example.deniseshop.core.presentation.components.ProductSortOptionBottomSheet
 import com.example.deniseshop.feature.categoryproducts.components.BrandsSection
 import com.example.deniseshop.feature.categoryproducts.components.CategoriesSection
-import com.example.deniseshop.navigation.Routes
+import com.example.deniseshop.navigation.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryProductsScreen(
 	viewModel: CategoryProductsViewModel,
 	onBackClick: () -> Unit,
-	onNavigate: (String) -> Unit,
+	onNavigate: (Route) -> Unit,
 ) {
 	val productItems = viewModel.categoryProductsPagingSource.collectAsLazyPagingItems()
 
@@ -114,7 +114,7 @@ fun CategoryProductsScreen(
 			},
 			actions = {
 				IconButton(
-					onClick = { onNavigate(Routes.Search.route) }
+					onClick = { onNavigate(Route.Search) }
 				) {
 					Icon(
 						painter = painterResource(id = R.drawable.ic_search),
@@ -122,7 +122,7 @@ fun CategoryProductsScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Cart.route) }
+					onClick = { onNavigate(Route.Cart) }
 				) {
 					IconWithBadge(
 						badge = cartItems.size,
@@ -131,7 +131,7 @@ fun CategoryProductsScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Wishlist.route) }
+					onClick = { onNavigate(Route.Wishlists) }
 				) {
 					IconWithBadge(
 						badge = wishlistItems.size,
@@ -198,7 +198,7 @@ fun CategoryProductsScreen(
 									CategoriesSection(
 										categories = categories,
 										onCategoryClick = { id ->
-											onNavigate("${Routes.CategoryProductScreen.route}/$id")
+											onNavigate(Route.CategoryProducts(id))
 										}
 									)
 								}
@@ -209,7 +209,7 @@ fun CategoryProductsScreen(
 									BrandsSection(
 										brands = brands,
 										onBrandClick = { id ->
-											onNavigate("${Routes.BrandProductScreen.route}/$id/0")
+											onNavigate(Route.BrandProducts(id,0))
 										}
 									)
 								}
@@ -223,7 +223,7 @@ fun CategoryProductsScreen(
 											inWishlist = it.id in wishlistItems,
 											inCart = it.id in cartItems,
 											onClick = { productId ->
-												onNavigate("${Routes.ProductDetail.route}/$productId")
+												onNavigate(Route.ProductDetail(productId))
 											},
 											onCartToggle = { id ->
 												viewModel.onCartToggle(id)
@@ -238,7 +238,7 @@ fun CategoryProductsScreen(
 											inWishlist = it.id in wishlistItems,
 											inCart = it.id in cartItems,
 											onClick = { productId ->
-												onNavigate("${Routes.ProductDetail.route}/$productId")
+												onNavigate(Route.ProductDetail(productId))
 											},
 											onCartToggle = { id ->
 												viewModel.onCartToggle(id)

@@ -1,6 +1,5 @@
 package com.example.deniseshop.feature.productdetail
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.deniseshop.core.domain.model.ProductData
@@ -11,6 +10,10 @@ import com.example.deniseshop.core.domain.repository.ShopRepository
 import com.example.deniseshop.core.domain.repository.UserSettingRepository
 import com.example.deniseshop.core.presentation.ScreenState
 import com.example.deniseshop.core.presentation.toUiText
+import com.example.deniseshop.navigation.Route
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,15 +21,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ProductDetailViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = ProductDetailViewModel.Factory::class)
+class ProductDetailViewModel @AssistedInject constructor(
 	private val shopRepository: ShopRepository,
 	private val settingRepository: UserSettingRepository,
-	savedStateHandle: SavedStateHandle,
+	@Assisted val navKey: Route.ProductDetail
 ): ViewModel() {
-	private val productId = savedStateHandle["productId"] ?: 0L
+	private val productId = navKey.id
 
 	private val _state = MutableStateFlow<ScreenState<ProductDetail>>(ScreenState.Loading)
 	private val _specState = MutableStateFlow(ProductDetailSpecState())
@@ -149,5 +151,10 @@ class ProductDetailViewModel @Inject constructor(
 				.onSuccess {  }
 				.onError {  }
 		}
+	}
+
+	@AssistedFactory
+	interface Factory {
+		fun create(navKey: Route.ProductDetail): ProductDetailViewModel
 	}
 }

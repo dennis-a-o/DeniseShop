@@ -1,6 +1,5 @@
 package com.example.deniseshop.feature.orderdetail
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.deniseshop.core.domain.model.onError
@@ -8,19 +7,22 @@ import com.example.deniseshop.core.domain.model.onSuccess
 import com.example.deniseshop.core.domain.repository.ShopRepository
 import com.example.deniseshop.core.presentation.UiText
 import com.example.deniseshop.core.presentation.toUiText
+import com.example.deniseshop.navigation.Route
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class OrderDetailViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = OrderDetailViewModel.Factory::class)
+class OrderDetailViewModel @AssistedInject constructor(
 	private val shopRepository: ShopRepository,
-	savedStateHandle: SavedStateHandle,
+	@Assisted val navKey: Route.OrderDetail
 ): ViewModel() {
-	private val orderId = savedStateHandle["orderId"] ?: 0L
+	private val orderId = navKey.id
 	private val _state = MutableStateFlow(OrderDetailState())
 
 	val state = _state.asStateFlow()
@@ -144,5 +146,10 @@ class OrderDetailViewModel @Inject constructor(
 					}
 				}
 		}
+	}
+
+	@AssistedFactory
+	interface Factory {
+		fun create(navKey: Route.OrderDetail): OrderDetailViewModel
 	}
 }

@@ -28,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -42,15 +41,15 @@ import com.example.deniseshop.core.presentation.components.LoadingUi
 import com.example.deniseshop.core.presentation.components.ProductConfigBar
 import com.example.deniseshop.core.presentation.components.ProductFilterBottomSheet
 import com.example.deniseshop.core.presentation.components.ProductSortOptionBottomSheet
-import com.example.deniseshop.navigation.Routes
+import com.example.deniseshop.navigation.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductsScreen(
 	viewModel: ProductsViewModel = hiltViewModel(),
-	title: String = stringResource(R.string.products),
+	title: String,
 	onBackClick: () -> Unit,
-	onNavigate: (String) -> Unit,
+	onNavigate: (Route) -> Unit,
 ) {
 	val productItems = viewModel.productPagingSource.collectAsLazyPagingItems()
 
@@ -109,7 +108,7 @@ fun ProductsScreen(
 			},
 			actions = {
 				IconButton(
-					onClick = { onNavigate(Routes.Search.route) }
+					onClick = { onNavigate(Route.Search) }
 				) {
 					Icon(
 						painter = painterResource(id = R.drawable.ic_search),
@@ -117,7 +116,7 @@ fun ProductsScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Cart.route) }
+					onClick = { onNavigate(Route.Cart) }
 				) {
 					IconWithBadge(
 						badge = cartItems.size,
@@ -126,7 +125,7 @@ fun ProductsScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Wishlist.route) }
+					onClick = { onNavigate(Route.Wishlists) }
 				) {
 					IconWithBadge(
 						badge = wishlistItems.size,
@@ -196,7 +195,7 @@ fun ProductsScreen(
 											inWishlist = it.id in wishlistItems,
 											inCart = it.id in cartItems,
 											onClick = { productId ->
-												onNavigate("${Routes.ProductDetail.route}/$productId")
+												onNavigate(Route.ProductDetail(productId))
 											},
 											onCartToggle = { id ->
 												viewModel.onProductsEvent(ProductsEvent.CartToggle(id))
@@ -211,7 +210,7 @@ fun ProductsScreen(
 											inWishlist = it.id in wishlistItems,
 											inCart = it.id in cartItems,
 											onClick = { productId ->
-												onNavigate("${Routes.ProductDetail.route}/$productId")
+												onNavigate(Route.ProductDetail(productId))
 											},
 											onCartToggle = { id ->
 												viewModel.onProductsEvent(ProductsEvent.CartToggle(id))

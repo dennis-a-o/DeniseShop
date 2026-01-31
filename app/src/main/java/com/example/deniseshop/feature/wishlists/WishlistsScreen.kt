@@ -50,7 +50,7 @@ import com.example.deniseshop.core.domain.model.Wishlist
 import com.example.deniseshop.core.presentation.components.ErrorUi
 import com.example.deniseshop.core.presentation.components.IconWithBadge
 import com.example.deniseshop.core.presentation.components.LoadingUi
-import com.example.deniseshop.navigation.Routes
+import com.example.deniseshop.navigation.Route
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -58,7 +58,7 @@ import java.util.Locale
 @Composable
 fun WishlistsScreen(
 	viewModel: WishlistsViewModel = hiltViewModel(),
-	onNavigate: (String) -> Unit,
+	onNavigate: (Route) -> Unit,
 	onShowSnackBar: suspend (String, String?) -> Boolean
 ) {
 	val wishlistItems = viewModel.wishlistPagingSource.collectAsLazyPagingItems()
@@ -75,7 +75,7 @@ fun WishlistsScreen(
 			modifier = Modifier.shadow(elevation = 1.dp),
 			actions = {
 				IconButton(
-					onClick = { onNavigate(Routes.Search.route) }
+					onClick = { onNavigate(Route.Search) }
 				) {
 					Icon(
 						painter = painterResource(id = R.drawable.ic_search),
@@ -83,7 +83,7 @@ fun WishlistsScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Cart.route) }
+					onClick = { onNavigate(Route.Cart) }
 				) {
 					IconWithBadge(
 						badge = cartItems.value.size,
@@ -126,11 +126,9 @@ fun WishlistsScreen(
 								WishlistItem(
 									wishlist = it,
 									onClick = { productId ->
-										onNavigate("${Routes.ProductDetail.route}/$productId")
+										onNavigate(Route.ProductDetail(productId))
 									},
-									onCartClick = { id ->
-										//TODO
-									},
+									onCartClick = {},
 									onRemoveClick = { id ->
 										viewModel.removeWishlist(
 											id = id,

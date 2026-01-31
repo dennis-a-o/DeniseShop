@@ -20,13 +20,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -53,11 +50,9 @@ import com.example.deniseshop.R
 import com.example.deniseshop.core.presentation.components.ButtonWithProgressIndicator
 import com.example.deniseshop.core.presentation.components.DeniseShopTextField
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditProfileBottomSheet(
+fun EditProfileScreen(
 	viewModel: EditProfileViewModel = hiltViewModel(),
-	onDismiss: () -> Unit,
 	onShowSnackBar:  suspend (String, String?) -> Boolean
 ) {
 	val state by viewModel.state.collectAsState()
@@ -91,35 +86,30 @@ fun EditProfileBottomSheet(
 		state.error!!.asString()
 	} else null
 
-	ModalBottomSheet(
-		onDismissRequest = onDismiss,
-		sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+	Column(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(horizontal = 16.dp),
 	) {
-		Column(
-			modifier = Modifier
-				.fillMaxWidth()
-				.padding(horizontal = 16.dp),
+		Row(
+			modifier = Modifier.fillMaxWidth(),
+			horizontalArrangement = Arrangement.Center
 		) {
-			Row(
-				modifier = Modifier.fillMaxWidth(),
-				horizontalArrangement = Arrangement.Center
-			) {
-				Text(
-					text = stringResource(R.string.edit_profile),
-					style = MaterialTheme.typography.titleLarge
-				)
-			}
-			Spacer(Modifier.height(32.dp))
-			EditProfileForm(
-				state = state,
-				onEvent = {
-					viewModel.onEvent(it)
-				},
-				onSelectImage = {
-					galleryLauncher.launch("image/*")
-				}
+			Text(
+				text = stringResource(R.string.edit_profile),
+				style = MaterialTheme.typography.titleLarge
 			)
 		}
+		Spacer(Modifier.height(16.dp))
+		EditProfileForm(
+			state = state,
+			onEvent = {
+				viewModel.onEvent(it)
+			},
+			onSelectImage = {
+				galleryLauncher.launch("image/*")
+			}
+		)
 	}
 }
 

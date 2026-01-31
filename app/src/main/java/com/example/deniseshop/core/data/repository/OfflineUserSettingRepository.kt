@@ -2,6 +2,7 @@ package com.example.deniseshop.core.data.repository
 
 import com.example.deniseshop.core.data.datastore.SettingDataSource
 import com.example.deniseshop.core.domain.model.ThemeMode
+import com.example.deniseshop.core.domain.model.User
 import com.example.deniseshop.core.domain.repository.UserSettingRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -43,6 +44,10 @@ class OfflineUserSettingRepository @Inject constructor(
 
 	override suspend fun removeSearchQuery(query: String) {
 		settingDataSource.deleteSearchQuery(query)
+	}
+
+	override fun getUser(): Flow<User?> {
+		return settingDataSource.getUser()
 	}
 
 }

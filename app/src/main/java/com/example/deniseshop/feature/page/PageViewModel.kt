@@ -1,6 +1,5 @@
 package com.example.deniseshop.feature.page
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.deniseshop.core.domain.model.Page
@@ -10,36 +9,31 @@ import com.example.deniseshop.core.domain.model.onSuccess
 import com.example.deniseshop.core.domain.repository.ShopRepository
 import com.example.deniseshop.core.presentation.ScreenState
 import com.example.deniseshop.core.presentation.toUiText
+import com.example.deniseshop.navigation.Route
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class PageViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = PageViewModel.Factory::class)
+class PageViewModel @AssistedInject constructor(
 	private val shopRepository: ShopRepository,
-	savedStateHandle: SavedStateHandle,
+	@Assisted val navKey: Route.Page
 ): ViewModel() {
-	private val page: PageType? = try {
-		PageType.valueOf(savedStateHandle["page"] ?: "")
-	}catch (e: Exception){
-		null
-	}
+	private val page: PageType = navKey.pageType
 	private val _state = MutableStateFlow<ScreenState<Page>>(ScreenState.Loading)
 
 	val state = _state.asStateFlow()
 
 	init {
-		page?.let {
-			getPage(it)
-		}
+		getPage(page)
 	}
 
 	fun onRefresh(){
-		page?.let {
-			getPage(it)
-		}
+		getPage(page)
 	}
 
 	private fun  getPage(page: PageType){
@@ -54,5 +48,10 @@ class PageViewModel @Inject constructor(
 						_state.value = ScreenState.Error(it.toUiText())
 					}
 		}
+	}
+
+	@AssistedFactory
+	interface Factory {
+		fun create(navKey: Route.Page): PageViewModel
 	}
 }

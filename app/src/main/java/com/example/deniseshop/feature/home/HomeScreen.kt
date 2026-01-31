@@ -35,13 +35,13 @@ import com.example.deniseshop.feature.home.components.FlashSaleSection
 import com.example.deniseshop.feature.home.components.NewArrivalSection
 import com.example.deniseshop.feature.home.components.RecentViewedSection
 import com.example.deniseshop.feature.home.components.SectionSlider
-import com.example.deniseshop.navigation.Routes
+import com.example.deniseshop.navigation.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
 	viewModel: HomeViewModel = hiltViewModel(),
-	onNavigate: (String) -> Unit
+	onNavigate: (Route) -> Unit
 ) {
 	val state =  viewModel.state.collectAsState()
 	val wishlistItems = viewModel.wishlistItems.collectAsState()
@@ -62,7 +62,7 @@ fun HomeScreen(
 			actions = {
 				IconButton(
 					onClick = {
-						onNavigate(Routes.Search.route)
+						onNavigate(Route.Search)
 					}
 				) {
 					Icon(
@@ -72,7 +72,7 @@ fun HomeScreen(
 				}
 				IconButton(
 					onClick = {
-						onNavigate(Routes.Cart.route)
+						onNavigate(Route.Cart)
 					}
 				) {
 					IconWithBadge(
@@ -131,7 +131,7 @@ private fun HomeScreen(
 	cartItems: List<Long>,
 	onCartToggle: (Long) -> Unit,
 	onWishlistToggle: (Long) -> Unit,
-	onNavigate: (String) -> Unit,
+	onNavigate: (Route) -> Unit,
 	modifier: Modifier = Modifier
 ){
 	LazyColumn (
@@ -144,15 +144,15 @@ private fun HomeScreen(
 					onClick = { slider ->
 						when (slider.type) {
 							"category" -> {
-								onNavigate("${Routes.CategoryProductScreen.route}/${slider.typeId}")
+								onNavigate(Route.CategoryProducts(slider.typeId))
 							}
 
 							"brand" -> {
-								onNavigate("${Routes.BrandProductScreen.route}/${slider.typeId}/0")
+								onNavigate(Route.BrandProducts(slider.typeId, 0))
 							}
 
 							else -> {
-								onNavigate("${Routes.ProductScreen.route}/Products")
+								onNavigate(Route.Products())
 							}
 						}
 					}
@@ -165,7 +165,7 @@ private fun HomeScreen(
 				CategorySection(
 					categories = home.categories,
 					onClick = {
-						onNavigate("${Routes.CategoryProductScreen.route}/$it")
+						onNavigate(Route.CategoryProducts(it))
 					}
 				)
 			}
@@ -178,10 +178,10 @@ private fun HomeScreen(
 					wishlistItems = wishlistItems,
 					cartItems = cartItems,
 					onSeeAllClick = { id ->
-						onNavigate("${Routes.FlashSaleScreen.route}/$id")
+						onNavigate(Route.FlashSale(id))
 					},
 					onProductClick = { id ->
-						onNavigate("${Routes.ProductDetail.route}/$id")
+						onNavigate(Route.ProductDetail(id))
 					},
 					onCartToggle = onCartToggle,
 					onWishlistToggle = onWishlistToggle
@@ -195,10 +195,10 @@ private fun HomeScreen(
 					wishlistItems = wishlistItems,
 					cartItems = cartItems,
 					onProductClick = { id ->
-						onNavigate("${Routes.ProductDetail.route}/$id")
-					},
+						onNavigate(Route.ProductDetail(id))
+											},
 					onClickSeeAll = {
-						onNavigate( "${Routes.ProductScreen.route}/Featured")
+						onNavigate(Route.Products("Featured"))
 					},
 					onCartToggle = onCartToggle,
 					onWishlistToggle = onWishlistToggle
@@ -210,10 +210,10 @@ private fun HomeScreen(
 				BrandSection(
 					brands = home.brands,
 					onClickSeeAll = {
-						onNavigate(Routes.BrandScreen.route)
+						onNavigate(Route.Brands)
 					},
 					onBrandClick = {
-						onNavigate("${Routes.BrandProductScreen.route}/$it/0")
+						onNavigate(Route.BrandProducts(it,0))
 					}
 				)
 			}
@@ -225,10 +225,10 @@ private fun HomeScreen(
 					wishlistItems = wishlistItems,
 					cartItems = cartItems,
 					onProductClick = {
-						onNavigate("${Routes.ProductDetail.route}/$it")
+						onNavigate(Route.ProductDetail(it))
 					},
 					onClickSeeAll = {
-						onNavigate(Routes.RecentlyViewed.route)
+						onNavigate(Route.RecentViewed)
 					},
 					onCartToggle = onCartToggle,
 					onWishlistToggle = onWishlistToggle
@@ -242,10 +242,10 @@ private fun HomeScreen(
 					wishlistItems = wishlistItems,
 					cartItems = cartItems,
 					onProductClick = {
-						onNavigate("${Routes.ProductDetail.route}/$it")
+						onNavigate(Route.ProductDetail(it))
 					},
 					onSeeAllClick = {
-						onNavigate("${Routes.ProductScreen.route}/New arrivals")
+						onNavigate(Route.Products("New arrivals"))
 					},
 					onWishlistToggle = onWishlistToggle,
 					onCartToggle = onCartToggle

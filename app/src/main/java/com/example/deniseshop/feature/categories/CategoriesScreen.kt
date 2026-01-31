@@ -5,14 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -30,7 +27,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,13 +45,13 @@ import com.example.deniseshop.core.presentation.components.IconWithBadge
 import com.example.deniseshop.feature.categories.components.CategoriesBrandItem
 import com.example.deniseshop.feature.categories.components.MainCategoryItem
 import com.example.deniseshop.feature.categories.components.SubCategoryItem
-import com.example.deniseshop.navigation.Routes
+import com.example.deniseshop.navigation.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoriesScreen(
 	viewModel: CategoriesViewModel = hiltViewModel(),
-	onNavigate: (String) -> Unit
+	onNavigate: (Route) -> Unit
 ) {
 	val state =  viewModel.state.collectAsState()
 	val cartItems = viewModel.cartItems.collectAsState()
@@ -73,7 +69,7 @@ fun CategoriesScreen(
 			actions = {
 				IconButton(
 					onClick = {
-						onNavigate(Routes.Search.route)
+						onNavigate(Route.Search)
 					}
 				) {
 					Icon(
@@ -83,7 +79,7 @@ fun CategoriesScreen(
 				}
 				IconButton(
 					onClick = {
-						onNavigate(Routes.Cart.route)
+						onNavigate(Route.Cart)
 					}
 				) {
 					IconWithBadge(
@@ -130,7 +126,7 @@ fun CategoriesScreen(
 @Composable
 private fun CategoryScreen(
 	categories: List<Category>,
-	onNavigate: (String) -> Unit,
+	onNavigate: (Route) -> Unit,
 	modifier: Modifier = Modifier
 ){
 	var selectedCategory by remember { mutableStateOf(categories[0]) }
@@ -154,16 +150,16 @@ private fun CategoryScreen(
 			modifier = Modifier
 				.weight(70f),
 			onCategoryClick = {
-				onNavigate("${Routes.CategoryProductScreen.route}/$it")
+				onNavigate(Route.CategoryProducts(it))
 			},
 			onBrandClick = {
-				onNavigate("${Routes.BrandProductScreen.route}/$it/0")
+				onNavigate(Route.BrandProducts(it, 0))
 			},
 			onSeeAllCategoryClick = {
-				onNavigate("${Routes.CategoryProductScreen.route}/$it")
+				onNavigate(Route.CategoryProducts(it))
 			},
 			onSeeAllBrandClick = {
-				onNavigate("${Routes.BrandProductScreen.route}/0/$it")
+				onNavigate(Route.BrandProducts(0,it))
 			}
 		)
 	}
