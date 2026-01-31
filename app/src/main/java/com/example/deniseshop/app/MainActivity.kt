@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -21,12 +22,15 @@ import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.util.Consumer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.example.deniseshop.app.ui.DeniseShopApp
 import com.example.deniseshop.app.ui.rememberDeniseShopAppState
 import com.example.deniseshop.core.domain.model.ThemeMode
 import com.example.deniseshop.core.domain.repository.UserSettingRepository
 import com.example.deniseshop.core.presentation.theme.DeniseShopTheme
+import com.example.deniseshop.navigation.Route
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -68,18 +72,18 @@ class MainActivity : ComponentActivity() {
 		setContent {
 			val darkTheme = shouldUseDarkTheme(uiState)
 
-			val navController = rememberNavController()
+			val backStack =  rememberNavBackStack(Route.Home)
 
-			DisposableEffect(navController) {
+			DisposableEffect(backStack) {
 				val listener = Consumer<Intent> { intent ->
-					navController.handleDeepLink(intent)
+					handlePaymentIntent(intent, backStack)
 				}
 				addOnNewIntentListener(listener)
 				onDispose { removeOnNewIntentListener(listener) }
 			}
 
 			val appState = rememberDeniseShopAppState(
-				navController = navController,
+				backStack = backStack,
 				settingRepository = userSettingRepository
 			)
 
@@ -105,6 +109,35 @@ class MainActivity : ComponentActivity() {
 			}
 			val notificationManager = context.getSystemService(NotificationManager::class.java)
 			notificationManager.createNotificationChannel(channel)
+		}
+	}
+
+	private fun handlePaymentIntent(
+		intent: Intent,
+		backStack: NavBackStack<NavKey>
+	){
+		val uri: Uri? = intent.data
+		//I used package name as return host
+		if (uri?.host == this.packageName) {
+			val parameters = buildMap {
+				uri.queryParameterNames?.forEach { argName ->
+					this[argName] = uri.getQueryParameter(argName)
+				}
+			}
+
+			if(
+				parameters.containsKey("status") &&
+				parameters.containsKey("token") &&
+				parameters.containsKey("payerId")
+			){
+				backStack.add(
+					Route.Checkout(
+						status = parameters["status"] ?: "",
+						token = parameters["token"] ?: "",
+						payerId = parameters["payerId"] ?: "",
+					)
+				)
+			}
 		}
 	}
 }

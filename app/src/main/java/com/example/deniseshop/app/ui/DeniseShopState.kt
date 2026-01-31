@@ -4,31 +4,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.NavDestination
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navOptions
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.example.deniseshop.core.domain.repository.UserSettingRepository
+import com.example.deniseshop.navigation.Route
 import com.example.deniseshop.navigation.TopLevelRoutes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 @Composable
 fun rememberDeniseShopAppState(
 	settingRepository: UserSettingRepository,
 	coroutineScope: CoroutineScope = rememberCoroutineScope(),
-	navController: NavHostController = rememberNavController(),
+	backStack: NavBackStack<NavKey> =  rememberNavBackStack(Route.Home),
 ): DeniseShopState {
 	return remember(
-		navController,
+		backStack,
 		coroutineScope,
 		settingRepository
 	) {
 		DeniseShopState(
-			navController = navController,
+			backStack = backStack,
 			coroutineScope = coroutineScope,
 			userSettingRepository = settingRepository
 		)
@@ -36,16 +35,15 @@ fun rememberDeniseShopAppState(
 }
 @Stable
 class DeniseShopState(
-	val navController: NavHostController,
+	val backStack: NavBackStack<NavKey>,
 	coroutineScope: CoroutineScope,
 	userSettingRepository: UserSettingRepository
 ) {
-	val currentRoute: NavDestination?
-		@Composable get() = navController
-			.currentBackStackEntryAsState().value?.destination
+	val currentRoute: NavKey?
+		@Composable get() = backStack.lastOrNull()
 
 	val currentTopLevelRoute: TopLevelRoutes?
-		@Composable get() = when (currentRoute?.route) {
+		@Composable get() = when (currentRoute) {
 			TopLevelRoutes.HOME.route -> TopLevelRoutes.HOME
 			TopLevelRoutes.CATEGORY.route -> TopLevelRoutes.CATEGORY
 			TopLevelRoutes.WISHLIST.route -> TopLevelRoutes.WISHLIST
@@ -55,29 +53,17 @@ class DeniseShopState(
 
 	val topLeveRoutes: List<TopLevelRoutes> = TopLevelRoutes.entries
 
+	val isLoggedIn = userSettingRepository.getUser()
+		.stateIn(
+			coroutineScope,
+			SharingStarted.WhileSubscribed(5_000),
+			initialValue = null,
+		).map { it != null }
+
 	val wishlistItems = userSettingRepository.getWishlistItems()
 		.stateIn(
 			coroutineScope,
 			SharingStarted.WhileSubscribed(5_000),
 			initialValue = emptyList(),
 		)
-
-	fun navigateToTopLevelRoute(topLevelRoute: TopLevelRoutes) {
-		val topLevelNavOptions = navOptions {
-			popUpTo(navController.graph.findStartDestination().id) {
-				saveState = true
-			}
-
-			launchSingleTop = true
-
-			restoreState = true
-		}
-
-		when (topLevelRoute) {
-			TopLevelRoutes.HOME -> navController.navigate(TopLevelRoutes.HOME.route, topLevelNavOptions)
-			TopLevelRoutes.CATEGORY -> navController.navigate(TopLevelRoutes.CATEGORY.route, topLevelNavOptions)
-			TopLevelRoutes.WISHLIST -> navController.navigate(TopLevelRoutes.WISHLIST.route, topLevelNavOptions)
-			TopLevelRoutes.PROFILE-> navController.navigate(TopLevelRoutes.PROFILE.route, topLevelNavOptions)
-		}
-	}
 }

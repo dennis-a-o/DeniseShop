@@ -15,19 +15,32 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.deniseshop.core.presentation.designsystem.DeniseShopNavigationBar
-import com.example.deniseshop.navigation.NavGraph
+import com.example.deniseshop.navigation.DeniseNavDisplay
+import com.example.deniseshop.navigation.Navigator
+import com.example.deniseshop.navigation.Route
 
 @Composable
 fun DeniseShopApp(
 	appState: DeniseShopState
 ){
 	val snackBarHostState = remember { SnackbarHostState() }
+
 	val wishlistItems by appState.wishlistItems.collectAsStateWithLifecycle()
+	val isLoggedIn by  appState.isLoggedIn.collectAsState(false)
+
+	val navigator = remember {
+		Navigator(
+			backStack = appState.backStack,
+			onNavigateToRestrictedKey = { Route.SignIn },
+			isLoggedIn = {  isLoggedIn }
+		)
+	}
 
 	Scaffold(
 		bottomBar = {
@@ -37,7 +50,7 @@ fun DeniseShopApp(
 					currentRoute = appState.currentTopLevelRoute,
 					wishlistBadgeCount = wishlistItems.size,
 					onRouteClick = {
-						appState.navigateToTopLevelRoute(it)
+						navigator.navigateTopLevel(it.route)
 					}
 				)
 			}
@@ -61,8 +74,9 @@ fun DeniseShopApp(
 					),
 				),
 		) {
-			NavGraph(
+			DeniseNavDisplay(
 				appState = appState,
+				navigator = navigator,
 				onShowSnackBar = { message, action ->
 					snackBarHostState.showSnackbar(
 						message = message,

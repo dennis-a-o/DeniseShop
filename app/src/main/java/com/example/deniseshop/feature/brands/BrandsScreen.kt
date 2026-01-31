@@ -33,14 +33,14 @@ import com.example.deniseshop.core.presentation.components.BrandItem
 import com.example.deniseshop.core.presentation.components.ErrorUi
 import com.example.deniseshop.core.presentation.components.IconWithBadge
 import com.example.deniseshop.core.presentation.components.LoadingUi
-import com.example.deniseshop.navigation.Routes
+import com.example.deniseshop.navigation.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BrandsScreen(
 	viewModel: BrandsViewModel = hiltViewModel(),
 	onBackClick: () -> Unit,
-	onNavigate: (String) -> Unit
+	onNavigate: (Route) -> Unit
 ) {
 	val brandItems = viewModel.brandsPagingSource.collectAsLazyPagingItems()
 
@@ -67,7 +67,7 @@ fun BrandsScreen(
 			},
 			actions = {
 				IconButton(
-					onClick = { onNavigate(Routes.Search.route) }
+					onClick = { onNavigate(Route.Search) }
 				) {
 					Icon(
 						painter = painterResource(id = R.drawable.ic_search),
@@ -75,7 +75,7 @@ fun BrandsScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Cart.route) }
+					onClick = { onNavigate(Route.Cart) }
 				) {
 					IconWithBadge(
 						badge = cartItemsCount,
@@ -84,7 +84,7 @@ fun BrandsScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Wishlist.route) }
+					onClick = { onNavigate(Route.Wishlists) }
 				) {
 					IconWithBadge(
 						badge = wishlistItemsCount,
@@ -133,7 +133,7 @@ fun BrandsScreen(
 									BrandItem(
 										brand = it,
 										onClick = { id ->
-											onNavigate("${Routes.BrandProductScreen.route}/$id/0")
+											onNavigate(Route.BrandProducts(id,0))
 										}
 									)
 								}

@@ -1,6 +1,5 @@
 package com.example.deniseshop.feature.brandproducts
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -13,6 +12,10 @@ import com.example.deniseshop.core.domain.model.onSuccess
 import com.example.deniseshop.core.domain.repository.ShopRepository
 import com.example.deniseshop.core.domain.repository.UserSettingRepository
 import com.example.deniseshop.core.presentation.models.ProductFilterState
+import com.example.deniseshop.navigation.Route
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,16 +23,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class BrandProductsViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = BrandProductsViewModel.Factory::class)
+class BrandProductsViewModel @AssistedInject constructor(
 	private val shopRepository: ShopRepository,
 	private val settingRepository: UserSettingRepository,
-	savedStateHandle: SavedStateHandle,
+	@Assisted val navKey: Route.BrandProducts,
 ): ViewModel() {
-	private val brandId = savedStateHandle["brandId"] ?: 0L
-	private val categoryId = savedStateHandle["categoryId"] ?: 0L
+	private val brandId = navKey.brandId
+	private val categoryId = navKey.categoryId
 
 	private val _state = MutableStateFlow(BrandProductsState())
 
@@ -148,5 +150,10 @@ class BrandProductsViewModel @Inject constructor(
 					}
 				}
 		}
+	}
+
+	@AssistedFactory
+	interface Factory {
+		fun create(navKey: Route.BrandProducts): BrandProductsViewModel
 	}
 }

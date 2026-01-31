@@ -1,6 +1,5 @@
 package com.example.deniseshop.feature.addeditaddress
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.deniseshop.core.domain.model.Address
@@ -13,23 +12,26 @@ import com.example.deniseshop.core.domain.usecase.ValidateGeneralInputUseCase
 import com.example.deniseshop.core.domain.usecase.ValidateNameUseCase
 import com.example.deniseshop.core.domain.usecase.ValidatePhoneUseCase
 import com.example.deniseshop.core.presentation.toUiText
+import com.example.deniseshop.navigation.Route
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AddEditAddressViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = AddEditAddressViewModel.Factory::class)
+class AddEditAddressViewModel @AssistedInject constructor(
 	private val shopRepository: ShopRepository,
 	private val validateName: ValidateNameUseCase,
 	private val validatePhone: ValidatePhoneUseCase,
 	private val validateEmail: ValidateEmailUseCase,
 	private val validateGeneralInput: ValidateGeneralInputUseCase,
-	savedStateHandle: SavedStateHandle,
+	@Assisted val navKey: Route.AddEditAddress,
 ): ViewModel() {
-	private val addressId =  savedStateHandle["addressId"] ?: 0L
+	private val addressId =  navKey.id
 	private val _state = MutableStateFlow(AddEditAddressState())
 
 	val state = _state.asStateFlow()
@@ -220,5 +222,10 @@ class AddEditAddressViewModel @Inject constructor(
 					_state.update { it.copy(error = error.toUiText()) }
 				}
 		}
+	}
+
+	@AssistedFactory
+	interface Factory {
+		fun create(navKey: Route.AddEditAddress): AddEditAddressViewModel
 	}
 }

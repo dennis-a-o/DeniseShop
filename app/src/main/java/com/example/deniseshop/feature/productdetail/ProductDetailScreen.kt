@@ -35,14 +35,14 @@ import com.example.deniseshop.feature.productdetail.components.DetailsSection
 import com.example.deniseshop.feature.productdetail.components.GallerySection
 import com.example.deniseshop.feature.productdetail.components.ProductDetailBottomBar
 import com.example.deniseshop.feature.productdetail.components.ReviewSection
-import com.example.deniseshop.navigation.Routes
+import com.example.deniseshop.navigation.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailScreen(
 	viewModel: ProductDetailViewModel,
 	onBackClick: () -> Unit,
-	onNavigate: (String) -> Unit,
+	onNavigate: (Route) -> Unit,
 ) {
 	val state by viewModel.state.collectAsState()
 	val specState by viewModel.specState.collectAsState()
@@ -80,7 +80,7 @@ fun ProductDetailScreen(
 			},
 			actions = {
 				IconButton(
-					onClick = { onNavigate(Routes.Search.route) }
+					onClick = { onNavigate(Route.Search) }
 				) {
 					Icon(
 						painter = painterResource(id = R.drawable.ic_search),
@@ -88,7 +88,7 @@ fun ProductDetailScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Cart.route) }
+					onClick = { onNavigate(Route.Cart) }
 				) {
 					IconWithBadge(
 						badge = cartItems.size,
@@ -97,7 +97,7 @@ fun ProductDetailScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Wishlist.route) }
+					onClick = { onNavigate(Route.Wishlists) }
 				) {
 					IconWithBadge(
 						badge = wishlistItems.size,
@@ -150,7 +150,7 @@ private fun ProductDetailScreen(
 	productDetail: ProductDetail,
 	specState: ProductDetailSpecState,
 	onEvent: (ProductDetailEvent) -> Unit,
-	onNavigate: (String) -> Unit,
+	onNavigate: (Route) -> Unit,
 	modifier: Modifier = Modifier
 ){
 	Column(
@@ -178,10 +178,10 @@ private fun ProductDetailScreen(
 					inCart = false,
 					onEvent = onEvent,
 					onClickBrand = {
-						onNavigate("${Routes.BrandProductScreen.route}/$it/0")
+						onNavigate(Route.BrandProducts(it,0))
 					},
 					onClickCategory = {
-						onNavigate("${Routes.CategoryProductScreen.route}/$it")
+						onNavigate(Route.CategoryProducts(it))
 					}
 				)
 			}
@@ -203,7 +203,7 @@ private fun ProductDetailScreen(
 				ReviewSection(
 					productDetail = productDetail,
 					onSeeAllReview = {
-						onNavigate("${Routes.Reviews.route}/$it")
+						onNavigate(Route.Reviews(it))
 					}
 				)
 			}
@@ -211,13 +211,13 @@ private fun ProductDetailScreen(
 		ProductDetailBottomBar(
 			isInCart = false,
 			onHomeClick = {
-				onNavigate(Routes.Home.route)
+				onNavigate(Route.Home)
 			},
 			onAddToCart = {
 				onEvent(ProductDetailEvent.ToggleCart)
 			},
 			onViewCartClick = {
-				onNavigate(Routes.Cart.route)
+				onNavigate(Route.Cart)
 			}
 		)
 	}

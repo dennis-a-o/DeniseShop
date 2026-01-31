@@ -39,14 +39,14 @@ import com.example.deniseshop.feature.cart.components.CartBottomBar
 import com.example.deniseshop.feature.cart.components.CartItem
 import com.example.deniseshop.feature.cart.components.CartSummary
 import com.example.deniseshop.feature.cart.components.CouponForm
-import com.example.deniseshop.navigation.Routes
+import com.example.deniseshop.navigation.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
 	viewModel: CartViewModel = hiltViewModel(),
 	onBackClick: () -> Unit,
-	onNavigate: (String) -> Unit,
+	onNavigate: (Route) -> Unit,
 	onShowSnackBar: suspend (String, String?) -> Boolean
 ) {
 	val state by viewModel.state.collectAsState()
@@ -91,7 +91,7 @@ fun CartScreen(
 			},
 			actions = {
 				IconButton(
-					onClick = { onNavigate(Routes.Search.route) }
+					onClick = { onNavigate(Route.Search) }
 				) {
 					Icon(
 						painter = painterResource(id = R.drawable.ic_search),
@@ -99,7 +99,7 @@ fun CartScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Wishlist.route) }
+					onClick = { onNavigate(Route.Wishlists) }
 				) {
 					IconWithBadge(
 						badge = wishlistItems.size,
@@ -139,7 +139,7 @@ fun CartScreen(
 						cart = state.cart!!,
 						isCouponLoading = state.isCouponLoading,
 						onCartItemClick = { id ->
-							onNavigate("${Routes.ProductDetail.route}/$id")
+							onNavigate(Route.ProductDetail(id))
 						},
 						onEvent = { event ->
 							viewModel.onEvent(event)
@@ -164,7 +164,7 @@ fun CartScreen(
 						viewModel.onEvent(CartEvent.ClearCart)
 					},
 					onCheckoutClick = {
-						onNavigate(Routes.Checkout.route)
+						onNavigate(Route.Checkout())
 					}
 				)
 			}

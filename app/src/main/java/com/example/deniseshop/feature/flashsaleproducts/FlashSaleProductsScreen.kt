@@ -39,7 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.deniseshop.R
+import com.example.deniseshop.core.presentation.components.CountDownType
 import com.example.deniseshop.core.presentation.components.ErrorUi
+import com.example.deniseshop.core.presentation.components.FlashSaleCountDown
 import com.example.deniseshop.core.presentation.components.GridProductItem
 import com.example.deniseshop.core.presentation.components.IconWithBadge
 import com.example.deniseshop.core.presentation.components.ListProductItem
@@ -47,10 +49,7 @@ import com.example.deniseshop.core.presentation.components.LoadingUi
 import com.example.deniseshop.core.presentation.components.ProductConfigBar
 import com.example.deniseshop.core.presentation.components.ProductFilterBottomSheet
 import com.example.deniseshop.core.presentation.components.ProductSortOptionBottomSheet
-import com.example.deniseshop.core.presentation.components.FlashSaleCountDown
-import com.example.deniseshop.core.presentation.components.CountDownType
-import com.example.deniseshop.navigation.Routes
-
+import com.example.deniseshop.navigation.Route
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,7 +57,7 @@ import com.example.deniseshop.navigation.Routes
 fun FlashSaleProductsScreen(
 	viewModel: FlashSaleProductsViewModel,
 	onBackClick: () -> Unit,
-	onNavigate: (String) -> Unit,
+	onNavigate: (Route) -> Unit,
 ) {
 	val productItems = viewModel.flashSaleProductsPagingSource.collectAsLazyPagingItems()
 
@@ -123,7 +122,7 @@ fun FlashSaleProductsScreen(
 			},
 			actions = {
 				IconButton(
-					onClick = { onNavigate(Routes.Search.route) }
+					onClick = { onNavigate(Route.Search) }
 				) {
 					Icon(
 						painter = painterResource(id = R.drawable.ic_search),
@@ -131,7 +130,7 @@ fun FlashSaleProductsScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Cart.route) }
+					onClick = { onNavigate(Route.Cart) }
 				) {
 					IconWithBadge(
 						badge = cartItems.size,
@@ -140,7 +139,7 @@ fun FlashSaleProductsScreen(
 					)
 				}
 				IconButton(
-					onClick = { onNavigate(Routes.Wishlist.route) }
+					onClick = { onNavigate(Route.Wishlists) }
 				) {
 					IconWithBadge(
 						badge = wishlistItems.size,
@@ -234,7 +233,7 @@ fun FlashSaleProductsScreen(
 											inWishlist = it.id in wishlistItems,
 											inCart = it.id in cartItems,
 											onClick = { productId ->
-												onNavigate("${Routes.ProductDetail.route}/$productId")
+												onNavigate(Route.ProductDetail(productId))
 											},
 											onCartToggle = { id ->
 												viewModel.onCartToggle(id)
@@ -249,7 +248,7 @@ fun FlashSaleProductsScreen(
 											inWishlist = it.id in wishlistItems,
 											inCart = it.id in cartItems,
 											onClick = { productId ->
-												onNavigate("${Routes.ProductDetail.route}/$productId")
+												onNavigate(Route.ProductDetail(productId))
 											},
 											onCartToggle = { id ->
 												viewModel.onCartToggle(id)
