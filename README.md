@@ -1,11 +1,11 @@
 
 # Deniseshop E-commerce App
 
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.0-blue.svg)](https://kotlinlang.org)
-[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.5.0-brightgreen.svg)](https://developer.android.com/jetpack/compose)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.3.0-blue.svg)](https://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.6.0-brightgreen.svg)](https://developer.android.com/jetpack/compose)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Modern e-commerce Android application built with Kotlin, Jetpack Compose, and modern Android architecture components. Features a clean architecture implementation with MVVM pattern.
+Modern e-commerce Android application built with Kotlin, Jetpack Compose, and modern Android architecture components. Features a clean architecture.
 
 ## Key Features
 
@@ -24,23 +24,24 @@ Modern e-commerce Android application built with Kotlin, Jetpack Compose, and mo
 
 **Architecture:**
 - Clean Architecture (Data ➔ Domain ➔ Presentation)
-- MVVM Pattern
+- MVVM and MVI Pattern
+- Repository pattern
 - Use Cases (Business Logic Separation)
 
 **Libraries:**
 - 🖼️ **UI**: Jetpack Compose, Material3
-- 📡 **Networking**: Retrofit 2, OkHttp3, Moshi
+- 📡 **Networking**: Retrofit 2, OkHttp3
 - 💉 **DI**: Dagger Hilt
 - 🔄 **Async**: Kotlin Coroutines, Flow
 - 🖼️ **Image Loading**: Coil
-- � **Navigation**: Compose Navigation
+- � **Navigation**: Nav3 (type safe)
 - 📦 **Persistence**: DataStore
 
 ## Installation
 
 **Prerequisites:**
-- Android Studio Koala | 2024.1.1 or later
-- Android SDK 33+
+- Android Studio Otter | 2025.2.2 or later
+- Android SDK 36
 - Java 17
 
 **Steps:**
@@ -52,44 +53,6 @@ Modern e-commerce Android application built with Kotlin, Jetpack Compose, and mo
 3. Build project (will resolve Gradle dependencies)
 4. Run on emulator or physical device (min API 24)
 
-## Project Structure
-
-```
-📦 deniseshop
-├─ 📂 app
-│  └─ 📂 src/main
-│     ├─ 📂 common
-│     │  ├─ 📂 event
-│     │  └─ 📂 state 
-│     ├─ 📂 data
-│     │  ├─ 📂 api
-│     │  ├─ 📂 datastore
-│     │  ├─ 📂 models    # Api/local data classes
-│     │  ├─ 📂 repository   # Implementation repositories
-│     │  └─ 📂 source # Implementation datasources
-│     ├─ 📂 di #dependecy modules
-│     │  ├─ 📂 api   
-│     │  ├─ 📂 datastore 
-│     │  ├─ 📂 mappers  
-│     │  ├─ 📂 repository 
-│     │  ├─ 📂 source    
-│     │  └─ 📂 usecase 
-│     ├─ 📂 domain
-│     │  ├─ 📂 models    # Data classes
-│     │  └─ 📂 usecase  # Business logic cases
-│     ├─ 📂 navigateion
-│     │  ├─ 📂 NavGraph
-│     │  └─ 📂 Routes
-│     ├─ 📂 ui
-│     │  ├─ 📂 components # Reusable UI components
-│     │  ├─ 📂 mapper  # Data models mappers data to ui
-│     │  ├─ 📂 models # Ui models classes
-│     │  ├─ 📂 screens    # All application screens with viewmodels & events 
-│     │  └─ 📂 theme # App theming 
-│     └─ 📂 utils # contains app utils
-└─ 📂 gradle
-```
-
 ## Screenshots
 
 | Home                                 | Products                              | Flash Sales                                 | Categories                                | Cart                          | Wishlist                              | Register                              | Login                              | Profile                              |
@@ -97,7 +60,7 @@ Modern e-commerce Android application built with Kotlin, Jetpack Compose, and mo
 | ![Home Screen](screenshots/home.png) | ![Products](screenshots/products.png) | ![Flash Sales](screenshots/flash-sales.png) | ![Categories](screenshots/categories.png) | ![Cart](screenshots/cart.png) | ![Wishlist](screenshots/wishlist.png) | ![Wishlist](screenshots/register.png) | ![Wishlist](screenshots/login.png) | ![Wishlist](screenshots/profile.png) |
 
 
-## API 
+## Backend
 
 The Deniseshop App uses the [Deniseshop Web App](https://github.com/dennis-o-a/deniseshop-web-app.git) for RESTful api.</br>
 

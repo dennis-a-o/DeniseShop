@@ -15,8 +15,8 @@ android {
 		applicationId = "com.example.deniseshop"
 		minSdk = 24
 		targetSdk = 36
-		versionCode = 1
-		versionName = "1.0"
+		versionCode = 2
+		versionName = "2.0"
 
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		vectorDrawables {
@@ -68,15 +68,16 @@ dependencies {
 	implementation(libs.androidx.material3)
 	//kotlin serialization
 	implementation(libs.kotlinx.serialization.json)
+	implementation(libs.retrofit.kotlinx.serialization.converter)
 	//preff datastore
 	implementation(libs.androidx.datastore.preferences.core)
 	//Protobuff datastore
 	implementation(libs.androidx.datastore.core)
 	//splash
 	implementation(libs.androidx.core.splashscreen)
-	//Navigation277
+	//Navigation2
 	implementation(libs.androidx.navigation.compose)
-	// Lifecycle components283
+	// Lifecycle components
 	// viewModel
 	implementation(libs.androidx.lifecycle.viewmodel.ktx)
 	// viewModel utilities for Compose
@@ -89,28 +90,14 @@ dependencies {
 	// Retrofit
 	implementation (libs.retrofit)
 	implementation(libs.converter.scalars)
-	// Retrofit with Moshi Converter
-	implementation (libs.converter.moshi)
 	// OkHttp
 	implementation (libs.okhttp)
-	// Moshi
-	implementation (libs.moshi.kotlin)
-	//testImplementation(libs.junit.jupiter)
-	ksp(libs.moshi.kotlin.codegen)
-	//gson
-	implementation (libs.gson)
-	implementation (libs.converter.gson)
 	// Hilt
 	implementation (libs.hilt.android)
+	implementation(libs.androidx.compose.ui)
 	ksp (libs.hilt.compiler)
 	//annotationProcessor (libs.hilt.compiler)
 	implementation (libs.androidx.hilt.navigation.compose)
-	// Room260
-	implementation(libs.androidx.room.runtime)
-	implementation(libs.androidx.room.ktx)
-	//annotationProcessor(libs.androidx.room.compiler)
-	//kapt("androidx.room:room-compiler:$room_version")
-	ksp(libs.androidx.room.room.compiler)
 	//Coil
 	implementation(libs.coil.compose)
 	//paging 330
@@ -127,6 +114,13 @@ dependencies {
 	implementation (libs.paypal.web.payments)
 	//webkit
 	implementation(libs.androidx.browser)
+	//navigation 3
+	implementation(libs.androidx.navigation3.runtime)
+	implementation(libs.androidx.navigation3.ui)
+	implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+
+	ksp(libs.kotlin.metadata.jvm)
+
 	testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)
 	androidTestImplementation(libs.androidx.espresso.core)
