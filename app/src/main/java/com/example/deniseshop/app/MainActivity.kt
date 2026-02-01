@@ -1,12 +1,8 @@
 package com.example.deniseshop.app
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -92,23 +88,6 @@ class MainActivity : ComponentActivity() {
 					appState = appState
 				)
 			}
-		}
-
-
-		createNotification(this)
-	}
-
-	private fun createNotification(context: Context){
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-			val channel = NotificationChannel(
-				"download_channel",
-				"Downloads",
-				NotificationManager.IMPORTANCE_DEFAULT
-			).apply {
-				description = "File Download Notification"
-			}
-			val notificationManager = context.getSystemService(NotificationManager::class.java)
-			notificationManager.createNotificationChannel(channel)
 		}
 	}
 

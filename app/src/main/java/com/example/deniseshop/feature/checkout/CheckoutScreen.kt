@@ -1,6 +1,5 @@
 package com.example.deniseshop.feature.checkout
 
-import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.example.deniseshop.R
 import com.example.deniseshop.core.domain.model.Checkout
 import com.example.deniseshop.core.domain.model.PaymentMethod
@@ -85,7 +85,7 @@ fun CheckoutScreen(
 			val customTabsIntent = CustomTabsIntent.Builder()
 				.setShowTitle(true)
 				.build()
-			customTabsIntent.launchUrl(context,Uri.parse(state.paypalPaymentUrl))
+			customTabsIntent.launchUrl(context, state.paypalPaymentUrl!!.toUri())
 			viewModel.clearState()
 		}
 	}

@@ -14,6 +14,7 @@ import androidx.core.text.HtmlCompat
 import coil.Coil
 import coil.ImageLoader
 import coil.request.ImageRequest
+import androidx.core.text.parseAsHtml
 
 @Composable
 fun HtmlText(
@@ -32,12 +33,7 @@ fun HtmlText(
 			}
 		},
 		update = {
-			it.text = HtmlCompat.fromHtml(
-				html,
-				HtmlCompat.FROM_HTML_MODE_COMPACT,
-				CoilImageGetter(it),
-				null
-			)
+			it.text = html.parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT, CoilImageGetter(it))
 		}
 	)
 }

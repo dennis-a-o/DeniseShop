@@ -1,6 +1,10 @@
 package com.example.deniseshop.core.data.repository
 
+import android.content.ContentValues
+import android.content.Context
+import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -52,15 +56,16 @@ import com.example.deniseshop.core.domain.model.Wishlist
 import com.example.deniseshop.core.domain.model.onError
 import com.example.deniseshop.core.domain.model.onSuccess
 import com.example.deniseshop.core.domain.repository.ShopRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import java.io.File
 import javax.inject.Inject
 
 class RemoteShopRepository @Inject constructor(
 	private val remoteDeniseShopDataSource: RemoteDeniseShopDataSource,
-	private val settingDataSource: SettingDataSource
+	private val settingDataSource: SettingDataSource,
+	@ApplicationContext val context: Context,
 ): ShopRepository {
 	override suspend fun getHome(): Result<Home, DataError.Remote> {
 		return when(val res = remoteDeniseShopDataSource.getHome()) {
@@ -438,19 +443,44 @@ class RemoteShopRepository @Inject constructor(
 					val  fileName = response.headers()["Content-Disposition"]
 						?.split(";")?.get(1)
 						?.split("=")?.get(1)
-						?.removeSurrounding("\"")
+						?.removeSurrounding("\"")?: "item.zip"
 
-					val destination = File(
-						Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-						fileName?: "Item.zip"
-					)
+					val resolver = context.contentResolver
 
-					body.byteStream().use { input ->
-						destination.outputStream().use { output ->
-							input.copyTo(output)
+					val contentValues = ContentValues().apply {
+						put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+						put(MediaStore.MediaColumns.MIME_TYPE, "file/zip")
+
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+							put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+							put(MediaStore.MediaColumns.IS_PENDING, 1)
 						}
 					}
-					kotlin.Result.success("Downloaded ${destination.name} successfully,check your Downloads folder.")
+
+					val collection = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+						MediaStore.Downloads.EXTERNAL_CONTENT_URI
+					}else{
+						MediaStore.Files.getContentUri("external")
+					}
+
+					val fileUri = resolver.insert(collection,contentValues)
+
+					fileUri?.let { uri ->
+						resolver.openOutputStream(uri)?.use { outputStream ->
+							body.byteStream().use { inputStream ->
+								inputStream.copyTo(outputStream)
+							}
+						}
+
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+							contentValues.clear()
+							contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
+							resolver.update(uri, contentValues, null, null)
+						}
+
+					}
+
+					kotlin.Result.success("Downloaded $fileName successfully,check your Downloads folder.")
 				}else{
 					kotlin.Result.failure(Exception("Download failed"))
 				}
@@ -469,19 +499,44 @@ class RemoteShopRepository @Inject constructor(
 					val  fileName = response.headers()["Content-Disposition"]
 						?.split(";")?.get(1)
 						?.split("=")?.get(1)
-						?.removeSurrounding("\"")
+						?.removeSurrounding("\"") ?: "Invoice.pdf"
 
-					val destination = File(
-						Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-						fileName?: "Invoice.pdf"
-					)
+					val resolver = context.contentResolver
 
-					body.byteStream().use { input ->
-						destination.outputStream().use { output ->
-							input.copyTo(output)
+					val contentValues = ContentValues().apply {
+						put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+						put(MediaStore.MediaColumns.MIME_TYPE, "document/pdf")
+
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+							put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+							put(MediaStore.MediaColumns.IS_PENDING, 1)
 						}
 					}
-					kotlin.Result.success("Downloaded ${destination.name} successfully,check your Downloads folder.")
+
+					val collection = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+						MediaStore.Downloads.EXTERNAL_CONTENT_URI
+					}else{
+						MediaStore.Files.getContentUri("external")
+					}
+
+					val fileUri = resolver.insert(collection,contentValues)
+
+					fileUri?.let { uri ->
+						resolver.openOutputStream(uri)?.use { outputStream ->
+							body.byteStream().use { inputStream ->
+								inputStream.copyTo(outputStream)
+							}
+						}
+
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+							contentValues.clear()
+							contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
+							resolver.update(uri, contentValues, null, null)
+						}
+
+					}
+
+					kotlin.Result.success("Downloaded $fileName successfully,check your Download folder.")
 				}else{
 					kotlin.Result.failure(Exception("Download failed"))
 				}
@@ -520,7 +575,7 @@ class RemoteShopRepository @Inject constructor(
 					.map { it.productId }
 
 				settingDataSource.saveWishlistItems(items)
-			}catch (e: Exception){ }
+			}catch (_: Exception){ }
 		}
 	}
 

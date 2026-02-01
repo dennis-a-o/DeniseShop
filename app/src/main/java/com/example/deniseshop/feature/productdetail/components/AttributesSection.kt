@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.example.deniseshop.R
 import com.example.deniseshop.core.domain.model.Product
 import com.example.deniseshop.feature.productdetail.ProductDetailEvent
+import androidx.core.graphics.toColorInt
 
 
 @Composable
@@ -75,7 +76,7 @@ fun AttributesSection(
 								.shadow(1.dp, CircleShape)
 								.size(28.dp),
 							colors = IconButtonDefaults
-								.iconButtonColors(containerColor = Color(android.graphics.Color.parseColor(color[1])))
+								.iconButtonColors(containerColor = Color(color[1].toColorInt()))
 						) {
 							if (selectedColor == color[0])
 								Icon(

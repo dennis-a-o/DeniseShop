@@ -5,7 +5,6 @@ import androidx.paging.PagingState
 import com.example.deniseshop.core.data.datastore.SettingDataSource
 import com.example.deniseshop.core.data.mappers.toProduct
 import com.example.deniseshop.core.data.network.RemoteDeniseShopDataSource
-import com.example.deniseshop.core.data.network.RetrofitDeniseShopNetworkApi
 import com.example.deniseshop.core.domain.model.Product
 import com.example.deniseshop.core.domain.model.ProductFilterParams
 

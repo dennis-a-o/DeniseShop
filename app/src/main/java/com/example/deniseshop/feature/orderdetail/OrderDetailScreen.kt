@@ -1,10 +1,6 @@
 package com.example.deniseshop.feature.orderdetail
 
-import android.Manifest
-import android.os.Build
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -34,7 +30,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import com.example.deniseshop.R
 import com.example.deniseshop.core.presentation.components.ErrorUi
 import com.example.deniseshop.core.presentation.components.LoadingUi
@@ -55,7 +50,6 @@ fun OrderDetailScreen(
 	val state by viewModel.state.collectAsState()
 	val context = LocalContext.current
 
-	var permissionsGranted by remember { mutableStateOf(false) }
 	var errorText by remember { mutableStateOf<String?>(null) }
 
 	errorText = if (state.error != null){
@@ -72,33 +66,6 @@ fun OrderDetailScreen(
 	if (state.success != null){
 		Toast.makeText(context, state.success, Toast.LENGTH_LONG).show()
 		viewModel.clearErrorSuccessState()
-	}
-
-	val permissions = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-		arrayOf(
-			Manifest.permission.MANAGE_EXTERNAL_STORAGE,
-			Manifest.permission.POST_NOTIFICATIONS,
-		)
-	}else{
-		arrayOf(
-			Manifest.permission.POST_NOTIFICATIONS,
-			Manifest.permission.READ_EXTERNAL_STORAGE,
-			Manifest.permission.WRITE_EXTERNAL_STORAGE,
-		)
-	}
-
-	val permissionLauncher = rememberLauncherForActivityResult(
-		contract = ActivityResultContracts.RequestMultiplePermissions()
-	) { permissionsMap ->
-		permissionsGranted = permissionsMap.values.all { it }
-	}
-
-	val hasPermission = permissions.all{
-		ContextCompat.checkSelfPermission(context, it) == android.content.pm.PackageManager.PERMISSION_GRANTED
-	}
-
-	LaunchedEffect(hasPermission) {
-		permissionsGranted = hasPermission
 	}
 
 	var showReviewBottomSheetWithItemId by remember { mutableStateOf<Long?>(null) }
@@ -172,18 +139,10 @@ fun OrderDetailScreen(
 						showReviewBottomSheetWithItemId = it
 					},
 					onDownloadItemClick = {
-						if (permissionsGranted) {
-							viewModel.downloadOrderItem(it)
-						}else{
-							permissionLauncher.launch(permissions)
-						}
+						viewModel.downloadOrderItem(it)
 					},
 					onDownloadInvoiceClick = {
-						if (permissionsGranted) {
-							viewModel.downloadInvoice()
-						}else{
-							permissionLauncher.launch(permissions)
-						}
+						viewModel.downloadInvoice()
 					}
 				)
 			}
